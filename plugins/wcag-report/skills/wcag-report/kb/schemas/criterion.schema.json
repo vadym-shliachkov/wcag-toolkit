@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WCAG 2.2 criterion practice catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "wcag_version", "slug", "title_ru", "title_en", "level", "introduced_in", "normative_text_en", "normative_url", "normative_archive", "normative_source_sha256", "applicability", "requirement_summary", "test_steps", "expected_result", "failure_condition", "exceptions_and_false_positives", "remediation", "example", "automation", "required_evidence", "understanding", "technique_ids", "technique_relations", "act_rule_candidates", "local_source_candidates", "code_patterns", "authority"],
+    "properties": {
+      "id": {"type": "string", "pattern": "^[1-4]\\.[1-5]\\.[0-9]{1,2}$", "not": {"const": "4.1.1"}},
+      "wcag_version": {"const": "2.2"},
+      "slug": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+      "title_ru": {"$ref": "#/$defs/text"},
+      "title_en": {"$ref": "#/$defs/text"},
+      "level": {"enum": ["A", "AA", "AAA"]},
+      "introduced_in": {"enum": ["2.0", "2.1", "2.2"]},
+      "normative_text_en": {"$ref": "#/$defs/text"},
+      "normative_url": {"type": "string", "pattern": "^https://www\\.w3\\.org/TR/WCAG22/#[a-z0-9-]+$"},
+      "normative_archive": {"$ref": "#/$defs/text"},
+      "normative_source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+      "applicability": {"$ref": "#/$defs/text"},
+      "requirement_summary": {"$ref": "#/$defs/text"},
+      "test_steps": {"$ref": "#/$defs/nonEmptyStrings"},
+      "expected_result": {"$ref": "#/$defs/text"},
+      "failure_condition": {"$ref": "#/$defs/text"},
+      "remediation": {"$ref": "#/$defs/text"},
+      "exceptions_and_false_positives": {"$ref": "#/$defs/text"},
+      "required_evidence": {"$ref": "#/$defs/nonEmptyStrings"},
+      "example": {
+        "type": "object", "required": ["kind", "before", "after", "provenance"],
+        "properties": {"kind": {"const": "original-scenario"}, "before": {"$ref": "#/$defs/text"}, "after": {"$ref": "#/$defs/text"}, "provenance": {"$ref": "#/$defs/text"}}
+      },
+      "automation": {
+        "type": "object", "required": ["mode", "limitations", "can_prove_complete_conformance"],
+        "properties": {"mode": {"enum": ["assisted", "manual-led"]}, "limitations": {"$ref": "#/$defs/text"}, "can_prove_complete_conformance": {"const": false}}
+      },
+      "understanding": {
+        "type": "object", "required": ["published_url", "local_path", "layer"],
+        "properties": {"published_url": {"$ref": "#/$defs/text"}, "local_path": {"$ref": "#/$defs/text"}, "layer": {"enum": ["published-snapshot", "pinned-editorial-source"]}}
+      },
+      "technique_ids": {"type": "object", "additionalProperties": {"$ref": "#/$defs/strings"}},
+      "technique_relations": {"type": "object"},
+      "act_rule_candidates": {"$ref": "#/$defs/strings"},
+      "local_source_candidates": {"$ref": "#/$defs/strings"},
+      "code_patterns": {"$ref": "#/$defs/strings"},
+      "authority": {"type": "object", "required": ["normative", "practice", "technique_associations"]}
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "strings": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "nonEmptyStrings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}}
+  }
+}

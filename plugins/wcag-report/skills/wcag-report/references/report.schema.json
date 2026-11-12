@@ -1,0 +1,1599 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "wcag-report/report@1",
+  "title": "wcag-report renderer input (report.json)",
+  "description": "The only input of the renderer. Produced by lib/report-data.mjs. Holds data and reader text only: UI strings (headings, labels, fixed honesty and legal sentences) come from references/i18n/<lang>.json. File paths are relative to the folder that holds report.json. Image box coordinates are in the image's own pixel space.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report",
+    "site",
+    "scope",
+    "verdict",
+    "totals",
+    "groups",
+    "journeys",
+    "priorities",
+    "issues",
+    "review_items",
+    "criteria",
+    "templates",
+    "pages",
+    "limits",
+    "method",
+    "glossary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "report": {
+      "type": "object",
+      "required": [
+        "id",
+        "language",
+        "generated_at",
+        "wcag_version",
+        "profile",
+        "options"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "description": "BCP 47 code of the report text: en (the report is English only)"
+        },
+        "generated_at": {
+          "type": "string",
+          "description": "ISO date-time of the review"
+        },
+        "wcag_version": {
+          "const": "2.2"
+        },
+        "profile": {
+          "enum": [
+            "A",
+            "AA",
+            "AAA"
+          ]
+        },
+        "options": {
+          "type": "object",
+          "required": [
+            "fix"
+          ],
+          "properties": {
+            "fix": {
+              "type": "boolean",
+              "description": "true only with --fix; issue.fix must then be present on every issue"
+            },
+            "max_pages": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "required": [
+        "name",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "description": "Public address or repository name. Never a localhost address."
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "url",
+                "repo",
+                "both"
+              ]
+            },
+            "repo_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "commit": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "home_shot": {
+          "$ref": "#/$defs/image_or_null"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "pages_discovered",
+        "pages_reviewed",
+        "cap_reached",
+        "max_pages",
+        "templates_total",
+        "templates_deep"
+      ],
+      "properties": {
+        "pages_discovered": {
+          "type": "integer"
+        },
+        "pages_reviewed": {
+          "type": "integer"
+        },
+        "pages_failed": {
+          "type": "integer"
+        },
+        "cap_reached": {
+          "type": "boolean"
+        },
+        "max_pages": {
+          "type": "integer"
+        },
+        "templates_total": {
+          "type": "integer"
+        },
+        "templates_deep": {
+          "type": "integer"
+        },
+        "journeys_tested": {
+          "type": "integer"
+        },
+        "discovery": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "sitemap",
+              "links",
+              "start"
+            ]
+          }
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "what",
+              "reason"
+            ],
+            "properties": {
+              "what": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "boolean"
+        },
+        "forms_submitted": {
+          "type": "boolean"
+        },
+        "robots_respected": {
+          "type": "boolean"
+        },
+        "documents_not_tested": {
+          "type": "integer"
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "required": [
+        "label",
+        "headline",
+        "summary",
+        "conformance"
+      ],
+      "properties": {
+        "label": {
+          "enum": [
+            "serious_barriers",
+            "significant_barriers",
+            "barriers",
+            "none_found",
+            "none_confirmed"
+          ],
+          "description": "serious = any critical; significant = any serious; barriers = only moderate/minor; none_found = no fails; none_confirmed = no fails, but items still to check"
+        },
+        "headline": {
+          "type": "string",
+          "maxLength": 220,
+          "description": "≤ 30 words: who cannot do what"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 700,
+          "description": "≤ 90 words, editor-written"
+        },
+        "conformance": {
+          "type": "object",
+          "required": [
+            "status",
+            "failing_criteria",
+            "open_criteria",
+            "untested_criteria"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "does_not_meet",
+                "not_established"
+              ]
+            },
+            "failing_criteria": {
+              "type": "integer"
+            },
+            "open_criteria": {
+              "type": "integer"
+            },
+            "untested_criteria": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "totals": {
+      "type": "object",
+      "required": [
+        "issues",
+        "review_items",
+        "criteria",
+        "pages_with_blocker"
+      ],
+      "properties": {
+        "issues": {
+          "$ref": "#/$defs/severity_counts"
+        },
+        "review_items": {
+          "type": "object",
+          "required": [
+            "total",
+            "potential_serious"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "potential_serious": {
+              "type": "integer"
+            }
+          }
+        },
+        "criteria": {
+          "type": "object",
+          "required": [
+            "total",
+            "fail",
+            "needs_review",
+            "pass",
+            "not_applicable",
+            "not_tested"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "fail": {
+              "type": "integer"
+            },
+            "needs_review": {
+              "type": "integer"
+            },
+            "pass": {
+              "type": "integer"
+            },
+            "not_applicable": {
+              "type": "integer"
+            },
+            "not_tested": {
+              "type": "integer"
+            }
+          }
+        },
+        "pages_with_blocker": {
+          "type": "integer",
+          "description": "pages with at least one critical issue"
+        },
+        "instances": {
+          "type": "integer"
+        }
+      }
+    },
+    "groups": {
+      "description": "All 8 groups, in the fixed order of $defs/group_id; the renderer sorts by weighted impact.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "counts",
+          "issue_ids"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/group_id"
+          },
+          "counts": {
+            "$ref": "#/$defs/severity_counts"
+          },
+          "issue_ids": {
+            "$ref": "#/$defs/ids"
+          },
+          "hardest_issue_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "blocked_journeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "≤ 50 words, editor-written"
+          },
+          "review_ids": {
+            "$ref": "#/$defs/ids",
+            "description": "Items to check that would affect this group if confirmed"
+          }
+        }
+      }
+    },
+    "journeys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tested",
+          "by_group"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "Plain task name in the report language, e.g. 'Buy a product'"
+          },
+          "tested": {
+            "type": "boolean"
+          },
+          "not_tested_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "by_group": {
+            "type": "object",
+            "description": "One entry per group id",
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "state",
+                "issue_ids"
+              ],
+              "properties": {
+                "state": {
+                  "enum": [
+                    "blocked",
+                    "very_hard",
+                    "some_problems",
+                    "no_barrier_found",
+                    "not_tested",
+                    "to_check"
+                  ]
+                },
+                "issue_ids": {
+                  "$ref": "#/$defs/ids"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "priorities": {
+      "type": "object",
+      "required": [
+        "issue_ids",
+        "check_soon"
+      ],
+      "properties": {
+        "issue_ids": {
+          "$ref": "#/$defs/ids",
+          "maxItems": 7
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "≤ 30 words: why this order"
+        },
+        "check_soon": {
+          "$ref": "#/$defs/ids",
+          "maxItems": 3
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/issue"
+      }
+    },
+    "review_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/review_item"
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "level",
+          "principle",
+          "in_profile",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/sc"
+          },
+          "name": {
+            "type": "string"
+          },
+          "plain": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "≤ 12 words, plain meaning"
+          },
+          "level": {
+            "enum": [
+              "A",
+              "AA",
+              "AAA"
+            ]
+          },
+          "principle": {
+            "enum": [
+              "perceivable",
+              "operable",
+              "understandable",
+              "robust"
+            ]
+          },
+          "in_profile": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/$defs/status"
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "≤ 15 words: why N/A, why not tested"
+          },
+          "issue_ids": {
+            "$ref": "#/$defs/ids"
+          },
+          "review_ids": {
+            "$ref": "#/$defs/ids"
+          }
+        }
+      }
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "page_count",
+          "deep_tested"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "page_count": {
+            "type": "integer"
+          },
+          "deep_tested": {
+            "type": "boolean"
+          },
+          "example_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "issue_ids": {
+            "$ref": "#/$defs/ids"
+          },
+          "review_ids": {
+            "$ref": "#/$defs/ids"
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "url",
+          "load_status"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Public URL or path (repo mode: path only)"
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "template_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deep_tested": {
+            "type": "boolean"
+          },
+          "load_status": {
+            "enum": [
+              "ok",
+              "error",
+              "blocked",
+              "soft404",
+              "excluded"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "issue_ids": {
+            "$ref": "#/$defs/ids"
+          },
+          "review_ids": {
+            "$ref": "#/$defs/ids"
+          }
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "gaps"
+      ],
+      "properties": {
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "area",
+              "reason",
+              "effect"
+            ],
+            "properties": {
+              "area": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string"
+              },
+              "criteria": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/sc"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "required": [
+        "environment"
+      ],
+      "properties": {
+        "environment": {
+          "type": "object",
+          "properties": {
+            "browser": {
+              "type": "string"
+            },
+            "viewports": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            },
+            "zoom_percent": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "ai_model": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "assistive_technology": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "crawl": {
+          "type": "object",
+          "properties": {
+            "include": {
+              "type": "array"
+            },
+            "exclude": {
+              "type": "array"
+            },
+            "robots": {
+              "type": "boolean"
+            }
+          }
+        },
+        "deep_pages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "template": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "dropped_automated": {
+          "type": "integer",
+          "description": "inconclusive automated results reviewed and closed"
+        },
+        "tool_notes": {
+          "type": "array",
+          "description": "results other tools report that are not WCAG failures, with a fixed explanation by code",
+          "items": {
+            "type": "object",
+            "required": [
+              "check",
+              "code",
+              "count",
+              "examples"
+            ],
+            "properties": {
+              "check": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "examples": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "html": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "glossary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "term",
+          "meaning"
+        ],
+        "properties": {
+          "term": {
+            "type": "string"
+          },
+          "meaning": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "findings_csv": {
+          "type": "string"
+        },
+        "evidence_dir": {
+          "type": "string"
+        },
+        "findings_xlsx": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sc": {
+      "type": "string",
+      "pattern": "^[1-4]\\.[1-5]\\.[0-9]{1,2}$"
+    },
+    "ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "enum": [
+        "fail",
+        "needs_review",
+        "pass",
+        "not_applicable",
+        "not_tested"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "critical",
+        "serious",
+        "moderate",
+        "minor"
+      ]
+    },
+    "group_id": {
+      "enum": [
+        "screen_reader",
+        "low_vision",
+        "colour",
+        "deaf",
+        "keyboard",
+        "dexterity",
+        "cognitive",
+        "seizure_motion"
+      ]
+    },
+    "severity_counts": {
+      "type": "object",
+      "required": [
+        "critical",
+        "serious",
+        "moderate",
+        "minor"
+      ],
+      "properties": {
+        "critical": {
+          "type": "integer"
+        },
+        "serious": {
+          "type": "integer"
+        },
+        "moderate": {
+          "type": "integer"
+        },
+        "minor": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "criterion_ref": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "level"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/sc"
+        },
+        "name": {
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "A",
+            "AA",
+            "AAA"
+          ]
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "criteria_refs": {
+      "type": "object",
+      "required": [
+        "primary"
+      ],
+      "properties": {
+        "primary": {
+          "$ref": "#/$defs/criterion_ref"
+        },
+        "related": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/criterion_ref"
+          }
+        }
+      }
+    },
+    "box": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "w",
+        "h"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "w": {
+          "type": "number"
+        },
+        "h": {
+          "type": "number"
+        },
+        "n": {
+          "type": "integer",
+          "description": "marker number; shown only when an image has 2+ boxes"
+        }
+      }
+    },
+    "image_or_null": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "file",
+            "width",
+            "height"
+          ],
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "shot": {
+      "type": "object",
+      "required": [
+        "file",
+        "width",
+        "height",
+        "alt",
+        "caption",
+        "kind"
+      ],
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "crop",
+            "pair",
+            "page"
+          ]
+        },
+        "alt": {
+          "type": "string",
+          "description": "Screenshot of {page/region}. {Element}, highlighted, {problem}."
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "boxes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/box"
+          }
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "page shown, public form"
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "pair: label of this half, e.g. 'Normal width'"
+        },
+        "pair": {
+          "description": "kind=pair: the second image (after / 320 px / focused)",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "file",
+                "width",
+                "height",
+                "alt",
+                "label"
+              ],
+              "properties": {
+                "file": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "alt": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "boxes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/box"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "description": "Optional widget for problems a screenshot cannot show",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "announced"
+          ],
+          "properties": {
+            "kind": {
+              "const": "screen_reader"
+            },
+            "announced": {
+              "type": "string"
+            },
+            "expected": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "fg",
+            "bg",
+            "ratio",
+            "required"
+          ],
+          "properties": {
+            "kind": {
+              "const": "contrast"
+            },
+            "fg": {
+              "type": "string"
+            },
+            "bg": {
+              "type": "string"
+            },
+            "ratio": {
+              "type": "number"
+            },
+            "required": {
+              "type": "number"
+            },
+            "sample": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "lines"
+          ],
+          "properties": {
+            "kind": {
+              "const": "source"
+            },
+            "lines": {
+              "type": "array",
+              "maxItems": 4,
+              "items": {
+                "type": "string"
+              }
+            },
+            "mark": {
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "where": {
+      "type": "object",
+      "required": [
+        "scope",
+        "summary",
+        "pages_confirmed",
+        "pages_reviewed"
+      ],
+      "properties": {
+        "scope": {
+          "enum": [
+            "site_wide",
+            "template",
+            "pages"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "description": "≤ 20 words, e.g. 'Site header, on every page'"
+        },
+        "component": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "template_ids": {
+          "$ref": "#/$defs/ids"
+        },
+        "pages_confirmed": {
+          "type": "integer"
+        },
+        "pages_likely": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "estimated pages for deep/AI findings (template size); null when measured on every page"
+        },
+        "pages_reviewed": {
+          "type": "integer"
+        },
+        "instances": {
+          "type": "integer"
+        },
+        "example_urls": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "more": {
+          "type": "integer",
+          "description": "pages not listed in example_urls"
+        },
+        "places": {
+          "$ref": "#/$defs/places"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "required": [
+        "id",
+        "key",
+        "severity",
+        "method",
+        "title",
+        "where",
+        "observed",
+        "cause",
+        "impacts",
+        "criteria",
+        "shots"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^I-\\d{2,3}$"
+        },
+        "key": {
+          "type": "string"
+        },
+        "rank": {
+          "type": "integer"
+        },
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "severity_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "≤ 20 words"
+        },
+        "method": {
+          "enum": [
+            "automated",
+            "measured",
+            "interactive",
+            "ai_review"
+          ],
+          "description": "printed as 'How we know'"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 90
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "journeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observed": {
+          "type": "string",
+          "description": "What's wrong, ≤ 40 words"
+        },
+        "cause": {
+          "type": "string",
+          "description": "Why it happens, ≤ 35 words"
+        },
+        "impacts": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "group",
+              "level",
+              "text"
+            ],
+            "properties": {
+              "group": {
+                "$ref": "#/$defs/group_id"
+              },
+              "level": {
+                "enum": [
+                  "blocks",
+                  "harder"
+                ]
+              },
+              "text": {
+                "type": "string",
+                "description": "≤ 25 words, the concrete experience"
+              }
+            }
+          }
+        },
+        "criteria": {
+          "$ref": "#/$defs/criteria_refs"
+        },
+        "shots": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/shot"
+          }
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "fix": {
+          "description": "Present (object) only when report.options.fix is true",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "steps"
+              ],
+              "properties": {
+                "steps": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "dev_note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "done_when": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "dev_ref": {
+          "type": "object",
+          "properties": {
+            "csv_rows": {
+              "type": "integer"
+            }
+          }
+        },
+        "recommended": {
+          "type": "array",
+          "description": "one row per thing to change (a picture file, a wording, a text style, an element an automated check failed): close-up, text now, exact replacement, where; at most 12 except for text styles, which are all listed",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "the replacement; \"\" = decorative (alt=\"\"); null = needs a description no reviewer wrote"
+              },
+              "kind": {
+                "enum": [
+                  "hide",
+                  "replace",
+                  "resize",
+                  "element",
+                  null
+                ]
+              },
+              "current": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "currents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "file": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "thumb": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "integer"
+                  },
+                  "height": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "pages": {
+                "type": "integer"
+              },
+              "places": {
+                "$ref": "#/$defs/places"
+              },
+              "basis": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "judge",
+                    "same_image",
+                    "pattern"
+                  ]
+                }
+              },
+              "zoom": {
+                "type": "object",
+                "description": "a text style that cannot grow to 200 %: its size in px and how far it grows, in %",
+                "properties": {
+                  "fontPx": {
+                    "type": "number"
+                  },
+                  "grows": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "fontPx",
+                  "grows"
+                ]
+              },
+              "seen": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "check": {
+                "type": "string",
+                "description": "for an element row: the automated check that failed on it"
+              },
+              "detail": {
+                "type": "object",
+                "description": "for an element row: what was measured (ratio and required for contrast, width and height for a tap target, token for autocomplete)"
+              }
+            }
+          }
+        },
+        "recommended_more": {
+          "type": "integer",
+          "description": "rows not shown on the card; all are in findings.xlsx and findings.csv"
+        }
+      }
+    },
+    "review_item": {
+      "type": "object",
+      "required": [
+        "id",
+        "key",
+        "title",
+        "where",
+        "observed",
+        "why_uncertain",
+        "what_to_check",
+        "if_confirmed",
+        "criteria"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^R-\\d{2,3}$"
+        },
+        "key": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 90,
+          "description": "Starts 'Check whether…'"
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "observed": {
+          "type": "string",
+          "description": "What we saw, ≤ 30 words"
+        },
+        "why_uncertain": {
+          "type": "string",
+          "description": "≤ 25 words"
+        },
+        "what_to_check": {
+          "type": "string",
+          "description": "≤ 30 words: who can confirm, what makes it a problem"
+        },
+        "if_confirmed": {
+          "type": "object",
+          "required": [
+            "severity",
+            "groups"
+          ],
+          "properties": {
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "groups": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/group_id"
+              }
+            }
+          }
+        },
+        "criteria": {
+          "$ref": "#/$defs/criteria_refs"
+        },
+        "shots": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/shot"
+          }
+        }
+      }
+    },
+    "places": {
+      "type": "object",
+      "description": "Where, summarised: every page; every page of a part of the site; or the pages, with the count of the others in their part of the site",
+      "properties": {
+        "total": {
+          "type": "integer"
+        },
+        "every": {
+          "type": "boolean"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "section",
+              "n"
+            ],
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "n": {
+                "type": "integer"
+              },
+              "total": {
+                "type": "integer"
+              },
+              "all": {
+                "type": "boolean"
+              },
+              "examples": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

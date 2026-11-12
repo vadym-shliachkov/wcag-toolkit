@@ -1,0 +1,1027 @@
+[
+ {
+  "id": "5f99a7",
+  "title_en": "ARIA attribute is defined in WAI-ARIA",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/5f99a7/",
+  "criteria": [
+   "1.3.1",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "6a7281",
+  "title_en": "ARIA state or property has valid value",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/6a7281/",
+  "criteria": [
+   "1.3.1",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "73f2c2",
+  "title_en": "Autocomplete attribute has valid value",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/73f2c2/",
+  "criteria": [
+   "1.3.5"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "97a4e1",
+  "title_en": "Button has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/97a4e1/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "oj04fd",
+  "title_en": "Element in sequential focus order has visible focus",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/oj04fd/",
+  "criteria": [
+   "2.4.7"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "46ca7f",
+  "title_en": "Element marked as decorative is not exposed",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/46ca7f/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "6cfa84",
+  "title_en": "Element with aria-hidden has no content in sequential focus navigation",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/6cfa84/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "de46e4",
+  "title_en": "Element with lang attribute has valid language tag",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/de46e4/",
+  "criteria": [
+   "3.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "307n5z",
+  "title_en": "Element with presentational children has no focusable content",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/307n5z/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "4e8ab6",
+  "title_en": "Element with role attribute has required states and properties",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/4e8ab6/",
+  "criteria": [
+   "1.3.1",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "e086e5",
+  "title_en": "Form field has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/e086e5/",
+  "criteria": [
+   "1.3.1",
+   "2.5.3",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "a25f45",
+  "title_en": "Headers attribute specified on a cell refers to cells in the same table element",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/a25f45/",
+  "criteria": [
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "0va7u6",
+  "title_en": "HTML images contain no text",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/0va7u6/",
+  "criteria": [
+   "1.4.5",
+   "1.4.9"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "b5c3f8",
+  "title_en": "HTML page has lang attribute",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/b5c3f8/",
+  "criteria": [
+   "3.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "2779a5",
+  "title_en": "HTML page has non-empty title",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/2779a5/",
+  "criteria": [
+   "2.4.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "bf051a",
+  "title_en": "HTML page lang attribute has valid language tag",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/bf051a/",
+  "criteria": [
+   "3.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "c4a8a4",
+  "title_en": "HTML page title is descriptive",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/c4a8a4/",
+  "criteria": [
+   "2.4.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "akn7bn",
+  "title_en": "Iframe with interactive elements is not excluded from tab-order",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/akn7bn/",
+  "criteria": [
+   "2.1.1",
+   "2.1.3"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "qt1vmo",
+  "title_en": "Image accessible name is descriptive",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/qt1vmo/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "59796f",
+  "title_en": "Image button has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/59796f/",
+  "criteria": [
+   "1.1.1",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "23a2a8",
+  "title_en": "Image has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/23a2a8/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "24afc2",
+  "title_en": "Important letter spacing in style attributes is wide enough",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/24afc2/",
+  "criteria": [
+   "1.4.12"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "78fd32",
+  "title_en": "Important line height in style attributes is wide enough",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/78fd32/",
+  "criteria": [
+   "1.4.12"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "9e45ec",
+  "title_en": "Important word spacing in style attributes is wide enough",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/9e45ec/",
+  "criteria": [
+   "1.4.12"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "c487ae",
+  "title_en": "Link has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/c487ae/",
+  "criteria": [
+   "1.1.1",
+   "2.4.4",
+   "2.4.9",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "m6b1q3",
+  "title_en": "Menuitem has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/m6b1q3/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "bc659a",
+  "title_en": "Meta element has no refresh delay",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/bc659a/",
+  "criteria": [
+   "2.2.1",
+   "2.2.4",
+   "3.2.5"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "bisz58",
+  "title_en": "Meta element has no refresh delay (no exception)",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/bisz58/",
+  "criteria": [
+   "2.2.1",
+   "2.2.4",
+   "3.2.5"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "b4f0c3",
+  "title_en": "Meta viewport allows for zoom",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/b4f0c3/",
+  "criteria": [
+   "1.4.4",
+   "1.4.10"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "8fc3b6",
+  "title_en": "Object element rendering non-text content has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/8fc3b6/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "b33eff",
+  "title_en": "Orientation of the page is not restricted using CSS transforms",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/b33eff/",
+  "criteria": [
+   "1.3.4"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "674b10",
+  "title_en": "Role attribute has valid value",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/674b10/",
+  "criteria": [
+   "1.3.1",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "0ssw9k",
+  "title_en": "Scrollable content can be reached with sequential focus navigation",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/0ssw9k/",
+  "criteria": [
+   "2.1.1",
+   "2.1.3"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "2t702h",
+  "title_en": "Summary element has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/2t702h/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "7d6734",
+  "title_en": "SVG element with explicit role has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/7d6734/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "09o5cg",
+  "title_en": "Text has enhanced contrast",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/09o5cg/",
+  "criteria": [
+   "1.4.3",
+   "1.4.6"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "afw4f7",
+  "title_en": "Text has minimum contrast",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/afw4f7/",
+  "criteria": [
+   "1.4.3",
+   "1.4.6"
+  ],
+  "deprecated": false,
+  "proposed": false,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "kb1m8s",
+  "title_en": "ARIA global properties not used where prohibited",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/kb1m8s/proposed/",
+  "criteria": [
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ff89c9",
+  "title_en": "ARIA required context role",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ff89c9/proposed/",
+  "criteria": [
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "in6db8",
+  "title_en": "ARIA required ID references exist",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/in6db8/proposed/",
+  "criteria": [
+   "1.3.1",
+   "4.1.2"
+  ],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "bc4a75",
+  "title_en": "ARIA required owned elements",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/bc4a75/proposed/",
+  "criteria": [
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "5c01ea",
+  "title_en": "ARIA state or property is permitted",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/5c01ea/proposed/",
+  "criteria": [
+   "1.3.1",
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "e6952f",
+  "title_en": "Attribute is not duplicated",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/e6952f/proposed/",
+  "criteria": [],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "1a02b0",
+  "title_en": "Audio and visuals of video element have transcript",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/1a02b0/proposed/",
+  "criteria": [
+   "1.2.1",
+   "1.2.8",
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "e7aa44",
+  "title_en": "Audio element content has text alternative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/e7aa44/proposed/",
+  "criteria": [
+   "1.2.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "2eb176",
+  "title_en": "Audio element content has transcript",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/2eb176/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "afb423",
+  "title_en": "Audio element content is media alternative for text",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/afb423/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "80f0bf",
+  "title_en": "Audio or video element avoids automatically playing audio",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/80f0bf/proposed/",
+  "criteria": [
+   "1.4.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "4c31df",
+  "title_en": "Audio or video element that plays automatically has a control mechanism",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/4c31df/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "aaa1bf",
+  "title_en": "Audio or video element that plays automatically has no audio that lasts more than 3 seconds",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/aaa1bf/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "3e12e1",
+  "title_en": "Block of repeated content is collapsible",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/3e12e1/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "cf77f2",
+  "title_en": "Bypass Blocks of Repeated Content",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/cf77f2/proposed/",
+  "criteria": [
+   "2.4.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "9bd38c",
+  "title_en": "Content has alternative for visual reference",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/9bd38c/proposed/",
+  "criteria": [
+   "1.3.3"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "7677a9",
+  "title_en": "Device motion based changes to the content can also be created from the user interface",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/7677a9/proposed/",
+  "criteria": [
+   "2.5.4"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "c249d5",
+  "title_en": "Device motion based changes to the content can be disabled",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/c249d5/proposed/",
+  "criteria": [
+   "2.5.4"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "b40fd1",
+  "title_en": "Document has a landmark with non-repeated content",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/b40fd1/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ye5d6e",
+  "title_en": "Document has an instrument to move focus to non-repeated content",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ye5d6e/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "047fe0",
+  "title_en": "Document has heading for non-repeated content",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/047fe0/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "36b590",
+  "title_en": "Error message describes invalid form field value",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/36b590/proposed/",
+  "criteria": [
+   "3.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "80af7b",
+  "title_en": "Focusable element has no keyboard trap",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/80af7b/proposed/",
+  "criteria": [
+   "2.1.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ebe86a",
+  "title_en": "Focusable element has no keyboard trap via non-standard navigation",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ebe86a/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "a1b64e",
+  "title_en": "Focusable element has no keyboard trap via standard navigation",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/a1b64e/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "cc0f0a",
+  "title_en": "Form field label is descriptive",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/cc0f0a/proposed/",
+  "criteria": [
+   "2.4.6"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ffd0e9",
+  "title_en": "Heading has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ffd0e9/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "b49b2e",
+  "title_en": "Heading is descriptive",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/b49b2e/proposed/",
+  "criteria": [
+   "2.4.6"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "off6ek",
+  "title_en": "HTML element language subtag matches language",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/off6ek/proposed/",
+  "criteria": [
+   "3.1.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "5b7ae0",
+  "title_en": "HTML page lang and xml:lang attributes have matching values",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/5b7ae0/proposed/",
+  "criteria": [
+   "3.1.1"
+  ],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ucwvc8",
+  "title_en": "HTML page language subtag matches default language",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ucwvc8/proposed/",
+  "criteria": [
+   "3.1.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "3ea0c8",
+  "title_en": "Id attribute value is unique",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/3ea0c8/proposed/",
+  "criteria": [],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "cae760",
+  "title_en": "Iframe element has non-empty accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/cae760/proposed/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "4b1c6c",
+  "title_en": "Iframe elements with identical accessible names have equivalent purpose",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/4b1c6c/proposed/",
+  "criteria": [
+   "4.1.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "9eb3f6",
+  "title_en": "Image filename is accessible name for image",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/9eb3f6/proposed/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "e88epe",
+  "title_en": "Image not in the accessibility tree is decorative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/e88epe/proposed/",
+  "criteria": [
+   "1.1.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "5effbb",
+  "title_en": "Link in context is descriptive",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/5effbb/proposed/",
+  "criteria": [
+   "2.4.4",
+   "2.4.9"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "aizyf1",
+  "title_en": "Link is descriptive",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/aizyf1/proposed/",
+  "criteria": [
+   "2.4.9"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "fd3a94",
+  "title_en": "Links with identical accessible names and same context serve equivalent purpose",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/fd3a94/proposed/",
+  "criteria": [
+   "2.4.4",
+   "2.4.9"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "b20e66",
+  "title_en": "Links with identical accessible names have equivalent purpose",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/b20e66/proposed/",
+  "criteria": [
+   "2.4.9"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ffbc54",
+  "title_en": "No keyboard shortcut uses only printable characters",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ffbc54/proposed/",
+  "criteria": [
+   "2.1.4"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "d0f69e",
+  "title_en": "Table header cell has assigned cells",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/d0f69e/proposed/",
+  "criteria": [
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "efbfc7",
+  "title_en": "Text content that changes automatically can be paused, stopped or hidden",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/efbfc7/proposed/",
+  "criteria": [
+   "2.2.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "eac66b",
+  "title_en": "Video element auditory content has accessible alternative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/eac66b/proposed/",
+  "criteria": [
+   "1.2.2"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "f51b46",
+  "title_en": "Video element auditory content has captions",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/f51b46/proposed/",
+  "criteria": [
+   "1.2.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ab4d13",
+  "title_en": "Video element content is media alternative for text",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ab4d13/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "c5a4ea",
+  "title_en": "Video element visual content has accessible alternative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/c5a4ea/proposed/",
+  "criteria": [
+   "1.2.3",
+   "1.2.5",
+   "1.2.8"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "1ea59c",
+  "title_en": "Video element visual content has audio description",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/1ea59c/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "f196ce",
+  "title_en": "Video element visual content has description track",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/f196ce/proposed/",
+  "criteria": [],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "1ec09b",
+  "title_en": "Video element visual content has strict accessible alternative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/1ec09b/proposed/",
+  "criteria": [
+   "1.2.5"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "c3232f",
+  "title_en": "Video element visual-only content has accessible alternative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/c3232f/proposed/",
+  "criteria": [
+   "1.2.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "d7ba54",
+  "title_en": "Video element visual-only content has audio track alternative",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/d7ba54/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ac7dc6",
+  "title_en": "Video element visual-only content has description track",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ac7dc6/proposed/",
+  "criteria": [],
+  "deprecated": true,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "ee13b5",
+  "title_en": "Video element visual-only content has transcript",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/ee13b5/proposed/",
+  "criteria": [
+   "1.2.1",
+   "1.3.1"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "fd26cf",
+  "title_en": "Video element visual-only content is media alternative for text",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/fd26cf/proposed/",
+  "criteria": [],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "2ee8b8",
+  "title_en": "Visible label is part of accessible name",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/2ee8b8/proposed/",
+  "criteria": [
+   "2.5.3"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ },
+ {
+  "id": "59br37",
+  "title_en": "Zoomed text node is not clipped with CSS overflow",
+  "url": "https://www.w3.org/WAI/standards-guidelines/act/rules/59br37/proposed/",
+  "criteria": [
+   "1.4.4"
+  ],
+  "deprecated": false,
+  "proposed": true,
+  "authority": "informative; applicability and assumptions must be evaluated"
+ }
+]

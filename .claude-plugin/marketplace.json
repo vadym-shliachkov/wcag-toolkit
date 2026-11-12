@@ -1,0 +1,16 @@
+{
+  "name": "wcag-toolkit",
+  "owner": { "name": "Vadym Shliachkov" },
+  "plugins": [
+    {
+      "name": "wcag-report",
+      "source": "./plugins/wcag-report",
+      "description": "Crawl a website or run a repository locally, check every page against WCAG 2.2 and produce a client-ready PDF accessibility report that passes an independent red-team review."
+    },
+    {
+      "name": "wcag-build",
+      "source": "./plugins/wcag-build",
+      "description": "Build UI that meets WCAG 2.2 from the first version: before Claude plans a component, block or restyle, it works out which criteria the change could break and builds the requirements in."
+    }
+  ]
+}

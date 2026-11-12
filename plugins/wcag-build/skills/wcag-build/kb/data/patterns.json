@@ -1,0 +1,341 @@
+[
+ {
+  "id": "image-alternative",
+  "criteria": [
+   "1.1.1"
+  ],
+  "title_en": "Meaningful and decorative illustrations",
+  "bad": "<img src=\"watering-zones.svg\">",
+  "good": "<img src=\"watering-zones.svg\" alt=\"Zone A is watered in the morning, zone B in the evening.\">\n<img src=\"leaf-divider.svg\" alt=\"\">",
+  "verification": "Read the alternatives in context. For a complex diagram, replace a long alt with a short pointer to a detailed description. An empty alt on a decorative divider is the expected result.",
+  "path": "examples/image-alternative.md",
+  "origin": "original"
+ },
+ {
+  "id": "chart-data",
+  "criteria": [
+   "1.1.1",
+   "1.3.1",
+   "1.4.1"
+  ],
+  "title_en": "Chart with accessible data",
+  "bad": "<img src=\"seedlings.svg\" alt=\"Chart\">",
+  "good": "<figure>\n  <img src=\"seedlings.svg\" alt=\"The number of seedlings is rising; exact values are in the table below.\">\n  <figcaption>Seedlings by week</figcaption>\n</figure>\n<table>\n  <caption>Number of seedlings that came up</caption>\n  <thead><tr><th scope=\"col\">Week</th><th scope=\"col\">Seedlings</th></tr></thead>\n  <tbody><tr><th scope=\"row\">First</th><td>12</td></tr>\n  <tr><th scope=\"row\">Second</th><td>29</td></tr></tbody>\n</table>",
+  "verification": "Compare the trend, the series labels and the values with the image; make sure the values are not distinguished by color alone. The presence of a table does not by itself prove that it is equivalent.",
+  "path": "examples/chart-data.md",
+  "origin": "original"
+ },
+ {
+  "id": "field-label",
+  "criteria": [
+   "1.3.1",
+   "3.3.2",
+   "4.1.2"
+  ],
+  "title_en": "Field label and instruction",
+  "bad": "<input placeholder=\"Library card number\">",
+  "good": "<label for=\"reader-number\">Library card number</label>\n<p id=\"reader-hint\">Enter the eight digits from the back of the card.</p>\n<input id=\"reader-number\" name=\"readerNumber\" inputmode=\"numeric\"\n       aria-describedby=\"reader-hint\">",
+  "verification": "Compare the visible label with the computed name, and check that the instruction is accessible and that the label remains after input. inputmode is a hint to the keyboard, not validation.",
+  "path": "examples/field-label.md",
+  "origin": "original"
+ },
+ {
+  "id": "grouped-controls",
+  "criteria": [
+   "1.3.1",
+   "3.3.2"
+  ],
+  "title_en": "Group of options",
+  "bad": "<p>Pickup</p><input type=\"radio\" name=\"pickup\"> In person",
+  "good": "<fieldset>\n  <legend>How to collect your selection</legend>\n  <label><input type=\"radio\" name=\"pickup\" value=\"desk\"> In the reading room</label>\n  <label><input type=\"radio\" name=\"pickup\" value=\"locker\"> From a pickup locker</label>\n</fieldset>",
+  "verification": "Enter the group with the keyboard, change the selection with the arrow keys and read the group name. A missing fieldset is not necessarily a failure if an equivalent relationship is implemented another way.",
+  "path": "examples/grouped-controls.md",
+  "origin": "original"
+ },
+ {
+  "id": "autocomplete",
+  "criteria": [
+   "1.3.5"
+  ],
+  "title_en": "Purpose of a personal field",
+  "bad": "<label>Your postal code <input name=\"postal\"></label>",
+  "good": "<label for=\"own-postal\">Your postal code</label>\n<input id=\"own-postal\" name=\"postal\" autocomplete=\"postal-code\">",
+  "verification": "Confirm that the data collected is about the user themselves and that the purpose is in the normative list. Do not require this token for a field that looks up the postal code of another recipient.",
+  "path": "examples/autocomplete.md",
+  "origin": "original"
+ },
+ {
+  "id": "heading-structure",
+  "criteria": [
+   "1.3.1",
+   "2.4.6"
+  ],
+  "title_en": "Section heading",
+  "bad": "<div class=\"large-text\">Renewing a loan</div>",
+  "good": "<h2>Renewing a loan</h2>\n<p>You can extend the loan period before the return date.</p>",
+  "verification": "Check that this really is a heading and that its level reflects how the section is nested. A single h1 is a practical convention, not a separate universal criterion.",
+  "path": "examples/heading-structure.md",
+  "origin": "original"
+ },
+ {
+  "id": "native-button",
+  "criteria": [
+   "2.1.1",
+   "4.1.2"
+  ],
+  "title_en": "Action button",
+  "bad": "<span onclick=\"saveDraft()\">Save draft</span>",
+  "good": "<button type=\"button\" id=\"save-draft\">Save draft</button>\n<script>\ndocument.querySelector(\"#save-draft\").addEventListener(\"click\", saveDraft);\n</script>",
+  "verification": "saveDraft is an application function; its implementation is not shown here. Check Enter, Space, the role and the name. button semantics do not guarantee that the business operation is correct.",
+  "path": "examples/native-button.md",
+  "origin": "original"
+ },
+ {
+  "id": "disclosure",
+  "criteria": [
+   "2.1.1",
+   "4.1.2"
+  ],
+  "title_en": "Disclosure section",
+  "bad": "<div onclick=\"toggleDetails()\">Booking conditions ▼</div>",
+  "good": "<button type=\"button\" id=\"rules-toggle\" aria-expanded=\"false\" aria-controls=\"rules-panel\">Booking conditions</button>\n<div id=\"rules-panel\" hidden><p>Booking opens seven days before the appointment.</p></div>\n<script>\nconst rulesToggle = document.querySelector('#rules-toggle');\nconst rulesPanel = document.querySelector('#rules-panel');\nrulesToggle.addEventListener('click', () => {\n  const open = rulesToggle.getAttribute('aria-expanded') === 'true';\n  rulesToggle.setAttribute('aria-expanded', String(!open));\n  rulesPanel.hidden = open;\n});\n</script>",
+  "verification": "Check Enter and Space, that aria-expanded and hidden stay in sync, and that focus cannot land in the hidden panel. Arrow keys are not required for a simple disclosure.",
+  "path": "examples/disclosure.md",
+  "origin": "original"
+ },
+ {
+  "id": "skip-link",
+  "criteria": [
+   "2.4.1",
+   "2.4.3"
+  ],
+  "title_en": "Skip to content",
+  "bad": "<a href=\"#\" onclick=\"window.scrollTo(0,500)\">Skip to content</a>",
+  "good": "<a href=\"#reading-main\">Skip to content</a>\n<nav aria-label=\"Main navigation\"><a href=\"catalog.html\">Catalogue</a></nav>\n<main id=\"reading-main\" tabindex=\"-1\"><h1>Reading rules</h1><p>Start of the rules.</p></main>",
+  "verification": "Check that the link is visible on focus, that it moves to main, and that keyboard navigation continues from the new point. Do not stop at checking the scroll position.",
+  "path": "examples/skip-link.md",
+  "origin": "original"
+ },
+ {
+  "id": "focus-style",
+  "criteria": [
+   "2.4.7",
+   "1.4.11",
+   "2.4.13"
+  ],
+  "title_en": "Visible focus indicator",
+  "bad": "button:focus { outline: none; }",
+  "good": "button:focus-visible, a:focus-visible, input:focus-visible {\n  outline: 3px solid #163f70;\n  outline-offset: 3px;\n}",
+  "verification": "The code is a candidate solution on a light background. Measure the adjacent colors; for AAA, separately measure the area and the contrast of the change in the same pixels. A 3px thickness alone does not guarantee the result on every background.",
+  "path": "examples/focus-style.md",
+  "origin": "original"
+ },
+ {
+  "id": "sticky-focus",
+  "criteria": [
+   "2.4.11",
+   "2.4.12"
+  ],
+  "title_en": "Focus next to a sticky area",
+  "bad": "header { position: fixed; top: 0; height: 6rem; }",
+  "good": "/* The value must account for the actual height of the sticky area. */\nhtml { scroll-padding-block-start: 7rem; }\n[id], input, button, a { scroll-margin-block: 1rem; }",
+  "verification": "Check both Tab directions, the change in header height at 200%, the bottom banner and open panels. Partial overlap is a separate AAA assessment, not an automatic AA fail.",
+  "path": "examples/sticky-focus.md",
+  "origin": "original"
+ },
+ {
+  "id": "text-contrast",
+  "criteria": [
+   "1.4.3",
+   "1.4.6"
+  ],
+  "title_en": "Contrast of readable text",
+  "bad": ".hint { color: #999999; background: #ffffff; }",
+  "good": ".hint { color: #333333; background: #ffffff; }",
+  "verification": "Check the sRGB relative luminance calculation, alpha compositing and the actual background. Do not round 4.499 up to a passing 4.5. The code with #333 on white has a margin, but inheritance and transparency can change the result.",
+  "path": "examples/text-contrast.md",
+  "origin": "original"
+ },
+ {
+  "id": "reflow",
+  "criteria": [
+   "1.4.4",
+   "1.4.10",
+   "1.4.12"
+  ],
+  "title_en": "Form without clipping when zoomed",
+  "bad": ".request { width: 900px; height: 220px; overflow: hidden; }",
+  "good": ".request { inline-size: min(100%, 56rem); }\n.request input { max-inline-size: 100%; box-sizing: border-box; }\n.request label, .request p { overflow-wrap: anywhere; }\n.request-row { display: flex; flex-wrap: wrap; gap: 1rem; }",
+  "verification": "Test 200%, a width of 320 CSS px and the four user text spacing settings, each with its own procedure. Responsive CSS does not replace testing all states of the form.",
+  "path": "examples/reflow.md",
+  "origin": "original"
+ },
+ {
+  "id": "error-message",
+  "criteria": [
+   "3.3.1",
+   "3.3.3",
+   "1.3.1"
+  ],
+  "title_en": "Error associated with the field",
+  "bad": "<input id=\"plot-count\" style=\"border-color:red\">",
+  "good": "<label for=\"plot-count\">Number of garden beds</label>\n<input id=\"plot-count\" name=\"plots\" inputmode=\"numeric\" aria-invalid=\"true\" aria-describedby=\"plot-error\">\n<p id=\"plot-error\">Enter a whole number from 1 to 18.</p>",
+  "verification": "The example shows the state after the error has been detected. Before an error, aria-invalid must not falsely report a problem; after correction, the message and the state must be updated. A dynamic announcement may need a separate focus strategy or a live region.",
+  "path": "examples/error-message.md",
+  "origin": "original"
+ },
+ {
+  "id": "status-update",
+  "criteria": [
+   "4.1.3"
+  ],
+  "title_en": "Announcing a result without moving focus",
+  "bad": "<div id=\"results-count\"></div>",
+  "good": "<p role=\"status\" id=\"results-count\"></p>\n<script>\n// The region exists before the update. Call this after filtering has finished.\nfunction announceFilteredCount(count) {\n  document.querySelector('#results-count').textContent = `Records found: ${count}`;\n}\n</script>",
+  "verification": "Trigger filtering from its real control, and check the announcement and that focus is kept. Do not put the whole list of results into an aggressive live region.",
+  "path": "examples/status-update.md",
+  "origin": "original"
+ },
+ {
+  "id": "visible-label-name",
+  "criteria": [
+   "2.5.3",
+   "4.1.2"
+  ],
+  "title_en": "Visible text included in the name",
+  "bad": "<button aria-label=\"Update due date\">Renew</button>",
+  "good": "<button aria-label=\"Renew the loan of the selected book\">Renew</button>",
+  "verification": "Check the computed name and a voice command using the visible text. A simpler solution is to keep only the button text if no extra clarification is needed.",
+  "path": "examples/visible-label-name.md",
+  "origin": "original"
+ },
+ {
+  "id": "target-size",
+  "criteria": [
+   "2.5.8",
+   "2.5.5"
+  ],
+  "title_en": "Sufficient target area",
+  "bad": ".day-button { width: 14px; height: 14px; padding: 0; }",
+  "good": ".day-button {\n  min-inline-size: 2.75rem;\n  min-block-size: 2.75rem;\n  padding: .5rem;\n}",
+  "verification": "With a base size of 16px, the area is at least 44px; measure the actual CSS px and check that the target does not overlap neighbouring targets. A smaller target can pass AA under the spacing or inline exception.",
+  "path": "examples/target-size.md",
+  "origin": "original"
+ },
+ {
+  "id": "drag-alternative",
+  "criteria": [
+   "2.5.7",
+   "2.1.1"
+  ],
+  "title_en": "Moving without dragging",
+  "bad": "<div draggable=\"true\">Observation #17</div>",
+  "good": "<form>\n  <label for=\"move-destination\">Section for observation #17</label>\n  <select id=\"move-destination\" name=\"destination\">\n    <option value=\"planned\">Planned</option><option value=\"done\">Completed</option>\n  </select>\n  <button type=\"submit\">Move</button>\n</form>",
+  "verification": "The form handler must actually move the selected item and preserve the meaning of the order. Check separately with a mouse without dragging, by touch and with the keyboard. This is an alternative, not complete storage code.",
+  "path": "examples/drag-alternative.md",
+  "origin": "original"
+ },
+ {
+  "id": "pointer-cancel",
+  "criteria": [
+   "2.5.2"
+  ],
+  "title_en": "Action on release",
+  "bad": "<button onpointerdown=\"removeDraft()\">Delete draft</button>",
+  "good": "<button type=\"button\" id=\"remove-draft\">Delete draft</button>\n<script>\ndocument.querySelector(\"#remove-draft\").addEventListener(\"click\", removeDraft);\n</script>",
+  "verification": "removeDraft is an application operation. Press, move the pointer away and release outside the button: the operation must not complete. If the action falls under 3.3.4, the corresponding data protection is also needed.",
+  "path": "examples/pointer-cancel.md",
+  "origin": "original"
+ },
+ {
+  "id": "password-assistance",
+  "criteria": [
+   "3.3.8"
+  ],
+  "title_en": "Password entry assistance",
+  "bad": "<input type=\"password\" onpaste=\"return false\" autocomplete=\"off\">",
+  "good": "<label for=\"account-secret\">Password</label>\n<input id=\"account-secret\" name=\"password\" type=\"password\" autocomplete=\"current-password\">",
+  "verification": "Do not block pasting, autofill or compatible assistance mechanisms. Check the whole process, including the one-time code, the backup sign-in and recovery. The autocomplete attribute does not guarantee that the process is accessible.",
+  "path": "examples/password-assistance.md",
+  "origin": "original"
+ },
+ {
+  "id": "repeat-entry",
+  "criteria": [
+   "3.3.7"
+  ],
+  "title_en": "Selecting previously entered data",
+  "bad": "<label>Re-enter your contact phone number <input type=\"tel\"></label>",
+  "good": "<label for=\"contact-again\">Contact phone number on the next step</label>\n<input id=\"contact-again\" type=\"tel\" name=\"contactPhone\" value=\"0123456789\">\n<p>The number from the previous step has been filled in. You can change it.</p>",
+  "verification": "The value is a fictitious teaching string of digits. In the application, the actual previously entered value is filled in. Check that it is the same process, and check the exceptions, including outdated information and security.",
+  "path": "examples/repeat-entry.md",
+  "origin": "original"
+ },
+ {
+  "id": "language",
+  "criteria": [
+   "3.1.1",
+   "3.1.2"
+  ],
+  "title_en": "Language of the document and of a passage",
+  "bad": "<html><body><p>In French: Fermez le portail, s'il vous plaît.</p></body></html>",
+  "good": "<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Garden plot rules</title></head>\n<body><p>In French: <span lang=\"fr\">Fermez le portail, s'il vous plaît.</span></p></body></html>",
+  "verification": "Check the default language and the actual language of the phrase. Do not automatically mark up every proper name and technical term as another language.",
+  "path": "examples/language.md",
+  "origin": "original"
+ },
+ {
+  "id": "reduced-motion",
+  "criteria": [
+   "2.3.3"
+  ],
+  "title_en": "Disabling motion triggered by interaction",
+  "bad": ".opened { animation: panel-flight 1s; }",
+  "good": ".opened { animation: panel-flight .25s; }\n@media (prefers-reduced-motion: reduce) {\n  .opened { animation: none; }\n  html { scroll-behavior: auto; }\n}",
+  "verification": "panel-flight is defined in the application. Check all motion triggered by interaction, including script-driven motion. Reducing the duration does not by itself replace disabling the motion.",
+  "path": "examples/reduced-motion.md",
+  "origin": "original"
+ },
+ {
+  "id": "modal-dialog",
+  "criteria": [
+   "2.1.1",
+   "2.1.2",
+   "2.4.3",
+   "4.1.2"
+  ],
+  "title_en": "Native modal dialog",
+  "bad": "<div class=\"popup\"><p>Confirm the renewal?</p><span>Close</span></div>",
+  "good": "<button id=\"open-renewal\" type=\"button\">Renew loan</button>\n<dialog id=\"renewal-dialog\" aria-labelledby=\"renewal-title\">\n  <h2 id=\"renewal-title\">Review the renewal</h2>\n  <p>The due date will change after confirmation.</p>\n  <form method=\"dialog\"><button autofocus>Go back</button></form>\n</dialog>\n<script>\nconst renewalOpener = document.querySelector('#open-renewal');\nconst renewalDialog = document.querySelector('#renewal-dialog');\nrenewalOpener.addEventListener('click', () => renewalDialog.showModal());\nrenewalDialog.addEventListener('close', () => renewalOpener.focus());\n</script>",
+  "verification": "This is a teaching dialog with only a \"Go back\" action; the renewal operation itself is not implemented. Check the initial focus, the Tab cycle, Escape, the inert background and the return to the opener. For long content, the initial focus is chosen according to context. aria-modal alone is not enough to block the background.",
+  "path": "examples/modal-dialog.md",
+  "origin": "original"
+ },
+ {
+  "id": "tabs",
+  "criteria": [
+   "2.1.1",
+   "2.4.3",
+   "4.1.2"
+  ],
+  "title_en": "Tabs: minimum behavior contract",
+  "bad": "<div role=\"tab\" onclick=\"showPane(1)\">Month</div>",
+  "good": "<!-- Markup contract. The keys and switching still have to be implemented. -->\n<div role=\"tablist\" aria-label=\"Observation period\">\n  <button type=\"button\" id=\"tab-week\" role=\"tab\" aria-selected=\"true\" aria-controls=\"pane-week\" tabindex=\"0\">Week</button>\n  <button type=\"button\" id=\"tab-month\" role=\"tab\" aria-selected=\"false\" aria-controls=\"pane-month\" tabindex=\"-1\">Month</button>\n</div>\n<section role=\"tabpanel\" id=\"pane-week\" aria-labelledby=\"tab-week\" tabindex=\"0\">Data for the week</section>\n<section role=\"tabpanel\" id=\"pane-month\" aria-labelledby=\"tab-month\" hidden tabindex=\"0\">Data for the month</section>",
+  "verification": "This is not a finished widget. Implement roving tabindex, the arrow keys, either manual activation with Enter/Space or automatic activation without noticeable delay, and keep aria-selected and hidden in sync. Check Home/End if they are supported; do not treat every deviation from the recommended keys as a WCAG failure in itself.",
+  "path": "examples/tabs.md",
+  "origin": "original"
+ },
+ {
+  "id": "tooltip",
+  "criteria": [
+   "1.4.13",
+   "2.1.1"
+  ],
+  "title_en": "Tooltip: contract",
+  "bad": "<span onmouseover=\"showHint()\">Quota</span>",
+  "good": "<!-- Contract. Needs code for opening, persistent hover and closing with Escape. -->\n<button type=\"button\" aria-describedby=\"quota-hint\">What does quota mean</button>\n<span role=\"tooltip\" id=\"quota-hint\" hidden>The maximum number of requests per week.</span>",
+  "verification": "Do not treat the snippet as a working tooltip: hidden must be removed on focus/hover, the area must persist while the pointer moves onto it, and Escape must close it without moving focus. Interactive links inside require a different pattern, for example a non-modal dialog.",
+  "path": "examples/tooltip.md",
+  "origin": "original"
+ }
+]

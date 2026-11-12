@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "One scoped WCAG 2.2 observation",
+  "type": "object",
+  "required": ["id", "wcag_version", "criterion_id", "level", "profile", "in_profile", "scope", "status", "applicability", "method", "steps", "expected", "observed", "exceptions_checked", "evidence", "environment", "normative_url", "impact", "severity", "confidence", "remediation", "related_criteria"],
+  "properties": {
+    "id": {"$ref": "#/$defs/text"},
+    "wcag_version": {"const": "2.2"},
+    "criterion_id": {"$ref": "#/$defs/sc"},
+    "level": {"enum": ["A", "AA", "AAA"]},
+    "profile": {"enum": ["A", "AA", "AAA"]},
+    "in_profile": {"type": "boolean"},
+    "scope": {
+      "type": "object", "required": ["url", "state", "locator"],
+      "properties": {"url": {"$ref": "#/$defs/text"}, "state": {"$ref": "#/$defs/text"}, "locator": {"type": ["string", "null"]}, "process_step": {"type": "string"}}
+    },
+    "status": {"enum": ["pass", "fail", "needs_review", "not_applicable", "not_tested"]},
+    "applicability": {
+      "type": "object", "required": ["applies", "reason"],
+      "properties": {"applies": {"type": ["boolean", "null"]}, "reason": {"$ref": "#/$defs/text"}}
+    },
+    "method": {"enum": ["static", "measurement", "interactive", "manual-content", "assistive-technology", "not-tested"]},
+    "steps": {"$ref": "#/$defs/strings"},
+    "expected": {"$ref": "#/$defs/text"},
+    "observed": {"type": ["string", "null"]},
+    "exceptions_checked": {"$ref": "#/$defs/strings"},
+    "evidence": {
+      "type": "array", "items": {
+        "type": "object", "required": ["kind", "reference", "description"],
+        "properties": {"kind": {"$ref": "#/$defs/text"}, "reference": {"$ref": "#/$defs/text"}, "description": {"$ref": "#/$defs/text"}}
+      }
+    },
+    "environment": {
+      "type": "object", "required": ["viewport_css_px", "zoom_percent", "input", "user_agent", "assistive_technology"],
+      "properties": {
+        "viewport_css_px": {"type": ["array", "null"], "minItems": 2, "maxItems": 2, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "zoom_percent": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "input": {"type": ["string", "null"]}, "user_agent": {"type": ["string", "null"]}, "assistive_technology": {"type": ["string", "null"]}
+      }
+    },
+    "normative_url": {"type": "string", "pattern": "^https://www\\.w3\\.org/TR/WCAG22/#[a-z0-9-]+$"},
+    "impact": {"type": ["string", "null"]},
+    "severity": {"enum": ["critical", "high", "medium", "low", null]},
+    "confidence": {"enum": ["confirmed", "candidate", "unknown"]},
+    "remediation": {"type": ["string", "null"]},
+    "related_criteria": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/sc"}},
+    "unresolved_questions": {"$ref": "#/$defs/strings"},
+    "reason_not_tested": {"$ref": "#/$defs/text"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "fail"}}},
+      "then": {"properties": {
+        "applicability": {"properties": {"applies": {"const": true}}},
+        "confidence": {"const": "confirmed"},
+        "steps": {"minItems": 1}, "evidence": {"minItems": 1},
+        "observed": {"$ref": "#/$defs/text"}, "impact": {"$ref": "#/$defs/text"},
+        "severity": {"enum": ["critical", "high", "medium", "low"]}, "remediation": {"$ref": "#/$defs/text"}
+      }}
+    },
+    {
+      "if": {"properties": {"status": {"const": "pass"}}},
+      "then": {"properties": {"applicability": {"properties": {"applies": {"const": true}}}, "steps": {"minItems": 1}, "evidence": {"minItems": 1}, "observed": {"$ref": "#/$defs/text"}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "not_applicable"}}},
+      "then": {"properties": {"applicability": {"properties": {"applies": {"const": false}}}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "needs_review"}}},
+      "then": {"required": ["unresolved_questions"], "properties": {"unresolved_questions": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "not_tested"}}},
+      "then": {"required": ["reason_not_tested"]}
+    }
+  ],
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "strings": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+    "sc": {"type": "string", "pattern": "^[1-4]\\.[1-5]\\.[0-9]{1,2}$", "not": {"const": "4.1.1"}}
+  }
+}

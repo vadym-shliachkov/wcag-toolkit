@@ -1,0 +1,32 @@
+{
+ "note": "Terms the report may use. The renderer prints only the terms that appear in the report. `match` lists the words that count as a use (lower case).",
+ "terms": [
+  { "term": "WCAG", "match": ["wcag"], "meaning": "Web Content Accessibility Guidelines: the international standard for accessible websites, published by the W3C. Version 2.2 is current." },
+  { "term": "Level A and AA", "match": ["level a", "level aa"], "meaning": "WCAG requirements come in three levels. A is the minimum; AA is the level most laws and contracts refer to; AAA is the highest." },
+  { "term": "Screen reader", "match": ["screen reader"], "meaning": "Software that reads the screen aloud, or shows it on a braille display, so people can use a website without seeing it." },
+  { "term": "Braille display", "match": ["braille"], "meaning": "A device that shows text as raised dots under the fingertips." },
+  { "term": "Screen magnifier", "match": ["magnifier"], "meaning": "Software that enlarges part of the screen many times over." },
+  { "term": "Browser zoom", "match": ["zoom"], "meaning": "Enlarging the whole page, for example with Ctrl and +." },
+  { "term": "Voice control", "match": ["voice control"], "meaning": "Software that lets people click, type and scroll by speaking, for example by saying the words on a button." },
+  { "term": "Switch device", "match": ["switch device"], "meaning": "One or two large buttons that step through items on screen, used by people with very limited movement." },
+  { "term": "Keyboard position", "match": ["keyboard position"], "meaning": "The item the keyboard is on right now. Developers call it focus." },
+  { "term": "Keyboard highlight", "match": ["keyboard highlight"], "meaning": "The visible outline that shows the keyboard position. Developers call it the focus indicator." },
+  { "term": "Alt text", "match": ["alt text", "text description"], "meaning": "The text description of an image, read out by screen readers. Most content systems have a field for it." },
+  { "term": "Captions", "match": ["caption"], "meaning": "On-screen text of what is said in a video, and of important sounds." },
+  { "term": "Audio description", "match": ["audio description"], "meaning": "A narrated track that describes important visual details of a video." },
+  { "term": "Transcript", "match": ["transcript"], "meaning": "The full text of a video or audio recording." },
+  { "term": "Contrast", "match": ["contrast"], "meaning": "How much text or a shape stands out from its background, measured as a ratio such as 4.5:1. Higher is easier to see." },
+  { "term": "Pixels", "match": ["pixel"], "meaning": "The unit web pages use for sizes. A phone screen is often about 320 to 400 pixels wide." },
+  { "term": "Pop-up", "match": ["pop-up"], "meaning": "A window or panel that opens on top of the page, such as a cookie banner or a dialog. Developers call it a modal or dialog." },
+  { "term": "Label", "match": ["label"], "meaning": "The text that says what a form field or button is for." },
+  { "term": "Name software reads out", "match": ["name software", "name screen readers"], "meaning": "The name a screen reader or voice control uses for a button, link or field. Developers call it the accessible name." },
+  { "term": "Plain box", "match": ["plain box"], "meaning": "A page element with no built-in meaning. Developers call it a div or span. Unlike a real button, software cannot tell what it does." },
+  { "term": "Page regions", "match": ["page region"], "meaning": "Parts of a page such as the header, menu and main content that screen readers can jump between. Developers call them landmarks." },
+  { "term": "Hint text", "match": ["hint text"], "meaning": "Grey example text inside an empty form field. Developers call it a placeholder." },
+  { "term": "Tap area", "match": ["tap area", "clickable area"], "meaning": "The area of a button or link that responds to a tap or click. Developers call it the target size." },
+  { "term": "Status message", "match": ["status message"], "meaning": "A message that appears without reloading the page, such as \"Added to cart\"." },
+  { "term": "Reduce motion setting", "match": ["reduce motion"], "meaning": "A device setting that asks websites to limit animation." },
+  { "term": "Embedded content", "match": ["embedded"], "meaning": "Content from another site shown inside a page, such as a map, video player or payment form. Developers call it an iframe." },
+  { "term": "Page type", "match": ["page type"], "meaning": "A group of pages built from the same layout, such as all product pages. A problem in the layout usually appears on every page of that type." }
+ ]
+}

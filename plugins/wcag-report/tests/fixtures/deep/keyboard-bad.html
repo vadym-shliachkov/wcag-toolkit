@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Keyboard planted</title><style>body{font:16px sans-serif;margin:20px}</style></head><body>
+<a href="#a">First link</a>
+<div id="widget"><button id="w1">Day 1</button> <button id="w2">Day 2</button></div>
+<div id="cart" style="cursor:pointer;padding:8px;background:#eee;width:120px">Add to cart</div>
+<a href="#z">Last link</a>
+<div id="fav" tabindex="0" style="display:inline-block;padding:8px;background:#eee">Save to favourites</div>
+<a href="#help" id="help">Help</a>
+<script>
+const w1 = document.getElementById('w1'), w2 = document.getElementById('w2');
+for (const b of [w1, w2]) b.addEventListener('keydown', (e) => { if (e.key === 'Tab' || e.key === 'Escape') { e.preventDefault(); (document.activeElement === w1 ? w2 : w1).focus(); } });
+document.getElementById('cart').addEventListener('click', () => { document.title = 'added'; });
+document.getElementById('fav').addEventListener('click', () => { document.title = 'saved'; });
+document.getElementById('help').addEventListener('focus', (e) => e.target.blur());
+</script>
+</body></html>

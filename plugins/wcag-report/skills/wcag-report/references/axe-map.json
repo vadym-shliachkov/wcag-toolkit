@@ -1,0 +1,1347 @@
+{
+ "axeVersion": "4.14.0",
+ "generatedAt": "2026-11-03",
+ "rules": {
+  "accesskeys": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Best practice, not a WCAG requirement.",
+   "help": "accesskey attribute value should be unique",
+   "actIds": [],
+   "experimental": false
+  },
+  "area-alt": {
+   "sc": [
+    "2.4.4",
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Image-map area without a name: the link has no name a screen reader can read.",
+   "help": "Active <area> elements must have alternative text",
+   "actIds": [
+    "c487ae"
+   ],
+   "experimental": false
+  },
+  "aria-allowed-attr": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Unsupported ARIA attribute: real impact depends on what assistive technology does with it.",
+   "help": "Elements must only use supported ARIA attributes",
+   "actIds": [
+    "5c01ea"
+   ],
+   "experimental": false
+  },
+  "aria-allowed-role": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Role not allowed on the element: barrier only when semantics or operation are lost.",
+   "help": "ARIA role should be appropriate for the element",
+   "actIds": [],
+   "experimental": false
+  },
+  "aria-braille-equivalent": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Braille label without a spoken equivalent: needs a check of the real name.",
+   "help": "aria-braille attributes must have a non-braille equivalent",
+   "actIds": [],
+   "experimental": false
+  },
+  "aria-command-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Control with a command role and no name: people cannot tell what it does.",
+   "help": "ARIA commands must have an accessible name",
+   "actIds": [
+    "97a4e1"
+   ],
+   "experimental": false
+  },
+  "aria-conditional-attr": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Attribute only valid in some contexts: impact depends on the widget.",
+   "help": "ARIA attributes must be used as specified for the element's role",
+   "actIds": [
+    "5c01ea"
+   ],
+   "experimental": false
+  },
+  "aria-deprecated-role": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Deprecated role: support varies; barrier must be shown.",
+   "help": "Deprecated ARIA roles must not be used",
+   "actIds": [
+    "674b10"
+   ],
+   "experimental": false
+  },
+  "aria-dialog-name": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Dialog without a name: best practice in axe; review whether context makes purpose clear.",
+   "help": "ARIA dialog and alertdialog nodes should have an accessible name",
+   "actIds": [],
+   "experimental": false
+  },
+  "aria-hidden-body": {
+   "sc": [
+    "1.3.1",
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "The whole page is hidden from assistive technology.",
+   "help": "aria-hidden=\"true\" must not be present on the document body",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "aria-hidden on <body> hides the whole page from assistive technology; no exception applies."
+  },
+  "aria-hidden-focus": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Keyboard reaches something screen readers are told to ignore.",
+   "help": "ARIA hidden element must not be focusable or contain focusable elements",
+   "actIds": [
+    "6cfa84"
+   ],
+   "experimental": false
+  },
+  "aria-input-field-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Input with an ARIA role and no name.",
+   "help": "ARIA input fields must have an accessible name",
+   "actIds": [
+    "e086e5"
+   ],
+   "experimental": false
+  },
+  "aria-meter-name": {
+   "sc": [
+    "1.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Meter without a name.",
+   "help": "ARIA meter nodes must have an accessible name",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "A meter with no accessible name at all; nothing to judge beyond the missing name."
+  },
+  "aria-progressbar-name": {
+   "sc": [
+    "1.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Progress bar without a name.",
+   "help": "ARIA progressbar nodes must have an accessible name",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "A progress bar with no accessible name at all; nothing to judge beyond the missing name."
+  },
+  "aria-prohibited-attr": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Prohibited attribute: often harmless; review the real name and role.",
+   "help": "Elements must only use permitted ARIA attributes",
+   "actIds": [
+    "5c01ea"
+   ],
+   "experimental": false
+  },
+  "aria-required-attr": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Widget role missing a state it needs (e.g. checked), so its value cannot be read.",
+   "help": "Required ARIA attributes must be provided",
+   "actIds": [
+    "4e8ab6"
+   ],
+   "experimental": false
+  },
+  "aria-required-children": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Composite widget missing required children: confirm the loss of structure.",
+   "help": "Certain ARIA roles must contain particular children",
+   "actIds": [
+    "bc4a75",
+    "ff89c9"
+   ],
+   "experimental": false
+  },
+  "aria-required-parent": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Item outside its required container: confirm the loss of structure.",
+   "help": "Certain ARIA roles must be contained by particular parents",
+   "actIds": [
+    "ff89c9"
+   ],
+   "experimental": false
+  },
+  "aria-roledescription": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Role description on an unsuitable element.",
+   "help": "aria-roledescription must be on elements with a semantic role",
+   "actIds": [],
+   "experimental": false
+  },
+  "aria-roles": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Invalid role value: the element has no usable role for assistive technology.",
+   "help": "ARIA roles used must conform to valid values",
+   "actIds": [
+    "674b10"
+   ],
+   "experimental": false
+  },
+  "aria-tab-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Tab with no name: screen reader users cannot tell the tabs apart.",
+   "help": "ARIA tab nodes must have an accessible name",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "A tab with no accessible name at all; nothing to judge beyond the missing name."
+  },
+  "aria-text": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "role=text best practice.",
+   "help": "\"role=text\" should have no focusable descendants",
+   "actIds": [],
+   "experimental": false
+  },
+  "aria-toggle-field-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Toggle control with no name.",
+   "help": "ARIA toggle fields must have an accessible name",
+   "actIds": [
+    "e086e5"
+   ],
+   "experimental": false
+  },
+  "aria-tooltip-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Tooltip with no name.",
+   "help": "ARIA tooltip nodes must have an accessible name",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "A tooltip with no accessible name at all; nothing to judge beyond the missing name."
+  },
+  "aria-treeitem-name": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Tree item name is a best practice in axe.",
+   "help": "ARIA treeitem nodes should have an accessible name",
+   "actIds": [],
+   "experimental": false
+  },
+  "aria-valid-attr": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Misspelled or invented ARIA attribute: the intended state or name is lost.",
+   "help": "ARIA attributes must conform to valid names",
+   "actIds": [
+    "5f99a7"
+   ],
+   "experimental": false
+  },
+  "aria-valid-attr-value": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Invalid ARIA value: the stated relationship or state is lost.",
+   "help": "ARIA attributes must conform to valid values",
+   "actIds": [
+    "6a7281"
+   ],
+   "experimental": false
+  },
+  "audio-caption": {
+   "sc": [
+    "1.2.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Audio needs a transcript; whether one exists nearby needs a person.",
+   "help": "<audio> elements must have a captions track",
+   "actIds": [
+    "2eb176",
+    "afb423"
+   ],
+   "experimental": false
+  },
+  "autocomplete-valid": {
+   "sc": [
+    "1.3.5"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "minor",
+   "note": "Invalid autocomplete token: browsers cannot fill the field for the person.",
+   "help": "autocomplete attribute must be used correctly",
+   "actIds": [
+    "73f2c2"
+   ],
+   "experimental": false
+  },
+  "avoid-inline-spacing": {
+   "sc": [
+    "1.4.12"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Inline !important spacing blocks people who override text spacing.",
+   "help": "Inline text spacing must be adjustable with custom stylesheets",
+   "actIds": [
+    "24afc2",
+    "9e45ec",
+    "78fd32"
+   ],
+   "experimental": false
+  },
+  "blink": {
+   "sc": [
+    "2.2.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Blinking content that cannot be stopped.",
+   "help": "<blink> elements are deprecated and must not be used",
+   "actIds": [],
+   "experimental": false,
+   "reviewReason": "Browsers no longer render <blink>; whether anything moves, and for how long, needs a look."
+  },
+  "button-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Button with no name: screen readers announce only \"button\".",
+   "help": "Buttons must have discernible text",
+   "actIds": [
+    "97a4e1",
+    "m6b1q3"
+   ],
+   "experimental": false
+  },
+  "bypass": {
+   "sc": [
+    "2.4.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "No way to skip repeated blocks found; confirm that no other bypass mechanism exists (disputed: skip link is one way).",
+   "help": "Page must have means to bypass repeated blocks",
+   "actIds": [
+    "cf77f2",
+    "047fe0",
+    "b40fd1",
+    "3e12e1",
+    "ye5d6e"
+   ],
+   "experimental": false
+  },
+  "color-contrast": {
+   "sc": [
+    "1.4.3"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Measured text contrast below the threshold.",
+   "help": "Elements must meet minimum color contrast ratio thresholds",
+   "actIds": [
+    "afw4f7",
+    "09o5cg"
+   ],
+   "experimental": false
+  },
+  "color-contrast-enhanced": {
+   "sc": [
+    "1.4.6"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "minor",
+   "note": "Measured text contrast below the AAA threshold.",
+   "help": "Elements must meet enhanced color contrast ratio thresholds",
+   "actIds": [
+    "09o5cg"
+   ],
+   "experimental": false
+  },
+  "css-orientation-lock": {
+   "sc": [
+    "1.3.4"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "CSS locks the page to one orientation.",
+   "help": "CSS Media queries must not lock display orientation",
+   "actIds": [
+    "b33eff"
+   ],
+   "experimental": true
+  },
+  "definition-list": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Malformed definition list: confirm a real loss of structure.",
+   "help": "<dl> elements must only directly contain properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements",
+   "actIds": [],
+   "experimental": false
+  },
+  "dlitem": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Definition item outside a list: confirm a real loss of structure.",
+   "help": "<dt> and <dd> elements must be contained by a <dl>",
+   "actIds": [],
+   "experimental": false
+  },
+  "document-title": {
+   "sc": [
+    "2.4.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "minor",
+   "note": "Page has no title, so tabs and history are unnamed.",
+   "help": "Documents must have <title> element to aid in navigation",
+   "actIds": [
+    "2779a5"
+   ],
+   "experimental": false
+  },
+  "duplicate-id": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Duplicate ids: 4.1.1 is obsolete in WCAG 2.2; only a lost relationship matters.",
+   "help": "id attribute value must be unique",
+   "actIds": [
+    "3ea0c8"
+   ],
+   "experimental": false
+  },
+  "duplicate-id-active": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Duplicate ids on focusable elements: investigate relationships, not a failure by itself.",
+   "help": "IDs of active elements must be unique",
+   "actIds": [
+    "3ea0c8"
+   ],
+   "experimental": false
+  },
+  "duplicate-id-aria": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Duplicate id used by a label or description: the wrong text may be read.",
+   "help": "IDs used in ARIA and labels must be unique",
+   "actIds": [
+    "3ea0c8"
+   ],
+   "experimental": false
+  },
+  "empty-heading": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Empty heading: confirm it is announced and misleads.",
+   "help": "Headings should not be empty",
+   "actIds": [
+    "ffd0e9"
+   ],
+   "experimental": false
+  },
+  "empty-table-header": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Empty table header cell.",
+   "help": "Table header text should not be empty",
+   "actIds": [],
+   "experimental": false
+  },
+  "focus-order-semantics": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Focusable element without an interactive role.",
+   "help": "Elements in the focus order should have an appropriate role",
+   "actIds": [],
+   "experimental": true
+  },
+  "form-field-multiple-labels": {
+   "sc": [
+    "3.3.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Several labels on one field: some screen readers read only one.",
+   "help": "Form field must not have multiple label elements",
+   "actIds": [],
+   "experimental": false
+  },
+  "frame-focusable-content": {
+   "sc": [
+    "2.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Frame with focusable content removed from keyboard order.",
+   "help": "Frames with focusable content must not have tabindex=-1",
+   "actIds": [
+    "akn7bn"
+   ],
+   "experimental": false
+  },
+  "frame-tested": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Frame could not be tested.",
+   "help": "Frames should be tested with axe-core",
+   "actIds": [],
+   "experimental": false
+  },
+  "frame-title": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "minor",
+   "note": "Frame with no name: screen reader users cannot tell what it contains.",
+   "help": "Frames must have an accessible name",
+   "actIds": [
+    "cae760"
+   ],
+   "experimental": false
+  },
+  "frame-title-unique": {
+   "sc": [],
+   "relatedSc": [
+    "4.1.2"
+   ],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Frames share a name.",
+   "help": "Frames must have a unique title attribute",
+   "actIds": [
+    "4b1c6c"
+   ],
+   "experimental": false
+  },
+  "heading-order": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Skipped heading level: disputed advice, never a failure by itself.",
+   "help": "Heading levels should only increase by one",
+   "actIds": [],
+   "experimental": false
+  },
+  "hidden-content": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Hidden content was not tested.",
+   "help": "Hidden content on the page should be analyzed",
+   "actIds": [],
+   "experimental": true
+  },
+  "html-has-lang": {
+   "sc": [
+    "3.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Page language not set: screen readers may read it with the wrong pronunciation.",
+   "help": "<html> element must have a lang attribute",
+   "actIds": [
+    "b5c3f8"
+   ],
+   "experimental": false
+  },
+  "html-lang-valid": {
+   "sc": [
+    "3.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Page language code is not valid.",
+   "help": "<html> element must have a valid value for the lang attribute",
+   "actIds": [
+    "bf051a"
+   ],
+   "experimental": false
+  },
+  "html-xml-lang-mismatch": {
+   "sc": [
+    "3.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Two different page languages declared.",
+   "help": "HTML elements with lang and xml:lang must have the same base language",
+   "actIds": [
+    "5b7ae0"
+   ],
+   "experimental": false,
+   "reviewReason": "Its ACT rule (5b7ae0) is deprecated; browsers use lang, so whether the mismatch changes how the page is read needs a look."
+  },
+  "identical-links-same-purpose": {
+   "sc": [],
+   "relatedSc": [
+    "2.4.9"
+   ],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Same name, different target: a best practice (2.4.9 AAA).",
+   "help": "Links with the same name must have a similar purpose",
+   "actIds": [
+    "b20e66"
+   ],
+   "experimental": false
+  },
+  "image-alt": {
+   "sc": [
+    "1.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Image without a text alternative (blocker when it is the only content of a link or button).",
+   "help": "Images must have alternative text",
+   "actIds": [
+    "23a2a8"
+   ],
+   "experimental": false
+  },
+  "image-redundant-alt": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Alt text repeats nearby text: noise, not a failure.",
+   "help": "Alternative text of images should not be repeated as text",
+   "actIds": [],
+   "experimental": false
+  },
+  "input-button-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Input button with no name.",
+   "help": "Input buttons must have discernible text",
+   "actIds": [
+    "97a4e1"
+   ],
+   "experimental": false
+  },
+  "input-image-alt": {
+   "sc": [
+    "1.1.1",
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Image button with no text alternative: its action cannot be named.",
+   "help": "Image buttons must have alternative text",
+   "actIds": [
+    "59796f"
+   ],
+   "experimental": false
+  },
+  "label": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Form field with no label that software can read.",
+   "help": "Form elements must have labels",
+   "actIds": [
+    "e086e5"
+   ],
+   "experimental": false
+  },
+  "label-content-name-mismatch": {
+   "sc": [
+    "2.5.3"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Visible label not in the name: voice control users may not be able to say it; confirm.",
+   "help": "Elements must have their visible text as part of their accessible name",
+   "actIds": [
+    "2ee8b8"
+   ],
+   "experimental": false
+  },
+  "label-title-only": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Field named only by a title attribute.",
+   "help": "Form elements should have a visible label",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-banner-is-top-level": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Banner landmark should not be contained in another landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-complementary-is-top-level": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Aside should not be contained in another landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-contentinfo-is-top-level": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Contentinfo landmark should not be contained in another landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-main-is-top-level": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Main landmark should not be contained in another landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-no-duplicate-banner": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Document should not have more than one banner landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-no-duplicate-contentinfo": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Document should not have more than one contentinfo landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-no-duplicate-main": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark structure: disputed advice.",
+   "help": "Document should not have more than one main landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-one-main": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Missing main landmark: disputed advice, not a failure by itself.",
+   "help": "Document should have one main landmark",
+   "actIds": [],
+   "experimental": false
+  },
+  "landmark-unique": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Landmark names not unique.",
+   "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+   "actIds": [],
+   "experimental": false
+  },
+  "link-in-text-block": {
+   "sc": [
+    "1.4.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Links in text told apart from surrounding text by colour only.",
+   "help": "Links must be distinguishable without relying on color",
+   "actIds": [],
+   "experimental": false,
+   "reviewReason": "Other cues than colour (weight, icon, position) and the focus/hover cue need a look; the skill measures link contrast itself."
+  },
+  "link-name": {
+   "sc": [
+    "2.4.4",
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "blocker",
+   "note": "Link with no name: screen readers announce only \"link\" or the address.",
+   "help": "Links must have discernible text",
+   "actIds": [
+    "c487ae"
+   ],
+   "experimental": false
+  },
+  "list": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Malformed list: confirm a real loss of structure.",
+   "help": "<ul> and <ol> must only directly contain <li>, <script> or <template> elements",
+   "actIds": [],
+   "experimental": false
+  },
+  "listitem": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "List item outside a list: confirm a real loss of structure.",
+   "help": "<li> elements must be contained in a <ul> or <ol>",
+   "actIds": [],
+   "experimental": false
+  },
+  "marquee": {
+   "sc": [
+    "2.2.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Scrolling marquee text that cannot be stopped.",
+   "help": "<marquee> elements are deprecated and must not be used",
+   "actIds": [],
+   "experimental": false,
+   "reviewReason": "2.2.2 allows motion that stops within 5 seconds or has a pause control; that needs a look."
+  },
+  "meta-refresh": {
+   "sc": [
+    "2.2.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Page refreshes or redirects on a timer the person cannot control.",
+   "help": "Delayed refresh under 20 hours must not be used",
+   "actIds": [
+    "bc659a",
+    "bisz58"
+   ],
+   "experimental": false
+  },
+  "meta-refresh-no-exceptions": {
+   "sc": [
+    "2.2.4",
+    "3.2.5"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Timed refresh or redirect (AAA, no exceptions).",
+   "help": "Delayed refresh must not be used",
+   "actIds": [
+    "bisz58"
+   ],
+   "experimental": false
+  },
+  "meta-viewport": {
+   "sc": [
+    "1.4.4"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Zoom disabled on mobile, so people cannot enlarge the page.",
+   "help": "Zooming and scaling must not be disabled",
+   "actIds": [
+    "b4f0c3"
+   ],
+   "experimental": false
+  },
+  "meta-viewport-large": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Zoom limited below 500%.",
+   "help": "Users should be able to zoom and scale the text up to 500%",
+   "actIds": [],
+   "experimental": false
+  },
+  "nested-interactive": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Control inside another control: screen readers may not announce or reach the inner one.",
+   "help": "Interactive controls must not be nested",
+   "actIds": [
+    "307n5z"
+   ],
+   "experimental": false
+  },
+  "no-autoplay-audio": {
+   "sc": [
+    "1.4.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Audio plays automatically; whether it lasts over 3 seconds without a stop control needs confirming.",
+   "help": "<video> or <audio> elements must not play automatically",
+   "actIds": [
+    "80f0bf"
+   ],
+   "experimental": false
+  },
+  "object-alt": {
+   "sc": [
+    "1.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Embedded object with no text alternative.",
+   "help": "<object> elements must have alternative text",
+   "actIds": [
+    "8fc3b6"
+   ],
+   "experimental": false
+  },
+  "p-as-heading": {
+   "sc": [],
+   "relatedSc": [
+    "1.3.1"
+   ],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Bold paragraph styled like a heading: confirm the structure loss before reporting.",
+   "help": "Styled <p> elements must not be used as headings",
+   "actIds": [],
+   "experimental": true
+  },
+  "page-has-heading-one": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "No h1: disputed advice, not a failure by itself.",
+   "help": "Page should contain a level-one heading",
+   "actIds": [],
+   "experimental": false
+  },
+  "presentation-role-conflict": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Element marked decorative is still exposed: confirm the effect.",
+   "help": "Elements marked as presentational should be consistently ignored",
+   "actIds": [
+    "46ca7f"
+   ],
+   "experimental": false
+  },
+  "region": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Content outside landmarks: disputed advice.",
+   "help": "All page content should be contained by landmarks",
+   "actIds": [],
+   "experimental": false
+  },
+  "role-img-alt": {
+   "sc": [
+    "1.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Graphic with role img and no name.",
+   "help": "[role=\"img\"] and [role=\"image\"] elements must have alternative text",
+   "actIds": [
+    "23a2a8"
+   ],
+   "experimental": false
+  },
+  "scope-attr-valid": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Table scope attribute misused.",
+   "help": "scope attribute should be used correctly",
+   "actIds": [],
+   "experimental": false
+  },
+  "scrollable-region-focusable": {
+   "sc": [
+    "2.1.1",
+    "2.1.3"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Scrolling area that keyboard users cannot reach or scroll.",
+   "help": "Scrollable region must have keyboard access",
+   "actIds": [
+    "0ssw9k"
+   ],
+   "experimental": false
+  },
+  "select-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Dropdown with no name.",
+   "help": "Select element must have an accessible name",
+   "actIds": [
+    "e086e5"
+   ],
+   "experimental": false
+  },
+  "server-side-image-map": {
+   "sc": [
+    "2.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Server-side image map cannot be used with a keyboard.",
+   "help": "Server-side image maps must not be used",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "A server-side image map only works with pointer coordinates; there is no keyboard path."
+  },
+  "skip-link": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Skip link target missing: confirm the link is the only bypass mechanism.",
+   "help": "The skip-link target should exist and be focusable",
+   "actIds": [],
+   "experimental": false
+  },
+  "summary-name": {
+   "sc": [
+    "4.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Summary (disclosure) control with no name.",
+   "help": "Summary elements must have discernible text",
+   "actIds": [],
+   "experimental": false,
+   "trustWithoutAct": "A <summary> control with no accessible name at all; nothing to judge beyond the missing name."
+  },
+  "svg-img-alt": {
+   "sc": [
+    "1.1.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "SVG graphic with role img and no name.",
+   "help": "<svg> elements with an img or image role must have alternative text",
+   "actIds": [
+    "7d6734"
+   ],
+   "experimental": false
+  },
+  "tabindex": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Positive tabindex: disputed advice; only a broken focus order (2.4.3) is a failure.",
+   "help": "Elements should not have tabindex greater than zero",
+   "actIds": [],
+   "experimental": false
+  },
+  "table-duplicate-name": {
+   "sc": [],
+   "bestPractice": true,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Table caption repeats its summary.",
+   "help": "Tables should not have the same summary and caption",
+   "actIds": [],
+   "experimental": false
+  },
+  "table-fake-caption": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Fake caption cell: confirm the structure loss.",
+   "help": "Data or header cells must not be used to give caption to a data table.",
+   "actIds": [],
+   "experimental": true
+  },
+  "target-size": {
+   "sc": [
+    "2.5.8"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Clickable area below 24 by 24 pixels without enough spacing.",
+   "help": "All touch targets must be 24px large, or leave sufficient space",
+   "actIds": [],
+   "experimental": false,
+   "reviewReason": "The spacing, equivalent-control, inline and essential exceptions of 2.5.8 need a look; the skill measures target size itself."
+  },
+  "td-has-header": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Large table cell without headers: confirm the relationship is lost.",
+   "help": "Non-empty <td> elements in larger <table> must have an associated table header",
+   "actIds": [],
+   "experimental": true
+  },
+  "td-headers-attr": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "major",
+   "note": "Table cell points at headers that do not exist in the table.",
+   "help": "Table cell headers attributes must refer to other <th> elements in the same table",
+   "actIds": [
+    "a25f45"
+   ],
+   "experimental": false
+  },
+  "th-has-data-cells": {
+   "sc": [
+    "1.3.1"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "minor",
+   "note": "Header cell with no data cells: confirm the structure loss.",
+   "help": "Table headers in a data table must refer to data cells",
+   "actIds": [
+    "d0f69e"
+   ],
+   "experimental": false
+  },
+  "valid-lang": {
+   "sc": [
+    "3.1.2"
+   ],
+   "bestPractice": false,
+   "trust": "confirmed",
+   "barrier": "minor",
+   "note": "Language of a part of the page set with an invalid code.",
+   "help": "lang attribute must have a valid value",
+   "actIds": [
+    "de46e4"
+   ],
+   "experimental": false
+  },
+  "video-caption": {
+   "sc": [
+    "1.2.2"
+   ],
+   "bestPractice": false,
+   "trust": "review",
+   "barrier": "major",
+   "note": "Video without a captions track; whether captions exist another way needs confirming.",
+   "help": "<video> elements must have captions",
+   "actIds": [
+    "eac66b"
+   ],
+   "experimental": false
+  }
+ },
+ "trustRule": "A rule produces a fail on its own only when trust is \"confirmed\" AND a current W3C ACT rule in kb/data/act-rules.json tests one of its criteria, or trustWithoutAct says why none is needed. Everything else goes to a judge."
+}

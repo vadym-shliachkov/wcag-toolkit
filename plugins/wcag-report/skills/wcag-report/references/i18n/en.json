@@ -1,0 +1,605 @@
+{
+  "meta": {
+    "language_name": "English",
+    "doc_title": "Accessibility review of {site}",
+    "doc_kind": "Accessibility review",
+    "standard": "WCAG 2.2 · Level {level}",
+    "date_format": "en-GB",
+    "decimal": ".",
+    "quote_open": "“",
+    "quote_close": "”",
+    "page_of": "Page {page} of {pages}",
+    "page_word": "Page",
+    "of_word": "of",
+    "footer": "{site} · {date}"
+  },
+  "running": {
+    "front": "Summary",
+    "issues": "Problems in detail",
+    "review": "Items to check",
+    "reference": "Reference",
+    "appendix": "Appendix"
+  },
+  "cover": {
+    "kicker": "Accessibility review",
+    "reviewed_on": "Reviewed on {date}",
+    "not_cert": "This is a review of the pages listed in this report, not a certification of the whole site.",
+    "not_covered": "Not covered: {list} (see “What this review did not cover”).",
+    "not_covered_at": "testing with assistive technology and with disabled people",
+    "home_alt": "Screenshot of the home page of {site} as it looked during the review.",
+    "tile_pages": "Pages checked",
+    "tile_pages_note": "of {found} found",
+    "tile_problems": "Distinct problems",
+    "tile_problems_note": "plus {review} to check",
+    "tile_blockers": "Block a task",
+    "tile_blockers_note": "critical problems",
+    "tile_blocked_pages": "Pages with a blocking problem",
+    "tile_blocked_pages_note": "of {pages} checked",
+    "tile_problems_note_none": "every requirement decided"
+  },
+  "verdict": {
+    "heading": "Verdict",
+    "serious_barriers": "Serious barriers found",
+    "significant_barriers": "Significant barriers found",
+    "barriers": "Barriers found",
+    "none_found": "No barriers found in what we tested",
+    "does_not_meet": "Does not meet WCAG 2.2 Level {level}: {n} requirements have problems on the pages reviewed.",
+    "does_not_meet_one": "Does not meet WCAG 2.2 Level {level}: 1 requirement has problems on the pages reviewed.",
+    "not_established": "Conformance not established: {open} requirements still need a person to check and {untested} could not be tested. A review of a sample of pages cannot confirm that a site conforms.",
+    "coverage": "Reviewed {pages} of {found} pages found{cap} · hands-on tests on one page of each of {deep} layouts · {journeys} · {date}",
+    "coverage_cap": " (limit {max})",
+    "next_label": "Next step:",
+    "next": "fix the problems under \"Fix these first\", have a person settle the items to check, then review the site again.",
+    "next_none": "have a person settle the items to check and the requirements we could not test.",
+    "journeys_one": "{n} key task",
+    "journeys_other": "{n} key tasks",
+    "none_confirmed": "No barriers found; {n} items need a person",
+    "next_decided": "fix the problems under \"Fix these first\", then review the site again.",
+    "next_none_decided": "keep the site this way: review it again after major changes."
+  },
+  "glance": {
+    "heading": "At a glance",
+    "lead": "Who meets barriers on this site, how serious they are, and where they sit.",
+    "who_heading": "Who is affected",
+    "who_caption": "Problems found, by the people they affect. A problem can affect more than one group.",
+    "col_group": "People",
+    "col_bar": "Share by severity",
+    "col_total": "Total",
+    "most_affected": "Most affected",
+    "no_barrier": "No barrier found in what we tested",
+    "severity_heading": "How serious",
+    "severity_on_pages": "on {n} pages",
+    "severity_on_page": "on 1 page",
+    "principles_heading": "Where the problems are",
+    "principles_lead": "WCAG groups its requirements under four principles. Each square is one requirement.",
+    "principle_problems": "{n} problems",
+    "principle_problem": "1 problem",
+    "principle_none": "No problems found",
+    "grid_legend": "Square legend",
+    "coverage_heading": "What we covered",
+    "coverage_line": "{pages} pages checked of {found} found · {failed} could not load",
+    "no_barrier_open": "No barrier found · {n} items for a person to check",
+    "no_barrier_open_one": "No barrier found · 1 item for a person to check",
+    "principle_open": "No problems found · {n} requirements for a person to check",
+    "principle_open_one": "No problems found · 1 requirement for a person to check"
+  },
+  "priorities": {
+    "heading": "Fix these first",
+    "lead": "The problems to fix first: those that block a task or make it very hard, in the order they matter most.",
+    "col_rank": "Rank",
+    "col_problem": "Problem",
+    "col_who": "Who",
+    "col_reach": "Reach",
+    "col_severity": "Severity",
+    "see": "See {id}",
+    "check_soon": "Check soon",
+    "check_soon_lead": "Only a person can settle these items. If they turn out to be problems, they would be serious.",
+    "none": "No problem blocks a task in what we tested.",
+    "check_first": "Check these first",
+    "check_first_lead": "Nothing was found broken. Only a person can settle these items; they would matter most if they turn out to be problems.",
+    "if_confirmed": "{severity} if it is a problem",
+    "lead_minor": "No problem blocks a task or makes it very hard. These are in order of severity, then of whether they sit on a page of a key task, then of how many pages they are likely on.",
+    "lead_mixed_one": "The problems to fix first, in order of severity, then of whether they sit on a page of a key task, then of how many pages they are likely on. Only the first makes a task very hard or blocks it; the others slow people down or are minor.",
+    "lead_mixed_other": "The problems to fix first, in order of severity, then of whether they sit on a page of a key task, then of how many pages they are likely on. Only the first {n} make a task very hard or block it; the others slow people down or are minor."
+  },
+  "journeys": {
+    "heading": "Can people complete key tasks?",
+    "lead": "Each cell shows the hardest barrier a group meets in that task, with the problems behind it.",
+    "col_task": "Task",
+    "blocked": "Blocked",
+    "very_hard": "Very hard",
+    "some_problems": "Some problems",
+    "no_barrier_found": "No barrier found",
+    "not_tested": "Not tested",
+    "not_tested_reason": "Not tested: {reason}",
+    "names": {
+      "browse": "Find and read information",
+      "search": "Search the site",
+      "login": "Sign in",
+      "signup": "Create an account",
+      "contact": "Contact the business",
+      "checkout": "Buy something",
+      "newsletter": "Subscribe to updates"
+    },
+    "to_check": "To check"
+  },
+  "howto": {
+    "heading": "How to read this report",
+    "lead": "Every problem is described the same way: what is wrong, why it happens, and who it affects.",
+    "severity_heading": "How serious a problem is",
+    "severity_note": "Severity describes the barrier for people, not the WCAG level. A Level A problem can be minor and a Level AA problem can block a task.",
+    "groups_heading": "The people in this report",
+    "tools_heading": "Tools people use",
+    "know_heading": "How we know",
+    "card_heading": "Reading a problem",
+    "card_parts": [
+      [
+        "ID and title",
+        "The barrier in plain words. IDs (I-01) are in priority order and stay the same in the developer files."
+      ],
+      [
+        "Severity",
+        "How hard the barrier is: shown as a word, a bar meter and a colour."
+      ],
+      [
+        "Requirement",
+        "The WCAG requirement that is not met, with its level."
+      ],
+      [
+        "Reach",
+        "How many of the checked pages show the problem. 'Likely' counts pages built from the same page type."
+      ],
+      [
+        "Screenshot",
+        "The problem on the page. The highlighted box marks the part with the problem."
+      ],
+      [
+        "Who it affects",
+        "Each group that meets the barrier and what happens to them. 'Can't use' means they cannot get past it."
+      ]
+    ],
+    "review_note": "Items to check are not counted as problems. Only a person can settle them, because they depend on facts the site does not show or on steps we must not take on a live site."
+  },
+  "severity": {
+    "critical": "Critical",
+    "serious": "Serious",
+    "moderate": "Moderate",
+    "minor": "Minor",
+    "critical_hint": "blocks a task",
+    "serious_hint": "very hard",
+    "moderate_hint": "slows people down",
+    "minor_hint": "annoyance",
+    "critical_desc": "People cannot complete a task and have no way around it.",
+    "serious_desc": "The task is possible only with great effort or someone's help.",
+    "moderate_desc": "People are slowed down, confused, or miss information, but can still finish.",
+    "minor_desc": "An annoyance or a small loss of information.",
+    "band_lead_critical": "These problems stop people from completing a task.",
+    "band_lead_serious": "These problems make a task very hard.",
+    "band_lead_moderate": "These problems slow people down or hide information.",
+    "band_lead_minor": "These problems are annoyances."
+  },
+  "method": {
+    "automated": "Automated check",
+    "measured": "Measured",
+    "interactive": "Tested with keyboard and browser",
+    "ai_review": "Reviewed by AI",
+    "automated_desc": "A rule checked the page code, or the links between pages, on every page.",
+    "measured_desc": "A value was measured on the page, such as colour contrast, size or layout width.",
+    "interactive_desc": "We used the page with the keyboard, zoom or a narrow window, as a person would.",
+    "ai_review_desc": "An AI review of the page content and screenshots, with the evidence quoted. Items it could not decide are listed as items to check."
+  },
+  "groups": {
+    "screen_reader": "People who are blind and use a screen reader",
+    "low_vision": "People with low vision",
+    "colour": "People with colour blindness",
+    "deaf": "People who are deaf or hard of hearing",
+    "keyboard": "People who can't use a mouse (keyboard, switch or voice control)",
+    "dexterity": "People with limited hand movement or tremor",
+    "cognitive": "People with cognitive or learning disabilities",
+    "seizure_motion": "People sensitive to flashing or motion",
+    "screen_reader_short": "Screen reader users",
+    "low_vision_short": "Low vision",
+    "colour_short": "Colour blindness",
+    "deaf_short": "Deaf / hard of hearing",
+    "keyboard_short": "Keyboard & voice users",
+    "dexterity_short": "Limited dexterity",
+    "cognitive_short": "Cognitive & learning",
+    "seizure_motion_short": "Flashing & motion",
+    "screen_reader_desc": "Hear the page read aloud and move around it with the keyboard or gestures.",
+    "low_vision_desc": "Enlarge text, zoom the page, or need strong contrast to read.",
+    "colour_desc": "Cannot rely on colour alone to tell things apart.",
+    "deaf_desc": "Need captions or a transcript for anything spoken.",
+    "keyboard_desc": "Use a keyboard, a switch device or voice commands instead of a mouse.",
+    "dexterity_desc": "Tremor or weakness makes small targets, dragging and fast actions hard.",
+    "cognitive_desc": "Find complex wording, memory load, time limits and surprises hard.",
+    "seizure_motion_desc": "Flashing can trigger seizures; movement on screen can cause dizziness or nausea.",
+    "blocks": "Can't use",
+    "harder": "Harder",
+    "also_affects": "Also affects: {list}"
+  },
+  "tools": [
+    [
+      "Screen reader",
+      "Software that reads the screen aloud, or shows it on a braille display, so people can use a computer or phone without seeing it."
+    ],
+    [
+      "Screen magnifier",
+      "Software that enlarges part of the screen many times over."
+    ],
+    [
+      "Browser zoom",
+      "Enlarging the whole page, for example with Ctrl and +."
+    ],
+    [
+      "Keyboard navigation",
+      "Moving through links and buttons with the Tab, arrow and Enter keys, without a mouse."
+    ],
+    [
+      "Voice control",
+      "Software that lets people click, type and scroll by speaking, for example by saying the words on a button."
+    ],
+    [
+      "Switch device",
+      "One or two large buttons that step through items on screen, for people with very limited movement."
+    ],
+    [
+      "Captions",
+      "On-screen text of what is said and of important sounds."
+    ]
+  ],
+  "status": {
+    "fail": "Problems found",
+    "needs_review": "To check",
+    "pass": "Passed in our tests",
+    "not_applicable": "Does not apply",
+    "not_tested": "Not tested",
+    "out_of_profile": "Outside this review"
+  },
+  "principles": {
+    "perceivable": "Perceivable",
+    "operable": "Operable",
+    "understandable": "Understandable",
+    "robust": "Robust",
+    "perceivable_q": "Can people perceive the content?",
+    "operable_q": "Can people use the controls?",
+    "understandable_q": "Can people understand it?",
+    "robust_q": "Does it work with assistive tools?"
+  },
+  "issues": {
+    "heading": "Problems in detail",
+    "lead": "Each problem appears once, however many pages it is on. They are ordered by severity, then by how many people and pages they reach.",
+    "band": "{severity} — {n} problems",
+    "band_one": "{severity} — 1 problem",
+    "band_index": "In this group",
+    "requirement": "WCAG {id} {name}",
+    "level": "Level {level}",
+    "related": "Also relates to: {list}",
+    "reach_measured": "{n} of {total} pages",
+    "reach_likely": "Seen on {n} page, likely on {likely} of {total}",
+    "reach_likely_many": "Seen on {n} pages, likely on {likely} of {total}",
+    "reach_site_wide": "Every page checked ({total})",
+    "places": "{n} places",
+    "how_we_know": "How we know: {method}",
+    "whats_wrong": "What's wrong",
+    "why": "Why it happens",
+    "who": "Who it affects",
+    "severity_reason": "Why this severity",
+    "fix": "How to fix",
+    "fix_dev": "Developer note",
+    "fix_done": "Done when",
+    "seen_on": "Seen on",
+    "and_more": "and {n} more (see the page list in the appendix)",
+    "figure": "Figure {n}.",
+    "sr_says": "What a screen reader says",
+    "sr_now": "Now",
+    "sr_expected": "Expected",
+    "contrast_title": "Measured contrast",
+    "contrast_needs": "needs {required} : 1",
+    "contrast_text": "Text colour",
+    "contrast_bg": "Background",
+    "source_title": "From the page code",
+    "dev_ref": "Every place, with what to change: findings.xlsx (grouped by page) and findings.csv (rows for {id}, {n} places).",
+    "none": "No problems were found by the checks we ran. This does not mean the site conforms: see what this review did not cover.",
+    "dev_ref_one": "This place, with what to change: findings.xlsx (grouped by page) and findings.csv (row for {id}).",
+    "recommended": "Recommended",
+    "rec_decorative": "(decorative: screen readers skip it)",
+    "not_certain": "We are fairly sure, but not certain:",
+    "rec_image": "Image",
+    "rec_now": "Now",
+    "rec_text": "Text",
+    "rec_zoom_now": "{px} px; grows only to {pct}% at 200% zoom",
+    "rec_zoom_should": "grows to at least 200%",
+    "rec_should": "Should be",
+    "rec_where": "Where",
+    "rec_no_alt": "(no alt text)",
+    "rec_no_image": "(no close-up)",
+    "rec_thumb_seen": "Close-up: {seen}",
+    "rec_thumb_text": "Close-up of this text on the page",
+    "rec_thumb_file": "Close-up of the picture {file}",
+    "rec_element": "Element",
+    "pair_with_focus": "With keyboard focus",
+    "pair_without_focus": "Without keyboard focus",
+    "pair_without_alt": "The same place without keyboard focus, for comparison.",
+    "rec_thumb_element": "Close-up of “{name}” on the page",
+    "rec_el_now_contrast": "contrast {ratio}:1",
+    "rec_el_now_size": "{w} × {h} px",
+    "rec_el_now_focus-visible": "no visible change with keyboard focus",
+    "rec_el_now_autocomplete": "no autocomplete",
+    "rec_el_now_form-labels": "no label",
+    "rec_el_now_target-size": "",
+    "rec_el_now_color-contrast": "",
+    "rec_el_now_label-in-name": "",
+    "rec_el_should_contrast": "at least {required}:1",
+    "rec_el_should_focus-visible": "a clearly visible highlight when it has keyboard focus",
+    "rec_el_should_autocomplete": "the autocomplete value for what it asks",
+    "rec_el_autocomplete_note": "tells the browser what the field asks for, so it can fill it in and assistive tools can label it",
+    "rec_el_should_form-labels": "a visible label tied to the field",
+    "rec_el_should_target-size": "at least 24 × 24 px, or 24 px clear around it",
+    "rec_el_should_color-contrast": "at least 4.5:1 (3:1 for large text)",
+    "rec_el_should_label-in-name": "a name that starts with the words shown",
+    "rec_describe_missing": "describe what it shows, like the rows above",
+    "rec_more": "{n} more images with the same problem are listed in findings.xlsx, sheet “By page”.",
+    "places_every": "every page",
+    "places_section_all": "every {section} page ({n})",
+    "places_section_more": "and {n} other {section} pages"
+  },
+  "review": {
+    "heading": "Items to check",
+    "lead": "Only a person can settle these: they depend on facts the site does not show, or on steps we must not take on a live site (such as sending real data). They are not counted as problems.",
+    "to_check": "To check",
+    "what_we_saw": "What we saw",
+    "why_uncertain": "Why we could not decide",
+    "what_to_check": "What to check",
+    "if_confirmed": "If it is a problem: {severity}; affects {groups}.",
+    "compact_heading": "Smaller items to check",
+    "col_item": "Item",
+    "col_where": "Where",
+    "col_requirement": "Requirement",
+    "none": "There are no open items to check."
+  },
+  "templates": {
+    "heading": "Page types",
+    "lead": "Pages built from the same layout usually share the same problems. {deep} of {types} page types were tested in depth, one page of each; the other types had the automated checks on every page.",
+    "col_type": "Page type",
+    "col_pages": "Pages",
+    "col_deep": "Tested in depth",
+    "col_example": "Example",
+    "col_ids": "Problems and items",
+    "yes": "Yes",
+    "no": "No",
+    "lead_all": "Pages built from the same layout usually share the same problems. One page of each type was tested in depth."
+  },
+  "criteria": {
+    "heading": "WCAG requirements",
+    "lead": "Every WCAG 2.2 requirement in this review, grouped by principle, with what we found.",
+    "out_of_profile": "{n} Level AAA requirements were outside this review's scope.",
+    "col_id": "No.",
+    "col_name": "Requirement",
+    "col_level": "Level",
+    "col_status": "Result",
+    "col_ids": "Problems",
+    "col_note": "Note",
+    "note_auto_clean": "Automated checks found no problems.",
+    "note_judge_failed": "The content review for some page types did not complete.",
+    "note_withdrawn": "A finding was withdrawn after a re-check."
+  },
+  "limits": {
+    "heading": "What this review did not cover",
+    "lead": "What you can and cannot conclude from this report.",
+    "fixed": [
+      "We did not test with real assistive technology. What a screen reader would say was worked out from the page code, not heard.",
+      "We did not test with disabled people. Their experience can reveal problems no tool finds.",
+      "We reviewed a sample of pages. Pages built from the same layout were assumed to behave like the one tested in depth.",
+      "This report is not a certification, a full conformance audit or an accessibility conformance report (VPAT).",
+      "Automated checks find only part of the problems a site can have. A page that passes them can still have problems they cannot see.",
+      "Results marked “Reviewed by AI” are judgements of the page content and screenshots, and they can be wrong. Each one quotes its evidence so it can be checked.",
+      "The review reflects the site on the date shown. Later changes are not covered."
+    ],
+    "gaps_heading": "Gaps in this review",
+    "col_area": "Area",
+    "col_reason": "Why",
+    "col_effect": "What it means",
+    "no_gaps": "No further gaps were recorded."
+  },
+  "method_section": {
+    "heading": "How we tested",
+    "steps": [
+      "Found the pages through the sitemap and the links between pages.",
+      "Ran automated accessibility checks on every page found.",
+      "Grouped the pages into {types} page types by layout and ran hands-on tests on one page of each of {deep} types: keyboard use, menus and pop-ups, forms, moving content, zoom to 200%, a 320-pixel-wide window, extra text spacing and focus visibility.",
+      "Reviewed content that needs judgement, such as image descriptions, headings and link text, with AI and quoted evidence.",
+      "Merged repeated problems, described each one in plain language, and had the report checked by an independent reviewer before release."
+    ],
+    "env_heading": "Test environment",
+    "browser": "Browser",
+    "viewports": "Window sizes",
+    "zoom": "Zoom levels",
+    "tools": "Tools",
+    "ai": "AI model",
+    "at": "Assistive technology",
+    "at_none": "None used",
+    "crawl": "Page limit",
+    "deep_pages": "Pages tested in depth",
+    "dropped": "{n} inconclusive automated results were reviewed and closed."
+  },
+  "tool_notes": {
+    "heading": "Code clean-up (not WCAG failures)",
+    "elements_one": "{n} element",
+    "elements_other": "{n} elements",
+    "outside": "Not part of this review: WCAG Level AAA requirements (such as 7:1 text contrast), general usability advice (such as a minimum font size), broken links, and code-validity points that do not change what people can see, hear or do.",
+    "aria_name_on_generic": {
+      "title": "A name (aria-label or aria-labelledby) on a plain container",
+      "why": "Screen readers ignore a name on a div or span that has no role. No one loses information: the name either repeats a heading that is visible to everyone or adds words that were never on the screen. WCAG does not require either, so this is not a failure.",
+      "fix": "To have the name read, add role=\"group\" (or role=\"region\" for a major section). Otherwise remove the attribute."
+    },
+    "aria_idref_missing": {
+      "title": "A reference (such as aria-controls) to an element that is not on the page",
+      "why": "The control points to a part of the page by an id that no element has, for example a menu button whose aria-controls names a panel with a different id. The control keeps its name, role and state, so no one loses information, and WCAG does not require the referenced element to exist. This is not a failure.",
+      "fix": "Make the reference match the id of the part it controls, or remove the attribute."
+    },
+    "pointer_one": "We also found 1 code clean-up point that is not a WCAG failure: {list}. It is described in \"{heading}\".",
+    "pointer_other": "We also found {n} code clean-up points that are not WCAG failures: {list}. They are described in \"{heading}\".",
+    "label_split_lines": {
+      "title": "Label words joined in the code",
+      "why": "The label is shown on two lines, but in the code its words have no space between them, so the raw text reads as one joined word. People see the words correctly, and the name read out by screen readers and used by voice control contains the visible words, so WCAG 2.5.3 Label in Name is met. Only text taken from the page without its layout (search results, copy and paste) reads the joined word.",
+      "fix": "Add a space before the line break inside the label."
+    },
+    "toggle_state_in_name": {
+      "title": "A pause or play button that tells its state only by changing its name",
+      "why": "When pressed, the button swaps its hidden name (\"Pause …\" becomes \"Play …\"). The new name is available to assistive technology, so WCAG 4.1.2 is met and this is not a failure. But most screen readers stay silent when the name of the button they are on changes, so after pressing Space or Enter a screen reader user hears nothing and cannot tell whether the animation or video stopped.",
+      "fix": "Keep one fixed name (for example \"Pause background video\") and add aria-pressed=\"false\", switching it to \"true\" while paused. Screen readers then say \"pressed\" or \"not pressed\" each time the button is used."
+    },
+    "redundant_role": {
+      "title": "A role that repeats what the element already is",
+      "why": "role=\"list\" on a ul or ol, or role=\"button\" on a button, tells assistive technology what it already knows. This is harmless and not a WCAG failure. On lists shown without bullets, role=\"list\" is a deliberate workaround: one widely used browser and screen reader otherwise stop announcing them as lists.",
+      "fix": "Keep role=\"list\" on lists shown without bullets. Remove any other repeated roles the next time that code is edited."
+    },
+    "lead": "Things in the page code worth tidying. None of them stops anyone using the site, so they are not counted as problems."
+  },
+  "glossary": {
+    "heading": "Glossary",
+    "lead": "Words used in this report."
+  },
+  "pages_appendix": {
+    "heading": "Appendix: pages reviewed",
+    "lead": "Every page we found, with the problems and items on it. Pages that could not be checked are listed with the reason.",
+    "col_url": "Page",
+    "col_type": "Type",
+    "col_deep": "Depth",
+    "col_ids": "Problems and items",
+    "deep": "In depth",
+    "auto": "Automated",
+    "status_error": "Could not load",
+    "status_blocked": "Blocked by the site",
+    "status_soft404": "Page not found",
+    "status_excluded": "Excluded",
+    "skip": {
+      "robots": "The site asks robots not to visit it",
+      "cap": "Beyond the page limit",
+      "shape_cap": "One of many similar pages (enough of them were checked)",
+      "depth": "Too many clicks from the home page",
+      "query_variant": "The same page with different address parameters",
+      "logout": "A sign-out link, never followed",
+      "blocked": "Blocked by the site",
+      "soft404": "Shows a \"page not found\" message",
+      "error": "Could not load",
+      "excluded": "Excluded on request",
+      "duplicate": "Redirects to a page already checked"
+    },
+    "lead_summary": "Every page we checked, with the problems and items on it, and every page that could not be loaded. The many further pages found but not checked are summarised after the list by reason and site section; the workbook (findings.xlsx, Pages sheet) lists each of them.",
+    "not_checked_heading": "Pages found but not checked ({n})",
+    "not_checked_lead": "These pages were found in the sitemap or in links but were not checked, for the reason given.",
+    "col_reason": "Reason",
+    "col_count": "Pages",
+    "col_where": "Mostly in",
+    "other_sections": ", and {n} elsewhere"
+  },
+  "toc": {
+    "heading": "Contents"
+  },
+  "gaps": {
+    "cap_reached": {
+      "area": "Pages beyond the page limit",
+      "reason": "The review stopped at {max} pages; {found} were found.",
+      "effect": "Problems on the other pages are not listed, though pages of the same type usually share them."
+    },
+    "not_loaded": {
+      "area": "Pages that could not be checked ({n})",
+      "reason": "They returned an error, were blocked or did not load in time.",
+      "effect": "Anything on these pages is not covered."
+    },
+    "robots": {
+      "area": "Pages the site asks robots to skip ({n})",
+      "reason": "The review respects the site's robots rules.",
+      "effect": "These pages were not checked."
+    },
+    "documents": {
+      "area": "Linked documents ({n})",
+      "reason": "PDF and office files linked from the site were not checked.",
+      "effect": "Their accessibility is unknown."
+    },
+    "auth": {
+      "area": "Pages behind sign-in",
+      "reason": "The review ran without an account.",
+      "effect": "Account pages, if the site has them, are not covered."
+    },
+    "forms": {
+      "area": "Sending forms",
+      "reason": "Forms were tested without sending anything to the site.",
+      "effect": "Messages shown after a real submission are not covered."
+    },
+    "embedded_forms": {
+      "area": "Forms from an outside form service ({n} pages)",
+      "reason": "The form on {pages} is built by an outside service inside a frame on the page. Its fields, labels and messages before sending were checked like the rest of the page.",
+      "effect": "Changes to it are made in that service's form settings, not in the site's own code, and the service can change it without notice."
+    },
+    "third_party": {
+      "area": "Content from other providers ({n})",
+      "reason": "Embedded maps, videos, chat or payment forms come from other sites.",
+      "effect": "Problems inside them were noted where found; fixing them may need the provider."
+    },
+    "shallow_templates": {
+      "area": "Page types tested by automated checks only ({n})",
+      "reason": "At most {max} page types are tested in depth with keyboard, zoom and layout checks.",
+      "effect": "Keyboard, zoom and layout problems on these page types are not covered."
+    },
+    "judge_failed": {
+      "area": "Content review of some page types ({n})",
+      "reason": "This step did not complete for them.",
+      "effect": "Requirements that need judgement are marked Not tested for these pages."
+    },
+    "media": {
+      "area": "Video and audio content",
+      "reason": "Captions and descriptions were checked for presence, not accuracy.",
+      "effect": "A person needs to watch the videos to confirm them."
+    },
+    "touch": {
+      "area": "Phones and touch screens",
+      "reason": "The review used a desktop browser with a narrow window for phone layouts.",
+      "effect": "Touch gestures and phone screen readers are not covered."
+    },
+    "refused": {
+      "area": "Page types the website refused to show during the in-depth checks ({n})",
+      "reason": "After many visits from the review, the website’s protection began answering “Forbidden” to the review’s browser for these pages: {pages}. They were checked automatically when the site was first crawled, before that happened.",
+      "effect": "Keyboard, zoom, text spacing, layout, hover and colour-contrast checks were not carried out on these page types; problems of those kinds there are not covered."
+    }
+  },
+  "xlsx": {
+    "title": "Accessibility findings by page",
+    "sheet_by_page": "By page",
+    "sheet_problems": "Problems",
+    "sheet_pages": "Pages",
+    "col_page": "Page",
+    "col_title": "Page title",
+    "col_id": "ID",
+    "col_problem": "Problem",
+    "col_severity": "Severity",
+    "col_status": "Status",
+    "col_wcag": "WCAG",
+    "col_element": "Where on the page",
+    "col_now": "Now",
+    "col_change": "Change to",
+    "col_notes": "What we saw",
+    "col_level": "Level",
+    "col_pages": "Pages",
+    "col_places": "Places",
+    "col_wrong": "What's wrong",
+    "col_why": "Why it happens",
+    "col_confidence": "How sure",
+    "col_checked": "Checked",
+    "col_problems": "Problems",
+    "col_to_check": "To check",
+    "col_ids": "IDs",
+    "status_problem": "Problem",
+    "status_check": "To check",
+    "page_counts": "Problems: {p} · To check: {c}",
+    "image": "Image {file}",
+    "alt_hide": "alt=\"\" (decorative: screen readers skip it)",
+    "describe": "Describe what the image shows (see the rows with the same problem)",
+    "yes": "Yes",
+    "sure_high": "Sure",
+    "sure_medium": "Fairly sure",
+    "status_note": "Clean-up (not a failure)",
+    "page_cleanup": "Clean-up: {k}"
+  }
+}

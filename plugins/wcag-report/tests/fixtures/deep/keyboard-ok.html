@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Keyboard clean</title><style>body{font:16px sans-serif;margin:20px}</style></head><body>
+<a href="#a">First link</a>
+<div><button>Day 1</button> <button>Day 2</button></div>
+<button id="cart">Add to cart</button>
+<a href="#z">Last link</a>
+<div id="fav" tabindex="0" role="button" style="display:inline-block;padding:8px;background:#eee">Save to favourites</div>
+<a href="#help">Help</a>
+<script>document.getElementById('cart').addEventListener('click', () => { document.title = 'added'; });
+const f = document.getElementById('fav'); f.addEventListener('click', () => { document.title = 'saved'; }); f.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') f.click(); });</script>
+</body></html>

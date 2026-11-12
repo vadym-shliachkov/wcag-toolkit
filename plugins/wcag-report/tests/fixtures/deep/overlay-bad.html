@@ -1,0 +1,4 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Overlay</title>
+<style>body{margin:0;font:18px sans-serif}section{position:relative;height:600px}canvas{position:absolute;inset:0;width:100%;height:600px}h1,p{position:relative;margin:0;padding:40px;width:600px;background:#fff}</style></head>
+<body><main><section><div><div><div><canvas id="c" width="1280" height="600"></canvas></div></div></div><h1>Text laid over a moving background</h1><p>The words do not move; the canvas behind them does.</p></section></main>
+<script>const g=document.getElementById('c').getContext('2d');setInterval(()=>{for(let x=0;x<1280;x+=40)for(let y=0;y<600;y+=40){g.fillStyle='hsl('+Math.floor(Math.random()*360)+' 80% 50%)';g.fillRect(x,y,40,40);}},200);</script></body></html>

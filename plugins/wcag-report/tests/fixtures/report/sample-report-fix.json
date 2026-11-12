@@ -1,0 +1,3629 @@
+{
+  "schema_version": "1.0",
+  "report": {
+    "id": "WR-2026-11-03-northwind-fix",
+    "language": "en",
+    "generated_at": "2026-11-03T09:00:00Z",
+    "wcag_version": "2.2",
+    "profile": "AA",
+    "options": {
+      "fix": true,
+      "max_pages": 200
+    }
+  },
+  "site": {
+    "name": "Northwind Outdoor",
+    "url": "https://northwind-outdoor.example/",
+    "source": {
+      "type": "url",
+      "repo_name": null,
+      "commit": null
+    },
+    "home_shot": {
+      "file": "shots/home.jpg",
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "scope": {
+    "pages_discovered": 40,
+    "pages_reviewed": 38,
+    "pages_failed": 2,
+    "cap_reached": false,
+    "max_pages": 200,
+    "templates_total": 6,
+    "templates_deep": 6,
+    "journeys_tested": 2,
+    "discovery": [
+      "sitemap",
+      "links"
+    ],
+    "excluded": [
+      {
+        "what": "/account/*",
+        "reason": "needs a customer account"
+      }
+    ],
+    "auth": false,
+    "forms_submitted": false,
+    "robots_respected": true,
+    "documents_not_tested": 3
+  },
+  "verdict": {
+    "label": "serious_barriers",
+    "headline": "Keyboard users cannot get past the cookie banner, and screen reader users cannot find the cart, so neither group can buy.",
+    "summary": "We checked 38 pages and found 12 problems. 2 of them stop people from buying: the cookie banner traps the keyboard, and the cart button has no name a screen reader can read. Most problems come from 4 shared page parts, such as the site header and the product layout, so each one repeats across many pages. Headings and page structure are clear throughout. 4 more items need a person to confirm them.",
+    "conformance": {
+      "status": "does_not_meet",
+      "failing_criteria": 14,
+      "open_criteria": 2,
+      "untested_criteria": 13
+    }
+  },
+  "totals": {
+    "issues": {
+      "critical": 2,
+      "serious": 4,
+      "moderate": 4,
+      "minor": 2,
+      "total": 12
+    },
+    "review_items": {
+      "total": 4,
+      "potential_serious": 2
+    },
+    "criteria": {
+      "total": 55,
+      "fail": 14,
+      "needs_review": 2,
+      "pass": 20,
+      "not_applicable": 6,
+      "not_tested": 13
+    },
+    "pages_with_blocker": 38,
+    "instances": 456
+  },
+  "groups": [
+    {
+      "id": "screen_reader",
+      "counts": {
+        "critical": 2,
+        "serious": 2,
+        "moderate": 1,
+        "minor": 1,
+        "total": 6
+      },
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-06",
+        "I-10",
+        "I-12"
+      ],
+      "hardest_issue_id": "I-01",
+      "blocked_journeys": [
+        "buy",
+        "newsletter"
+      ],
+      "summary": "Cannot find the cart and get stuck in the cookie banner, so they cannot buy."
+    },
+    {
+      "id": "low_vision",
+      "counts": {
+        "critical": 0,
+        "serious": 1,
+        "moderate": 2,
+        "minor": 0,
+        "total": 3
+      },
+      "issue_ids": [
+        "I-04",
+        "I-07",
+        "I-08"
+      ],
+      "hardest_issue_id": "I-04",
+      "blocked_journeys": [],
+      "summary": "Lose prices and buttons when zooming, and cannot read faint text."
+    },
+    {
+      "id": "colour",
+      "counts": {
+        "critical": 0,
+        "serious": 1,
+        "moderate": 0,
+        "minor": 0,
+        "total": 1
+      },
+      "issue_ids": [
+        "I-06"
+      ],
+      "hardest_issue_id": "I-06",
+      "blocked_journeys": [],
+      "summary": null
+    },
+    {
+      "id": "deaf",
+      "counts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 1,
+        "minor": 0,
+        "total": 1
+      },
+      "issue_ids": [
+        "I-09"
+      ],
+      "hardest_issue_id": "I-09",
+      "blocked_journeys": [],
+      "summary": null
+    },
+    {
+      "id": "keyboard",
+      "counts": {
+        "critical": 2,
+        "serious": 1,
+        "moderate": 0,
+        "minor": 0,
+        "total": 3
+      },
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05"
+      ],
+      "hardest_issue_id": "I-01",
+      "blocked_journeys": [
+        "buy",
+        "newsletter"
+      ],
+      "summary": "Cannot get past the cookie banner and cannot see where they are on the page."
+    },
+    {
+      "id": "dexterity",
+      "counts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 1,
+        "total": 1
+      },
+      "issue_ids": [
+        "I-11"
+      ],
+      "hardest_issue_id": "I-11",
+      "blocked_journeys": [],
+      "summary": null
+    },
+    {
+      "id": "cognitive",
+      "counts": {
+        "critical": 0,
+        "serious": 2,
+        "moderate": 3,
+        "minor": 0,
+        "total": 5
+      },
+      "issue_ids": [
+        "I-05",
+        "I-06",
+        "I-07",
+        "I-09",
+        "I-10"
+      ],
+      "hardest_issue_id": "I-05",
+      "blocked_journeys": [],
+      "summary": null
+    },
+    {
+      "id": "seizure_motion",
+      "counts": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0,
+        "total": 0
+      },
+      "issue_ids": [],
+      "hardest_issue_id": null,
+      "blocked_journeys": [],
+      "summary": null
+    }
+  ],
+  "journeys": [
+    {
+      "id": "buy",
+      "name": "Buy a product",
+      "tested": true,
+      "not_tested_reason": null,
+      "by_group": {
+        "screen_reader": {
+          "state": "blocked",
+          "issue_ids": [
+            "I-01",
+            "I-02",
+            "I-03",
+            "I-10"
+          ]
+        },
+        "low_vision": {
+          "state": "very_hard",
+          "issue_ids": [
+            "I-04"
+          ]
+        },
+        "colour": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        },
+        "deaf": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        },
+        "keyboard": {
+          "state": "blocked",
+          "issue_ids": [
+            "I-01",
+            "I-02",
+            "I-05"
+          ]
+        },
+        "dexterity": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        },
+        "cognitive": {
+          "state": "very_hard",
+          "issue_ids": [
+            "I-05",
+            "I-10"
+          ]
+        },
+        "seizure_motion": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        }
+      }
+    },
+    {
+      "id": "newsletter",
+      "name": "Sign up for the newsletter",
+      "tested": true,
+      "not_tested_reason": null,
+      "by_group": {
+        "screen_reader": {
+          "state": "blocked",
+          "issue_ids": [
+            "I-01",
+            "I-06"
+          ]
+        },
+        "low_vision": {
+          "state": "some_problems",
+          "issue_ids": [
+            "I-07"
+          ]
+        },
+        "colour": {
+          "state": "very_hard",
+          "issue_ids": [
+            "I-06"
+          ]
+        },
+        "deaf": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        },
+        "keyboard": {
+          "state": "blocked",
+          "issue_ids": [
+            "I-01",
+            "I-05"
+          ]
+        },
+        "dexterity": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        },
+        "cognitive": {
+          "state": "very_hard",
+          "issue_ids": [
+            "I-05",
+            "I-06",
+            "I-07"
+          ]
+        },
+        "seizure_motion": {
+          "state": "no_barrier_found",
+          "issue_ids": []
+        }
+      }
+    },
+    {
+      "id": "store",
+      "name": "Find a store",
+      "tested": false,
+      "not_tested_reason": "the store finder did not load",
+      "by_group": {}
+    }
+  ],
+  "priorities": {
+    "issue_ids": [
+      "I-01",
+      "I-02",
+      "I-03",
+      "I-04",
+      "I-05",
+      "I-06"
+    ],
+    "reason": "Problems that block buying come first, then those on every page, then those on the product pages.",
+    "check_soon": [
+      "R-01",
+      "R-03"
+    ]
+  },
+  "issues": [
+    {
+      "id": "I-01",
+      "key": "WR-lfls",
+      "rank": 1,
+      "severity": "critical",
+      "severity_reason": "Stops every task on the site on a first visit; there is no way around it.",
+      "method": "interactive",
+      "title": "Keyboard users get stuck in the cookie banner",
+      "where": {
+        "scope": "site_wide",
+        "summary": "Cookie banner, shown on the first visit to any page",
+        "component": "Cookie banner",
+        "template_ids": [],
+        "pages_confirmed": 38,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 38,
+        "example_urls": [
+          "https://northwind-outdoor.example/",
+          "https://northwind-outdoor.example/p/trail-runner-2",
+          "https://northwind-outdoor.example/c/hiking"
+        ],
+        "more": 35
+      },
+      "journeys": [
+        "buy",
+        "newsletter"
+      ],
+      "observed": "When the banner opens, the Tab key moves only between its “Settings” and “Privacy” links. The “Accept” and “Reject” buttons are skipped, and the banner cannot be closed.",
+      "cause": "The banner holds the keyboard inside itself, as pop-ups do. Its two buttons are built from plain boxes the keyboard cannot reach, so there is no way out.",
+      "impacts": [
+        {
+          "group": "keyboard",
+          "level": "blocks",
+          "text": "They cannot close the banner, so they cannot use any page of the site."
+        },
+        {
+          "group": "screen_reader",
+          "level": "blocks",
+          "text": "They hear the two links over and over and never reach the buttons, so they cannot continue."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "2.1.2",
+          "name": "No Keyboard Trap",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#no-keyboard-trap"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/cookie.jpg",
+          "width": 2480,
+          "height": 400,
+          "boxes": [
+            {
+              "x": 887,
+              "y": 70,
+              "w": 168,
+              "h": 78,
+              "n": 1
+            },
+            {
+              "x": 1079,
+              "y": 70,
+              "w": 161,
+              "h": 78,
+              "n": 2
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the cookie banner at the bottom of the home page. The “Accept” and “Reject” buttons, marked 1 and 2, cannot be reached with the keyboard.",
+          "caption": "Cookie banner on the home page. Buttons 1 and 2 cannot be reached with the Tab key.",
+          "url": "https://northwind-outdoor.example/",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Rebuild “Accept” and “Reject” as real buttons, so the Tab key reaches them.",
+          "Let the Escape key close the banner and return to the page."
+        ],
+        "dev_note": "Use native button elements; keep focus inside the dialog only while it is open.",
+        "done_when": "With only the keyboard, you can open any page, reach “Reject”, press Enter and carry on browsing."
+      },
+      "dev_ref": {
+        "csv_rows": 38
+      }
+    },
+    {
+      "id": "I-02",
+      "key": "WR-llpr",
+      "rank": 2,
+      "severity": "critical",
+      "severity_reason": "Blocks checkout for screen reader users on every page.",
+      "method": "automated",
+      "title": "The cart button has no name screen readers can read",
+      "where": {
+        "scope": "site_wide",
+        "summary": "Site header, on every page",
+        "component": "Header cart icon",
+        "template_ids": [],
+        "pages_confirmed": 38,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 38,
+        "example_urls": [
+          "https://northwind-outdoor.example/",
+          "https://northwind-outdoor.example/cart",
+          "https://northwind-outdoor.example/p/down-jacket"
+        ],
+        "more": 35
+      },
+      "journeys": [
+        "buy"
+      ],
+      "observed": "The cart icon in the top right opens the cart, but a screen reader announces it only as “button”. The number of items in the cart is not read out either.",
+      "cause": "The icon is a picture inside a plain box with no text name, so software cannot tell what it is or what it does.",
+      "impacts": [
+        {
+          "group": "screen_reader",
+          "level": "blocks",
+          "text": "They hear only “button”, so they cannot find their cart or go to checkout."
+        },
+        {
+          "group": "keyboard",
+          "level": "harder",
+          "text": "Saying “click cart” in voice control does nothing, because the button has no name to say."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#name-role-value"
+        },
+        "related": [
+          {
+            "id": "2.5.3",
+            "name": "Label in Name",
+            "level": "A",
+            "url": "https://www.w3.org/TR/WCAG22/#label-in-name"
+          }
+        ]
+      },
+      "shots": [
+        {
+          "file": "shots/cart.jpg",
+          "width": 2560,
+          "height": 400,
+          "boxes": [
+            {
+              "x": 2402,
+              "y": 30,
+              "w": 84,
+              "h": 84,
+              "n": 1
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the site header. The cart icon in the top right is highlighted; it has no name a screen reader can read.",
+          "caption": "Site header. The highlighted cart icon has no readable name.",
+          "url": "https://northwind-outdoor.example/",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": {
+        "kind": "screen_reader",
+        "announced": "button",
+        "expected": "Cart, 2 items, button"
+      },
+      "fix": {
+        "steps": [
+          "Rebuild the cart icon as a real button.",
+          "Give it a hidden text name with the item count, such as “Cart, 2 items”."
+        ],
+        "dev_note": "A native button with visually hidden text; update the text whenever the count changes.",
+        "done_when": "With a screen reader on, the icon is announced as “Cart, 2 items, button”."
+      },
+      "dev_ref": {
+        "csv_rows": 38
+      }
+    },
+    {
+      "id": "I-03",
+      "key": "WR-lrtq",
+      "rank": 3,
+      "severity": "serious",
+      "severity_reason": "Buying is possible, but only by guessing what the product looks like.",
+      "method": "automated",
+      "title": "Product photos have no text description",
+      "where": {
+        "scope": "template",
+        "summary": "Product photos on the product page type",
+        "component": "Product photo",
+        "template_ids": [
+          "t02",
+          "t03"
+        ],
+        "pages_confirmed": 24,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 214,
+        "example_urls": [
+          "https://northwind-outdoor.example/p/trail-runner-2",
+          "https://northwind-outdoor.example/p/down-jacket",
+          "https://northwind-outdoor.example/c/hiking"
+        ],
+        "more": 21
+      },
+      "journeys": [
+        "buy"
+      ],
+      "observed": "214 product photos show colour, pattern and fit, but none has a text description. Screen readers often read out the file name instead, such as “IMG 4471 jpg”.",
+      "cause": "The product layout adds each photo without a text description (alt text). Every product uses the same layout, so the gap repeats on every product page.",
+      "impacts": [
+        {
+          "group": "screen_reader",
+          "level": "blocks",
+          "text": "They hear a file name instead of a description, so they cannot judge colour or style before buying."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "1.1.1",
+          "name": "Non-text Content",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#non-text-content"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/photos.jpg",
+          "width": 2560,
+          "height": 636,
+          "boxes": [
+            {
+              "x": 76,
+              "y": 60,
+              "w": 578,
+              "h": 312,
+              "n": 1
+            },
+            {
+              "x": 686,
+              "y": 60,
+              "w": 578,
+              "h": 312,
+              "n": 2
+            },
+            {
+              "x": 1296,
+              "y": 60,
+              "w": 578,
+              "h": 312,
+              "n": 3
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the product grid. Three product photos, marked 1 to 3, have no text description.",
+          "caption": "Product grid on a category page. Photos 1 to 3 have no text description.",
+          "url": "https://northwind-outdoor.example/c/hiking",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Add a short text description to every product photo that says what it shows.",
+          "Mark purely decorative images as decorative."
+        ],
+        "dev_note": "Fill the alt attribute from a product field editors can maintain; decorative images get alt=\"\".",
+        "done_when": "A screen reader reads a useful description for each product photo."
+      },
+      "dev_ref": {
+        "csv_rows": 214
+      }
+    },
+    {
+      "id": "I-04",
+      "key": "WR-lxxp",
+      "rank": 4,
+      "severity": "serious",
+      "severity_reason": "Buying needs sideways scrolling or help for people who zoom.",
+      "method": "interactive",
+      "title": "Price and “Add to cart” are cut off on narrow screens",
+      "where": {
+        "scope": "template",
+        "summary": "Product grid on the product and category page types",
+        "component": "Product grid",
+        "template_ids": [
+          "t02",
+          "t03"
+        ],
+        "pages_confirmed": 1,
+        "pages_likely": 26,
+        "pages_reviewed": 38,
+        "instances": 26,
+        "example_urls": [
+          "https://northwind-outdoor.example/c/hiking"
+        ],
+        "more": 25
+      },
+      "journeys": [
+        "buy"
+      ],
+      "observed": "In a window 320 pixels wide, or at 400 % zoom, the product grid keeps four columns. The price and the “Add to cart” button of most products fall outside the screen.",
+      "cause": "The grid always has four columns. When there is no room, it does not move the products below each other, so the part that does not fit is hidden.",
+      "impacts": [
+        {
+          "group": "low_vision",
+          "level": "blocks",
+          "text": "The price and the buy button vanish when they enlarge the page, so they cannot buy without help."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "1.4.10",
+          "name": "Reflow",
+          "level": "AA",
+          "url": "https://www.w3.org/TR/WCAG22/#reflow"
+        },
+        "related": [
+          {
+            "id": "1.4.4",
+            "name": "Resize Text",
+            "level": "AA",
+            "url": "https://www.w3.org/TR/WCAG22/#resize-text"
+          }
+        ]
+      },
+      "shots": [
+        {
+          "file": "shots/reflow-wide.jpg",
+          "width": 2560,
+          "height": 636,
+          "boxes": [
+            {
+              "x": 1904,
+              "y": 58,
+              "w": 582,
+              "h": 520,
+              "n": 1
+            }
+          ],
+          "kind": "pair",
+          "alt": "Screenshot of the product grid at normal width, with four products in a row.",
+          "caption": "Product grid at normal width and at phone width.",
+          "url": "https://northwind-outdoor.example/c/hiking",
+          "label": "Normal width (1280 pixels)",
+          "pair": {
+            "file": "shots/reflow-narrow.jpg",
+            "width": 640,
+            "height": 802,
+            "boxes": [
+              {
+                "x": 100,
+                "y": 494,
+                "w": 50,
+                "h": 46,
+                "n": 1
+              }
+            ],
+            "alt": "Screenshot of the same grid 320 pixels wide. The highlighted price is cut off at the edge of the screen.",
+            "label": "Phone width (320 pixels)"
+          }
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Let the product grid drop to one or two columns on narrow screens."
+        ],
+        "dev_note": "Use a responsive grid such as repeat(auto-fill, minmax(…)) instead of four fixed columns.",
+        "done_when": "At 400 % zoom every price and button is visible without sideways scrolling."
+      },
+      "dev_ref": {
+        "csv_rows": 26
+      }
+    },
+    {
+      "id": "I-05",
+      "key": "WR-m41o",
+      "rank": 5,
+      "severity": "serious",
+      "severity_reason": "Every task is possible but slow and error-prone without a mouse.",
+      "method": "interactive",
+      "title": "The keyboard highlight is invisible on menu links",
+      "where": {
+        "scope": "site_wide",
+        "summary": "Main menu in the site header, on every page",
+        "component": "Main menu",
+        "template_ids": [],
+        "pages_confirmed": 1,
+        "pages_likely": 38,
+        "pages_reviewed": 38,
+        "instances": 38,
+        "example_urls": [
+          "https://northwind-outdoor.example/"
+        ],
+        "more": 37
+      },
+      "journeys": [
+        "buy",
+        "newsletter"
+      ],
+      "observed": "When the Tab key reaches a menu link such as “Sale”, nothing on screen changes. The page looks the same as before the key was pressed.",
+      "cause": "The site styling removes the browser’s outline around the selected link and puts nothing in its place.",
+      "impacts": [
+        {
+          "group": "keyboard",
+          "level": "harder",
+          "text": "They cannot see which link is selected, so they press Enter on the wrong one or give up."
+        },
+        {
+          "group": "cognitive",
+          "level": "harder",
+          "text": "Losing their place on the page adds effort to every step."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "2.4.7",
+          "name": "Focus Visible",
+          "level": "AA",
+          "url": "https://www.w3.org/TR/WCAG22/#focus-visible"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/focus-before.jpg",
+          "width": 840,
+          "height": 180,
+          "boxes": [
+            {
+              "x": 454,
+              "y": 32,
+              "w": 72,
+              "h": 46,
+              "n": 1
+            }
+          ],
+          "kind": "pair",
+          "alt": "Screenshot of the main menu before the Tab key is pressed.",
+          "caption": "Main menu before and after the Tab key reaches “Sale”.",
+          "url": "https://northwind-outdoor.example/",
+          "label": "Before: pointer on the page",
+          "pair": {
+            "file": "shots/focus-after.jpg",
+            "width": 840,
+            "height": 180,
+            "boxes": [
+              {
+                "x": 454,
+                "y": 32,
+                "w": 72,
+                "h": 46,
+                "n": 1
+              }
+            ],
+            "alt": "Screenshot of the main menu after the Tab key reaches “Sale”. The highlighted link looks exactly as before.",
+            "label": "After: “Sale” reached with the Tab key"
+          }
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Show a clear, thick outline around any link or button the keyboard reaches."
+        ],
+        "dev_note": "Add a :focus-visible style with at least 3:1 contrast against the background.",
+        "done_when": "Pressing Tab on any page always shows where you are."
+      },
+      "dev_ref": {
+        "csv_rows": 38
+      }
+    },
+    {
+      "id": "I-06",
+      "key": "WR-ma5n",
+      "rank": 6,
+      "severity": "serious",
+      "severity_reason": "Signing up is very hard without knowing what went wrong.",
+      "method": "measured",
+      "title": "Form errors are shown only by a red colour",
+      "where": {
+        "scope": "pages",
+        "summary": "Newsletter and contact forms",
+        "component": "Form error message",
+        "template_ids": [],
+        "pages_confirmed": 3,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 3,
+        "example_urls": [
+          "https://northwind-outdoor.example/newsletter",
+          "https://northwind-outdoor.example/contact",
+          "https://northwind-outdoor.example/"
+        ],
+        "more": 0
+      },
+      "journeys": [
+        "newsletter"
+      ],
+      "observed": "When an email address is wrong, the field turns red and a red dot appears below it. There is no text saying what is wrong.",
+      "cause": "The error is shown by colour alone, with no words, so people who cannot see red or cannot see the screen get no message.",
+      "impacts": [
+        {
+          "group": "colour",
+          "level": "blocks",
+          "text": "They see a grey border and no message, so they do not know why the form will not send."
+        },
+        {
+          "group": "screen_reader",
+          "level": "harder",
+          "text": "Nothing is read out, so they do not know the form failed."
+        },
+        {
+          "group": "cognitive",
+          "level": "harder",
+          "text": "With no words to explain the error, they have to guess what to change."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "1.4.1",
+          "name": "Use of Color",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#use-of-color"
+        },
+        "related": [
+          {
+            "id": "3.3.1",
+            "name": "Error Identification",
+            "level": "A",
+            "url": "https://www.w3.org/TR/WCAG22/#error-identification"
+          }
+        ]
+      },
+      "shots": [
+        {
+          "file": "shots/form-error.jpg",
+          "width": 2560,
+          "height": 400,
+          "boxes": [
+            {
+              "x": 74,
+              "y": 180,
+              "w": 2412,
+              "h": 44,
+              "n": 1
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the newsletter form after a wrong email address. The highlighted error is a red dot with no text.",
+          "caption": "Newsletter form after sending a wrong email address.",
+          "url": "https://northwind-outdoor.example/newsletter",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Add a short text message to each error, such as “Enter an email address like name@example.com”."
+        ],
+        "dev_note": "Connect the message to the field so screen readers announce it.",
+        "done_when": "A wrong entry shows a written message, and a screen reader reads it."
+      },
+      "dev_ref": {
+        "csv_rows": 3
+      }
+    },
+    {
+      "id": "I-07",
+      "key": "WR-mg9m",
+      "rank": 7,
+      "severity": "moderate",
+      "severity_reason": "Forms can be completed, but with more effort and mistakes.",
+      "method": "measured",
+      "title": "Hint text in form fields is too faint to read",
+      "where": {
+        "scope": "pages",
+        "summary": "Newsletter, contact and checkout forms",
+        "component": "Form hint text",
+        "template_ids": [],
+        "pages_confirmed": 6,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 9,
+        "example_urls": [
+          "https://northwind-outdoor.example/newsletter",
+          "https://northwind-outdoor.example/contact",
+          "https://northwind-outdoor.example/checkout"
+        ],
+        "more": 3
+      },
+      "journeys": [
+        "newsletter"
+      ],
+      "observed": "The pale grey hint text inside the fields, such as “Email address”, barely stands out from the white background.",
+      "cause": "All forms share one style for hint text, and that style uses a very light grey.",
+      "impacts": [
+        {
+          "group": "low_vision",
+          "level": "harder",
+          "text": "The hints look blank, so they cannot tell what each field asks for."
+        },
+        {
+          "group": "cognitive",
+          "level": "harder",
+          "text": "Unclear fields lead to mistakes and having to start again."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "1.4.3",
+          "name": "Contrast (Minimum)",
+          "level": "AA",
+          "url": "https://www.w3.org/TR/WCAG22/#contrast-minimum"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/form-hint.jpg",
+          "width": 2560,
+          "height": 400,
+          "boxes": [
+            {
+              "x": 74,
+              "y": 88,
+              "w": 616,
+              "h": 92,
+              "n": 1
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the newsletter form. The highlighted email field shows a hint text that is very hard to see.",
+          "caption": "Email field on the newsletter form.",
+          "url": "https://northwind-outdoor.example/newsletter",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": {
+        "kind": "contrast",
+        "fg": "#C4C4C4",
+        "bg": "#FFFFFF",
+        "ratio": 1.74,
+        "required": 4.5,
+        "sample": "Email address"
+      },
+      "fix": {
+        "steps": [
+          "Darken the hint text until it reaches the required contrast."
+        ],
+        "dev_note": "Change the placeholder colour to at least #767676 on white.",
+        "done_when": "The hint text measures at least 4.5 to 1 against its background."
+      },
+      "dev_ref": {
+        "csv_rows": 9
+      }
+    },
+    {
+      "id": "I-08",
+      "key": "WR-mmdl",
+      "rank": 8,
+      "severity": "moderate",
+      "severity_reason": "Important terms are hard to read, but the text is still there.",
+      "method": "measured",
+      "title": "Footer text is too faint to read",
+      "where": {
+        "scope": "site_wide",
+        "summary": "Site footer, on every page",
+        "component": "Site footer",
+        "template_ids": [],
+        "pages_confirmed": 38,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 38,
+        "example_urls": [
+          "https://northwind-outdoor.example/",
+          "https://northwind-outdoor.example/about",
+          "https://northwind-outdoor.example/cart"
+        ],
+        "more": 35
+      },
+      "journeys": [],
+      "observed": "The footer text, including “Returns within 60 days” and “Prices include VAT”, is light grey on an almost white background.",
+      "cause": "The footer style uses a light grey text colour that is too close to its background.",
+      "impacts": [
+        {
+          "group": "low_vision",
+          "level": "harder",
+          "text": "They cannot read the return and price terms without copying the text or zooming in."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "1.4.3",
+          "name": "Contrast (Minimum)",
+          "level": "AA",
+          "url": "https://www.w3.org/TR/WCAG22/#contrast-minimum"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/footer.jpg",
+          "width": 2560,
+          "height": 240,
+          "boxes": [
+            {
+              "x": -6,
+              "y": -6,
+              "w": 2572,
+              "h": 154,
+              "n": 1
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the site footer. The highlighted text is light grey on a near-white background.",
+          "caption": "Site footer.",
+          "url": "https://northwind-outdoor.example/",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": {
+        "kind": "contrast",
+        "fg": "#B9B9B9",
+        "bg": "#FAFAFA",
+        "ratio": 1.97,
+        "required": 4.5,
+        "sample": "Prices include VAT"
+      },
+      "fix": {
+        "steps": [
+          "Use a darker text colour in the footer."
+        ],
+        "dev_note": "Set the footer text colour to #595959 or darker on #FAFAFA.",
+        "done_when": "The footer text measures at least 4.5 to 1."
+      },
+      "dev_ref": {
+        "csv_rows": 38
+      }
+    },
+    {
+      "id": "I-09",
+      "key": "WR-mshk",
+      "rank": 9,
+      "severity": "moderate",
+      "severity_reason": "Information is lost, but it is repeated elsewhere on the site.",
+      "method": "ai_review",
+      "title": "The founders’ video has no captions",
+      "where": {
+        "scope": "pages",
+        "summary": "Home page and About page (the same video on both)",
+        "component": "Video player",
+        "template_ids": [],
+        "pages_confirmed": 2,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 2,
+        "example_urls": [
+          "https://northwind-outdoor.example/",
+          "https://northwind-outdoor.example/about"
+        ],
+        "more": 0
+      },
+      "journeys": [],
+      "observed": "In the 2-minute video “Meet the founders”, everything is spoken, including the 60-day return promise. There are no captions and no written version on the page.",
+      "cause": "The video was published without a caption file, so the player has no captions to show.",
+      "impacts": [
+        {
+          "group": "deaf",
+          "level": "blocks",
+          "text": "They see people talking but miss what they say, including the return promise."
+        },
+        {
+          "group": "cognitive",
+          "level": "harder",
+          "text": "They lose parts of the spoken message and have no text to check it against."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "1.2.2",
+          "name": "Captions (Prerecorded)",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#captions-prerecorded"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/video.jpg",
+          "width": 2448,
+          "height": 488,
+          "boxes": [
+            {
+              "x": 18,
+              "y": 18,
+              "w": 2412,
+              "h": 452,
+              "n": 1
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the video player on the home page, showing the start screen of the video “Meet the founders”.",
+          "caption": "Video on the home page. It has no captions.",
+          "url": "https://northwind-outdoor.example/",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Add captions to the video.",
+          "Add a short written summary or transcript below it."
+        ],
+        "dev_note": "Upload a captions track (WebVTT) to the video host and check its accuracy.",
+        "done_when": "Captions can be switched on and match what is said."
+      },
+      "dev_ref": {
+        "csv_rows": 2
+      }
+    },
+    {
+      "id": "I-10",
+      "key": "WR-mylj",
+      "rank": 10,
+      "severity": "moderate",
+      "severity_reason": "People can still shop, but finding and comparing products takes longer.",
+      "method": "automated",
+      "title": "All product pages have the same page title",
+      "where": {
+        "scope": "template",
+        "summary": "Every product page",
+        "component": "Page title",
+        "template_ids": [
+          "t02"
+        ],
+        "pages_confirmed": 24,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 24,
+        "example_urls": [
+          "https://northwind-outdoor.example/p/trail-runner-2",
+          "https://northwind-outdoor.example/p/down-jacket",
+          "https://northwind-outdoor.example/p/day-pack-22"
+        ],
+        "more": 21
+      },
+      "journeys": [
+        "buy"
+      ],
+      "observed": "All 24 product pages are titled “Northwind Outdoor”. The browser tab and search results never name the product.",
+      "cause": "The product layout uses the shop name as the page title instead of the product name.",
+      "impacts": [
+        {
+          "group": "screen_reader",
+          "level": "harder",
+          "text": "The first thing they hear on each page is the same, so they cannot tell product pages apart."
+        },
+        {
+          "group": "cognitive",
+          "level": "harder",
+          "text": "Several open tabs look identical, which makes comparing products confusing."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "2.4.2",
+          "name": "Page Titled",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#page-titled"
+        },
+        "related": []
+      },
+      "shots": [],
+      "evidence": {
+        "kind": "source",
+        "lines": [
+          "<head>",
+          "  <title>Northwind Outdoor</title>",
+          "  <meta charset=\"utf-8\">"
+        ],
+        "mark": 1
+      },
+      "fix": {
+        "steps": [
+          "Put the product name first in each product page title, such as “Trail runner 2 – Northwind Outdoor”."
+        ],
+        "dev_note": null,
+        "done_when": "Each product tab shows its product name."
+      },
+      "dev_ref": {
+        "csv_rows": 24
+      }
+    },
+    {
+      "id": "I-11",
+      "key": "WR-n4pi",
+      "rank": 11,
+      "severity": "minor",
+      "severity_reason": "An annoyance: the wrong page opens, but people can retry.",
+      "method": "measured",
+      "title": "Page number buttons are very small",
+      "where": {
+        "scope": "template",
+        "summary": "Page numbers under product lists",
+        "component": "Pagination",
+        "template_ids": [
+          "t03"
+        ],
+        "pages_confirmed": 6,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 24,
+        "example_urls": [
+          "https://northwind-outdoor.example/c/hiking",
+          "https://northwind-outdoor.example/c/camping",
+          "https://northwind-outdoor.example/c/sale"
+        ],
+        "more": 3
+      },
+      "journeys": [],
+      "observed": "The page number buttons under the product lists are 16 by 16 pixels and touch each other.",
+      "cause": "The pagination style uses small, tightly packed boxes for the page numbers.",
+      "impacts": [
+        {
+          "group": "dexterity",
+          "level": "harder",
+          "text": "They often tap the wrong page number and have to try again."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "2.5.8",
+          "name": "Target Size (Minimum)",
+          "level": "AA",
+          "url": "https://www.w3.org/TR/WCAG22/#target-size-minimum"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/pager.jpg",
+          "width": 2560,
+          "height": 220,
+          "boxes": [
+            {
+              "x": 74,
+              "y": 34,
+              "w": 48,
+              "h": 48,
+              "n": 1
+            },
+            {
+              "x": 114,
+              "y": 34,
+              "w": 48,
+              "h": 48,
+              "n": 2
+            },
+            {
+              "x": 154,
+              "y": 34,
+              "w": 48,
+              "h": 48,
+              "n": 3
+            },
+            {
+              "x": 194,
+              "y": 34,
+              "w": 48,
+              "h": 48,
+              "n": 4
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the page numbers under a product list. The four highlighted buttons are very small and touch each other.",
+          "caption": "Page numbers under a product list.",
+          "url": "https://northwind-outdoor.example/c/hiking",
+          "label": null,
+          "pair": null
+        }
+      ],
+      "evidence": null,
+      "fix": {
+        "steps": [
+          "Make each page number at least 24 by 24 pixels, or add space between them."
+        ],
+        "dev_note": null,
+        "done_when": "Each page number is easy to tap on a phone."
+      },
+      "dev_ref": {
+        "csv_rows": 24
+      }
+    },
+    {
+      "id": "I-12",
+      "key": "WR-nath",
+      "rank": 12,
+      "severity": "minor",
+      "severity_reason": "The text can still be read, but pronunciation may be wrong.",
+      "method": "automated",
+      "title": "Two pages do not say which language they are in",
+      "where": {
+        "scope": "pages",
+        "summary": "2 pages",
+        "component": "Page language",
+        "template_ids": [],
+        "pages_confirmed": 2,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 2,
+        "example_urls": [
+          "https://northwind-outdoor.example/privacy",
+          "https://northwind-outdoor.example/shipping"
+        ],
+        "more": 0
+      },
+      "journeys": [],
+      "observed": "The Privacy and Shipping pages do not state that they are in English.",
+      "cause": "These two pages come from an older layout that does not set the page language.",
+      "impacts": [
+        {
+          "group": "screen_reader",
+          "level": "harder",
+          "text": "Their screen reader may read the English text with the wrong pronunciation."
+        }
+      ],
+      "criteria": {
+        "primary": {
+          "id": "3.1.1",
+          "name": "Language of Page",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#language-of-page"
+        },
+        "related": []
+      },
+      "shots": [],
+      "evidence": {
+        "kind": "source",
+        "lines": [
+          "<!doctype html>",
+          "<html>",
+          "<head>"
+        ],
+        "mark": 1
+      },
+      "fix": {
+        "steps": [
+          "Set the page language to English on both pages."
+        ],
+        "dev_note": "Add lang=\"en\" to the html element.",
+        "done_when": "Both pages state their language in the page code."
+      },
+      "dev_ref": {
+        "csv_rows": 2
+      }
+    }
+  ],
+  "review_items": [
+    {
+      "id": "R-01",
+      "key": "WR-r01",
+      "title": "Check whether product photo descriptions say what the photo shows",
+      "where": {
+        "scope": "template",
+        "summary": "Product page type, once descriptions are added",
+        "pages_confirmed": 24,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 24,
+        "example_urls": [
+          "https://northwind-outdoor.example/p/trail-runner-2"
+        ],
+        "more": 23
+      },
+      "observed": "Some product photos on newer pages have descriptions such as “Product image”. They do not say what the photo shows.",
+      "why_uncertain": "Only someone who knows the products can judge whether a description is accurate.",
+      "what_to_check": "Someone who knows the products compares each photo with its description. Generic or wrong descriptions are a problem.",
+      "if_confirmed": {
+        "severity": "serious",
+        "groups": [
+          "screen_reader"
+        ]
+      },
+      "criteria": {
+        "primary": {
+          "id": "1.1.1",
+          "name": "Non-text Content",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#non-text-content"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/photos.jpg",
+          "width": 2560,
+          "height": 636,
+          "boxes": [
+            {
+              "x": 76,
+              "y": 60,
+              "w": 578,
+              "h": 312,
+              "n": 1
+            }
+          ],
+          "kind": "crop",
+          "alt": "Screenshot of the product grid. The first photo is highlighted.",
+          "caption": "Product photo with a generic description.",
+          "url": "https://northwind-outdoor.example/p/trail-runner-2",
+          "label": null,
+          "pair": null
+        }
+      ]
+    },
+    {
+      "id": "R-02",
+      "key": "WR-r02",
+      "title": "Check whether the store finder map has a text alternative",
+      "where": {
+        "scope": "pages",
+        "summary": "Store finder page",
+        "pages_confirmed": 1,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 1,
+        "example_urls": [
+          "https://northwind-outdoor.example/stores"
+        ],
+        "more": 0
+      },
+      "observed": "The store finder shows shop locations on an embedded map. We could not find a list of shops in text.",
+      "why_uncertain": "The page did not finish loading during the review, so we could not see all of it.",
+      "what_to_check": "Open the store finder and check that every shop's address is also listed in text.",
+      "if_confirmed": {
+        "severity": "moderate",
+        "groups": [
+          "screen_reader",
+          "keyboard"
+        ]
+      },
+      "criteria": {
+        "primary": {
+          "id": "1.1.1",
+          "name": "Non-text Content",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#non-text-content"
+        },
+        "related": []
+      },
+      "shots": [
+        {
+          "file": "shots/map.jpg",
+          "width": 2560,
+          "height": 456,
+          "boxes": [],
+          "kind": "crop",
+          "alt": "Screenshot of the banner area of the home page, where the store finder is linked.",
+          "caption": "Banner on the home page that links to the store finder.",
+          "url": "https://northwind-outdoor.example/stores",
+          "label": null,
+          "pair": null
+        }
+      ]
+    },
+    {
+      "id": "R-03",
+      "key": "WR-r03",
+      "title": "Check whether the checkout time limit can be extended",
+      "where": {
+        "scope": "pages",
+        "summary": "Checkout",
+        "pages_confirmed": 2,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 2,
+        "example_urls": [
+          "https://northwind-outdoor.example/checkout"
+        ],
+        "more": 1
+      },
+      "observed": "The checkout says items are reserved for 10 minutes. We did not see a way to ask for more time.",
+      "why_uncertain": "We did not wait for the time limit to run out, so we do not know what happens then.",
+      "what_to_check": "Start a checkout, wait 10 minutes and check whether the site warns you and lets you extend the time.",
+      "if_confirmed": {
+        "severity": "serious",
+        "groups": [
+          "cognitive",
+          "dexterity",
+          "screen_reader"
+        ]
+      },
+      "criteria": {
+        "primary": {
+          "id": "2.2.1",
+          "name": "Timing Adjustable",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#timing-adjustable"
+        },
+        "related": []
+      },
+      "shots": []
+    },
+    {
+      "id": "R-04",
+      "key": "WR-r04",
+      "title": "Check whether “Read more” links make sense on the journal pages",
+      "where": {
+        "scope": "template",
+        "summary": "Journal articles",
+        "pages_confirmed": 5,
+        "pages_likely": null,
+        "pages_reviewed": 38,
+        "instances": 5,
+        "example_urls": [
+          "https://northwind-outdoor.example/journal/winter-layering"
+        ],
+        "more": 4
+      },
+      "observed": "Each journal teaser ends with a “Read more” link. The heading next to it may be enough to explain it.",
+      "why_uncertain": "Whether the nearby heading explains the link depends on how it is read.",
+      "what_to_check": "Read each “Read more” link with its heading and check that it is clear which article it opens.",
+      "if_confirmed": {
+        "severity": "minor",
+        "groups": [
+          "screen_reader"
+        ]
+      },
+      "criteria": {
+        "primary": {
+          "id": "2.4.4",
+          "name": "Link Purpose (In Context)",
+          "level": "A",
+          "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+        },
+        "related": []
+      },
+      "shots": []
+    }
+  ],
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "name": "Non-text Content",
+      "plain": "Images have a text description.",
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-03"
+      ],
+      "review_ids": [
+        "R-01",
+        "R-02"
+      ]
+    },
+    {
+      "id": "1.2.1",
+      "name": "Audio-only and Video-only (Prerecorded)",
+      "plain": null,
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_applicable",
+      "note": "No audio-only or video-only recordings found.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.2",
+      "name": "Captions (Prerecorded)",
+      "plain": "Videos with sound have captions.",
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-09"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.3",
+      "name": "Audio Description or Media Alternative (Prerecorded)",
+      "plain": null,
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a person to watch the video.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.4",
+      "name": "Captions (Live)",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_applicable",
+      "note": "No live video found.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.5",
+      "name": "Audio Description (Prerecorded)",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a person to watch the video.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.6",
+      "name": "Sign Language (Prerecorded)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.7",
+      "name": "Extended Audio Description (Prerecorded)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.8",
+      "name": "Media Alternative (Prerecorded)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.2.9",
+      "name": "Audio-only (Live)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.3.1",
+      "name": "Info and Relationships",
+      "plain": null,
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.3.2",
+      "name": "Meaningful Sequence",
+      "plain": null,
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.3.3",
+      "name": "Sensory Characteristics",
+      "plain": null,
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.3.4",
+      "name": "Orientation",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.3.5",
+      "name": "Identify Input Purpose",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.3.6",
+      "name": "Identify Purpose",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.1",
+      "name": "Use of Color",
+      "plain": "Colour is not the only way information is shown.",
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-06"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.2",
+      "name": "Audio Control",
+      "plain": null,
+      "level": "A",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_applicable",
+      "note": "No sound plays automatically.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (Minimum)",
+      "plain": "Text stands out clearly from its background.",
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-07",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.4",
+      "name": "Resize Text",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-04"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.5",
+      "name": "Images of Text",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.6",
+      "name": "Contrast (Enhanced)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.7",
+      "name": "Low or No Background Audio",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.8",
+      "name": "Visual Presentation",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.9",
+      "name": "Images of Text (No Exception)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "perceivable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "plain": "Pages work on a narrow screen without sideways scrolling.",
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-04"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text Contrast",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text Spacing",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "1.4.13",
+      "name": "Content on Hover or Focus",
+      "plain": null,
+      "level": "AA",
+      "principle": "perceivable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "plain": "Everything works with the keyboard.",
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.1.2",
+      "name": "No Keyboard Trap",
+      "plain": "The keyboard never gets stuck.",
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-01"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "2.1.3",
+      "name": "Keyboard (No Exception)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.1.4",
+      "name": "Character Key Shortcuts",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.2.1",
+      "name": "Timing Adjustable",
+      "plain": "Time limits can be turned off or extended.",
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "needs_review",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": [
+        "R-03"
+      ]
+    },
+    {
+      "id": "2.2.2",
+      "name": "Pause, Stop, Hide",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.2.3",
+      "name": "No Timing",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.2.4",
+      "name": "Interruptions",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.2.5",
+      "name": "Re-authenticating",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.2.6",
+      "name": "Timeouts",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.3.1",
+      "name": "Three Flashes or Below Threshold",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "No flashing seen; needs analysis of each video.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.3.2",
+      "name": "Three Flashes",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.3.3",
+      "name": "Animation from Interactions",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.1",
+      "name": "Bypass Blocks",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.2",
+      "name": "Page Titled",
+      "plain": "Each page has a title that says what it is.",
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.3",
+      "name": "Focus Order",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.4",
+      "name": "Link Purpose (In Context)",
+      "plain": "Each link's purpose is clear.",
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "needs_review",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": [
+        "R-04"
+      ]
+    },
+    {
+      "id": "2.4.5",
+      "name": "Multiple Ways",
+      "plain": null,
+      "level": "AA",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.6",
+      "name": "Headings and Labels",
+      "plain": null,
+      "level": "AA",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus Visible",
+      "plain": "You can see where the keyboard is.",
+      "level": "AA",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-05"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.8",
+      "name": "Location",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.9",
+      "name": "Link Purpose (Link Only)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.10",
+      "name": "Section Headings",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus Not Obscured (Minimum)",
+      "plain": null,
+      "level": "AA",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.12",
+      "name": "Focus Not Obscured (Enhanced)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.4.13",
+      "name": "Focus Appearance",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.1",
+      "name": "Pointer Gestures",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.2",
+      "name": "Pointer Cancellation",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.3",
+      "name": "Label in Name",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-02"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.4",
+      "name": "Motion Actuation",
+      "plain": null,
+      "level": "A",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "not_applicable",
+      "note": "No feature works by moving the device.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.5",
+      "name": "Target Size (Enhanced)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.6",
+      "name": "Concurrent Input Mechanisms",
+      "plain": null,
+      "level": "AAA",
+      "principle": "operable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging Movements",
+      "plain": null,
+      "level": "AA",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "not_applicable",
+      "note": "Nothing on the site needs dragging.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target Size (Minimum)",
+      "plain": "Buttons are big enough to tap.",
+      "level": "AA",
+      "principle": "operable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "3.1.1",
+      "name": "Language of Page",
+      "plain": "The page states its language.",
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-12"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "3.1.2",
+      "name": "Language of Parts",
+      "plain": null,
+      "level": "AA",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.1.3",
+      "name": "Unusual Words",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.1.4",
+      "name": "Abbreviations",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.1.5",
+      "name": "Reading Level",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.1.6",
+      "name": "Pronunciation",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.2.1",
+      "name": "On Focus",
+      "plain": null,
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.2.2",
+      "name": "On Input",
+      "plain": null,
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.2.3",
+      "name": "Consistent Navigation",
+      "plain": null,
+      "level": "AA",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.2.4",
+      "name": "Consistent Identification",
+      "plain": null,
+      "level": "AA",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.2.5",
+      "name": "Change on Request",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent Help",
+      "plain": null,
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Help links were not compared across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.1",
+      "name": "Error Identification",
+      "plain": "Errors are described in text.",
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-06"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.2",
+      "name": "Labels or Instructions",
+      "plain": null,
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.3",
+      "name": "Error Suggestion",
+      "plain": null,
+      "level": "AA",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "pass",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.4",
+      "name": "Error Prevention (Legal, Financial, Data)",
+      "plain": null,
+      "level": "AA",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.5",
+      "name": "Help",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.6",
+      "name": "Error Prevention (All)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant Entry",
+      "plain": null,
+      "level": "A",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible Authentication (Minimum)",
+      "plain": null,
+      "level": "AA",
+      "principle": "understandable",
+      "in_profile": true,
+      "status": "not_applicable",
+      "note": "No login or password step in scope.",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "3.3.9",
+      "name": "Accessible Authentication (Enhanced)",
+      "plain": null,
+      "level": "AAA",
+      "principle": "understandable",
+      "in_profile": false,
+      "status": "not_tested",
+      "note": null,
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, Role, Value",
+      "plain": "Controls have a name software can read.",
+      "level": "A",
+      "principle": "robust",
+      "in_profile": true,
+      "status": "fail",
+      "note": null,
+      "issue_ids": [
+        "I-02"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "4.1.3",
+      "name": "Status Messages",
+      "plain": null,
+      "level": "AA",
+      "principle": "robust",
+      "in_profile": true,
+      "status": "not_tested",
+      "note": "Needs a manual check across pages.",
+      "issue_ids": [],
+      "review_ids": []
+    }
+  ],
+  "templates": [
+    {
+      "id": "t01",
+      "name": "Home page",
+      "page_count": 1,
+      "deep_tested": true,
+      "example_url": "https://northwind-outdoor.example/",
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "t02",
+      "name": "Product page",
+      "page_count": 24,
+      "deep_tested": true,
+      "example_url": "https://northwind-outdoor.example/p/trail-runner-2",
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "t03",
+      "name": "Category page",
+      "page_count": 6,
+      "deep_tested": true,
+      "example_url": "https://northwind-outdoor.example/c/hiking",
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "t04",
+      "name": "Content page",
+      "page_count": 5,
+      "deep_tested": true,
+      "example_url": "https://northwind-outdoor.example/about",
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "t05",
+      "name": "Form page",
+      "page_count": 2,
+      "deep_tested": true,
+      "example_url": "https://northwind-outdoor.example/contact",
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "id": "t06",
+      "name": "Cart and checkout",
+      "page_count": 2,
+      "deep_tested": true,
+      "example_url": "https://northwind-outdoor.example/cart",
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": []
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://northwind-outdoor.example/",
+      "title": "Northwind Outdoor",
+      "template_id": "t01",
+      "deep_tested": true,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-06",
+        "I-08",
+        "I-09"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/trail-runner-2",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": true,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": [
+        "R-01"
+      ]
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/down-jacket",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/day-pack-22",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/camp-stove",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/rain-shell",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/merino-tee",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/trekking-poles",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/headlamp-300",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/sleeping-bag-5",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/tent-2p",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/water-filter",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/gaiters",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/beanie",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/gloves",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/socks-3pack",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/map-case",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/compass",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/first-aid-kit",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/hip-belt",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/stuff-sacks",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/mug",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/spork",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/pillow",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/p/chair",
+      "title": "Northwind Outdoor",
+      "template_id": "t02",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-10"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/c/hiking",
+      "title": "Hiking",
+      "template_id": "t03",
+      "deep_tested": true,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/c/camping",
+      "title": "Camping",
+      "template_id": "t03",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/c/climbing",
+      "title": "Climbing",
+      "template_id": "t03",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/c/sale",
+      "title": "Sale",
+      "template_id": "t03",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/c/new",
+      "title": "New",
+      "template_id": "t03",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/c/kids",
+      "title": "Kids",
+      "template_id": "t03",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-08",
+        "I-11"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/about",
+      "title": "about",
+      "template_id": "t04",
+      "deep_tested": true,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08",
+        "I-09"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/returns",
+      "title": "returns",
+      "template_id": "t04",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/shipping",
+      "title": "shipping",
+      "template_id": "t04",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08",
+        "I-12"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/privacy",
+      "title": "privacy",
+      "template_id": "t04",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08",
+        "I-12"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/journal/winter-layering",
+      "title": "journal/winter-layering",
+      "template_id": "t04",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": [
+        "R-04"
+      ]
+    },
+    {
+      "url": "https://northwind-outdoor.example/contact",
+      "title": "Contact",
+      "template_id": "t05",
+      "deep_tested": true,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-06",
+        "I-07",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/newsletter",
+      "title": "Newsletter",
+      "template_id": "t05",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-06",
+        "I-07",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/cart",
+      "title": "Cart",
+      "template_id": "t06",
+      "deep_tested": true,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-08"
+      ],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/checkout",
+      "title": "Checkout",
+      "template_id": "t06",
+      "deep_tested": false,
+      "load_status": "ok",
+      "reason": null,
+      "issue_ids": [
+        "I-01",
+        "I-02",
+        "I-05",
+        "I-07",
+        "I-08"
+      ],
+      "review_ids": [
+        "R-03"
+      ]
+    },
+    {
+      "url": "https://northwind-outdoor.example/stores",
+      "title": null,
+      "template_id": null,
+      "deep_tested": false,
+      "load_status": "error",
+      "reason": "the page did not finish loading within 30 seconds",
+      "issue_ids": [],
+      "review_ids": []
+    },
+    {
+      "url": "https://northwind-outdoor.example/account",
+      "title": null,
+      "template_id": null,
+      "deep_tested": false,
+      "load_status": "blocked",
+      "reason": "needs a customer account",
+      "issue_ids": [],
+      "review_ids": []
+    }
+  ],
+  "limits": {
+    "gaps": [
+      {
+        "area": "Customer account",
+        "reason": "Needs a login, which was not provided.",
+        "effect": "Order history and account settings were not checked."
+      },
+      {
+        "area": "Payment step",
+        "reason": "The payment form comes from a payment provider.",
+        "effect": "The final payment step was not checked."
+      },
+      {
+        "area": "3 PDF brochures",
+        "reason": "Documents linked from the site were outside this review.",
+        "effect": "Their accessibility is unknown."
+      }
+    ]
+  },
+  "method": {
+    "environment": {
+      "browser": "Chromium 149",
+      "viewports": [
+        [
+          1280,
+          900
+        ],
+        [
+          320,
+          640
+        ]
+      ],
+      "zoom_percent": [
+        100,
+        200
+      ],
+      "tools": [
+        {
+          "name": "axe-core",
+          "version": "4.14.0"
+        },
+        {
+          "name": "Playwright",
+          "version": "1.61.1"
+        }
+      ],
+      "ai_model": "Claude",
+      "assistive_technology": null
+    },
+    "crawl": {
+      "include": [],
+      "exclude": [
+        "/account/*"
+      ],
+      "robots": true
+    },
+    "deep_pages": [
+      {
+        "template": "Home page",
+        "url": "https://northwind-outdoor.example/"
+      },
+      {
+        "template": "Product page",
+        "url": "https://northwind-outdoor.example/p/trail-runner-2"
+      },
+      {
+        "template": "Category page",
+        "url": "https://northwind-outdoor.example/c/hiking"
+      },
+      {
+        "template": "Content page",
+        "url": "https://northwind-outdoor.example/about"
+      },
+      {
+        "template": "Form page",
+        "url": "https://northwind-outdoor.example/contact"
+      },
+      {
+        "template": "Cart and checkout",
+        "url": "https://northwind-outdoor.example/cart"
+      }
+    ],
+    "dropped_automated": 31
+  },
+  "glossary": [
+    {
+      "term": "Screen reader",
+      "meaning": "Software that reads the screen aloud, or shows it on a braille display, for people who cannot see it."
+    },
+    {
+      "term": "Alt text",
+      "meaning": "A short text description of an image, read out by screen readers. You can usually edit it in your content manager."
+    },
+    {
+      "term": "Contrast",
+      "meaning": "How much text stands out from its background, measured as a ratio such as 4.5 to 1."
+    },
+    {
+      "term": "Keyboard highlight",
+      "meaning": "The outline that shows which link or button the keyboard has reached. Developers call it the focus indicator."
+    },
+    {
+      "term": "Captions",
+      "meaning": "On-screen text of what is said in a video and of important sounds."
+    },
+    {
+      "term": "WCAG",
+      "meaning": "The Web Content Accessibility Guidelines, the international standard for accessible websites. Level AA is the level most laws refer to."
+    }
+  ],
+  "artifacts": {
+    "findings_csv": "findings.csv",
+    "evidence_dir": "evidence/"
+  }
+}

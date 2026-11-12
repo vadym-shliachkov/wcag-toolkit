@@ -1,0 +1,4 @@
+node_modules/
+.wcag-report/
+**/tests/.tmp/
+.probe-*

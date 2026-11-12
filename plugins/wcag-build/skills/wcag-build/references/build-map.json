@@ -1,0 +1,412 @@
+{
+ "about": "Index from what is being built (components) and what the task touches (changes) to the WCAG 2.2 criteria it can break. Each risk says how it goes wrong and what to build instead. Criteria ids and pattern ids must exist in kb/data. A risk with \"always\": true is shown even when its criteria are above the chosen level, because it is cheap to build in.",
+ "components": {
+  "button-link": {
+   "title": "Buttons and links",
+   "patterns": ["native-button", "visible-label-name", "focus-style", "target-size"],
+   "risks": [
+    {"sc": ["4.1.2", "2.1.1"], "risk": "A clickable div or span stands in for a control: no role, no keyboard.", "build": "button for an action, a[href] for navigation; never href=\"#\" for an action."},
+    {"sc": ["4.1.2", "2.5.3"], "risk": "Icon-only control has no accessible name, or its aria-label drops the visible text.", "build": "Visible text is part of the name; icon-only gets aria-label and the icon gets aria-hidden=\"true\"."},
+    {"sc": ["2.4.4"], "risk": "Repeated 'Read more' / 'Learn more' links say nothing about the destination.", "build": "Name the destination: hidden text in the link or aria-labelledby pointing at the heading."},
+    {"sc": ["2.4.7"], "risk": "Focus outline is reset and nothing replaces it.", "build": "A :focus-visible style on every interactive element."},
+    {"sc": ["2.5.8"], "risk": "Target smaller than 24 by 24 CSS px with close neighbours.", "build": "min-width/min-height or padding to 24 px, or 24 px of clear spacing."},
+    {"sc": ["1.4.3", "1.4.11"], "risk": "Label text below 4.5:1 on the button fill, or an icon-only glyph below 3:1.", "build": "Measure the label on the fill in every state, not only on the page background."},
+    {"sc": ["1.4.1"], "risk": "A link inside running text differs from the text by colour alone.", "build": "Keep the underline, or 3:1 against the surrounding text plus a non-colour cue on hover and focus."}
+   ]
+  },
+  "navigation-menu": {
+   "title": "Menus, header and mobile navigation",
+   "patterns": ["disclosure", "sticky-focus", "focus-style", "target-size", "skip-link"],
+   "risks": [
+    {"sc": ["4.1.2"], "risk": "Hamburger or submenu toggle is not a button, or does not expose open/closed.", "build": "button with aria-expanded and aria-controls, updated on every toggle; a name such as 'Menu'."},
+    {"sc": ["2.1.1", "1.4.13"], "risk": "Submenu opens on hover only, or a hover-opened submenu cannot be dismissed or reached with the pointer.", "build": "Open on click and Enter as well; Escape closes; the panel stays while the pointer is on it."},
+    {"sc": ["2.4.3", "2.1.1"], "risk": "Links of a closed menu or off-canvas panel stay focusable because it is hidden with opacity, transform or off-screen position.", "build": "Closed state uses hidden, display:none, visibility:hidden or inert."},
+    {"sc": ["2.1.2", "2.4.3"], "risk": "With the mobile panel open, focus wanders behind it, or is trapped with no way to close.", "build": "Move focus into the panel, Escape and a close button close it, focus returns to the toggle."},
+    {"sc": ["4.1.2"], "risk": "role=\"menu\" on site navigation without the arrow-key model it promises.", "build": "nav > ul > li > a; no menu roles for ordinary navigation."},
+    {"sc": ["1.3.1", "2.4.1"], "risk": "Navigation is not a landmark, or several nav landmarks cannot be told apart.", "build": "nav element; aria-label on each when there is more than one."},
+    {"sc": ["1.4.1", "4.1.2"], "risk": "The current page is marked by colour only.", "build": "aria-current=\"page\" plus a non-colour cue (underline, weight, marker)."},
+    {"sc": ["2.4.11"], "risk": "A sticky header covers the element that receives focus below it.", "build": "scroll-padding-top on the scroller equal to the sticky height."},
+    {"sc": ["1.4.10"], "risk": "At 320 px the menu overflows sideways or items are cut off.", "build": "Wrap or collapse to the mobile pattern; no fixed widths on items."},
+    {"sc": ["2.5.8"], "risk": "Tight menu items or icon toggles under 24 px.", "build": "Padding on the link itself so the hit area is at least 24 px."}
+   ]
+  },
+  "form": {
+   "title": "Forms and fields",
+   "patterns": ["field-label", "grouped-controls", "error-message", "autocomplete", "status-update", "repeat-entry", "password-assistance"],
+   "risks": [
+    {"sc": ["1.3.1", "3.3.2", "4.1.2"], "risk": "Placeholder is the only label.", "build": "A visible label element tied to the field with for/id."},
+    {"sc": ["1.3.1", "3.3.2"], "risk": "Radio or checkbox group has no group name.", "build": "fieldset with legend."},
+    {"sc": ["3.3.1", "1.3.1", "1.4.1"], "risk": "An error is a red border only, or its text is not tied to the field.", "build": "Text message next to the field, aria-describedby to it, aria-invalid=\"true\"."},
+    {"sc": ["3.3.3"], "risk": "The error says 'Invalid' without saying what is expected.", "build": "State the expected format or value in the message."},
+    {"sc": ["3.3.2", "1.4.1"], "risk": "Required fields are marked by colour or a bare asterisk.", "build": "required attribute, and the asterisk explained once in text."},
+    {"sc": ["1.3.5"], "risk": "Name, email, phone and address fields lack autocomplete.", "build": "The matching autocomplete token on each personal-data field."},
+    {"sc": ["4.1.3"], "risk": "Success or failure after an async submit is not announced.", "build": "A role=\"status\" (or role=\"alert\" for errors) container that exists before the text is inserted."},
+    {"sc": ["1.4.11"], "risk": "The field border is the only boundary and is below 3:1 against the background.", "build": "Border or fill at 3:1 or more; same check for checkbox and radio outlines."},
+    {"sc": ["1.4.3"], "risk": "Placeholder and help text are too pale.", "build": "4.5:1 for both; placeholder counts as text."},
+    {"sc": ["3.2.2"], "risk": "A select or checkbox submits or navigates on change.", "build": "Change the context on an explicit button, not on input."},
+    {"sc": ["3.3.8", "3.3.7"], "risk": "Paste is blocked on a password or code field, or earlier answers must be typed again.", "build": "Allow paste and autofill; prefill or offer what was already entered."}
+   ]
+  },
+  "modal-dialog": {
+   "title": "Modal dialogs, drawers and lightboxes",
+   "patterns": ["modal-dialog", "native-button", "focus-style"],
+   "risks": [
+    {"sc": ["4.1.2"], "risk": "No dialog role or name.", "build": "Native dialog with showModal(), aria-labelledby pointing at its heading."},
+    {"sc": ["2.4.3"], "risk": "Focus stays on the page behind, and is lost on close.", "build": "Focus moves into the dialog on open and back to the opener on close."},
+    {"sc": ["2.1.2", "2.4.3"], "risk": "Tab and the screen reader reach the page behind the overlay.", "build": "showModal() or inert on everything outside the dialog."},
+    {"sc": ["2.1.1", "4.1.2"], "risk": "No keyboard close; the X is a div or has no name.", "build": "Escape closes; the close control is a button named 'Close'."},
+    {"sc": ["1.4.10", "1.4.4"], "risk": "At 320 px or 200% text the content is cut off and the close button is unreachable.", "build": "max-height with internal scroll; no fixed pixel height."},
+    {"sc": ["2.4.11"], "risk": "A sticky footer or header inside the dialog hides the focused field.", "build": "scroll-padding on the dialog's scroller."}
+   ]
+  },
+  "accordion": {
+   "title": "Accordions and disclosures",
+   "patterns": ["disclosure", "heading-structure"],
+   "risks": [
+    {"sc": ["4.1.2", "2.1.1"], "risk": "The header is a clickable div.", "build": "button with aria-expanded and aria-controls, or native details/summary."},
+    {"sc": ["1.3.1"], "risk": "Section headers are not headings, so the structure is lost.", "build": "The button sits inside a heading of the right level."},
+    {"sc": ["2.4.3"], "risk": "Collapsed panels (height:0, opacity:0) still take focus.", "build": "hidden or display:none on collapsed panels; animate with a wrapper if needed."},
+    {"sc": ["1.4.1", "1.4.11"], "risk": "Open/closed is shown only by an icon's colour, or the icon is below 3:1.", "build": "Icon shape changes and reaches 3:1."}
+   ]
+  },
+  "tabs": {
+   "title": "Tabs",
+   "patterns": ["tabs", "focus-style"],
+   "risks": [
+    {"sc": ["4.1.2"], "risk": "No tablist/tab/tabpanel roles and no selected state.", "build": "role tablist, tab with aria-selected and aria-controls, tabpanel with aria-labelledby."},
+    {"sc": ["2.1.1", "2.4.3"], "risk": "Arrow keys do nothing, or hidden panels stay in the focus order.", "build": "Roving tabindex with arrow keys; inactive panels hidden."},
+    {"sc": ["1.4.1"], "risk": "The selected tab differs by colour only.", "build": "Add an underline, border or weight change."},
+    {"sc": ["4.1.2"], "risk": "Links to other pages are dressed up with tab roles.", "build": "If each item loads a page, it is navigation: nav, links and aria-current."},
+    {"sc": ["1.4.10"], "risk": "The tab row overflows at 320 px.", "build": "Wrap, or a scrollable row whose tabs stay keyboard reachable."}
+   ]
+  },
+  "combobox": {
+   "title": "Autocomplete, comboboxes and custom selects",
+   "patterns": ["field-label", "status-update"],
+   "risks": [
+    {"sc": ["4.1.2"], "risk": "A custom select exposes no role, state or active option.", "build": "Native select or datalist where the design allows; otherwise combobox with aria-expanded, aria-controls, aria-activedescendant."},
+    {"sc": ["2.1.1"], "risk": "The list cannot be operated by keyboard, or text-editing keys are hijacked.", "build": "Arrows move, Enter selects, Escape closes; Home/End and caret keys keep working in the input."},
+    {"sc": ["4.1.3"], "risk": "The changing number of results is silent.", "build": "A polite status region with the count."},
+    {"sc": ["3.3.2", "1.3.1"], "risk": "No visible label.", "build": "label tied to the input."}
+   ]
+  },
+  "carousel": {
+   "title": "Carousels and sliders of content",
+   "patterns": ["native-button", "target-size", "image-alternative", "reduced-motion"],
+   "risks": [
+    {"sc": ["2.2.2"], "risk": "Auto-rotation with no way to pause.", "build": "No autoplay, or a visible pause button; pause on focus and hover as well."},
+    {"sc": ["2.4.3", "4.1.2"], "risk": "Off-screen slides keep their links in the focus order and are read aloud.", "build": "inert or hidden on slides that are not visible."},
+    {"sc": ["4.1.2", "2.5.3"], "risk": "Previous, next and dots are divs or have no names.", "build": "buttons named 'Previous slide', 'Next slide', 'Slide 2 of 5'; aria-current on the active dot."},
+    {"sc": ["2.5.8"], "risk": "Pagination dots are 8 to 12 px.", "build": "24 px hit area around each dot (padding), even if the visible dot is small."},
+    {"sc": ["2.5.1", "2.5.7"], "risk": "Swipe or drag is the only way to move.", "build": "Buttons do everything the gesture does."},
+    {"sc": ["1.1.1"], "risk": "Slide images carry the message with no text alternative.", "build": "alt by purpose; text as real text over the image."},
+    {"sc": ["4.1.3"], "risk": "aria-live on an auto-rotating carousel interrupts reading on every slide.", "build": "Live region off while rotating; polite only when the user moves it."}
+   ]
+  },
+  "table": {
+   "title": "Data tables",
+   "patterns": [],
+   "risks": [
+    {"sc": ["1.3.1"], "risk": "A grid of divs, or a table with no header cells.", "build": "table with th and scope, caption for the title."},
+    {"sc": ["1.4.10"], "risk": "A wide table forces the whole page to scroll sideways at 320 px.", "build": "Wrap it in an overflow-x container with tabindex=\"0\", role=\"region\" and aria-label."},
+    {"sc": ["1.3.1", "1.3.2"], "risk": "A responsive 'stacked' layout sets display:block on table parts and drops the table semantics.", "build": "Keep table display, or restate header text in each cell."},
+    {"sc": ["1.4.1"], "risk": "Cell status is shown by colour only.", "build": "Text or an icon with a name alongside the colour."}
+   ]
+  },
+  "date-picker": {
+   "title": "Calendars and date pickers",
+   "patterns": ["field-label"],
+   "risks": [
+    {"sc": ["2.1.1"], "risk": "The calendar grid works with the mouse only.", "build": "The date can also be typed; the grid supports arrow keys and Escape."},
+    {"sc": ["3.3.2"], "risk": "The expected format is not stated.", "build": "Format in the label or help text, tied with aria-describedby."},
+    {"sc": ["4.1.2", "1.4.1"], "risk": "Selected, today and unavailable days differ by colour only and expose no state.", "build": "aria-selected, aria-current=\"date\", aria-disabled, plus a non-colour cue."},
+    {"sc": ["2.5.8"], "risk": "Day cells under 24 px on mobile.", "build": "Cells of at least 24 by 24 CSS px."}
+   ]
+  },
+  "slider": {
+   "title": "Range sliders",
+   "patterns": ["drag-alternative"],
+   "risks": [
+    {"sc": ["4.1.2"], "risk": "A custom thumb exposes no name or value.", "build": "input type=\"range\" where possible; otherwise role=\"slider\" with aria-valuemin, -max, -now, -valuetext and a label."},
+    {"sc": ["2.1.1"], "risk": "Arrow keys do not move the thumb.", "build": "Arrow keys, Home and End change the value."},
+    {"sc": ["2.5.7"], "risk": "Dragging is the only pointer method.", "build": "Click on the track, step buttons or a number field. A keyboard alternative does not cover this."},
+    {"sc": ["1.4.11"], "risk": "Thumb or track below 3:1.", "build": "3:1 for the thumb and the filled part against what is next to them."}
+   ]
+  },
+  "card": {
+   "title": "Cards, tiles and teasers",
+   "patterns": ["image-alternative", "heading-structure", "focus-style"],
+   "risks": [
+    {"sc": ["2.4.4", "4.1.2"], "risk": "The whole card is wrapped in one link, so its name is every word in the card; or a button sits inside the link.", "build": "Link on the heading, stretched over the card with ::after; other actions stay outside that link."},
+    {"sc": ["2.4.4"], "risk": "Every card ends with the same 'Read more'.", "build": "The heading is the link, or the link is tied to the heading with aria-labelledby."},
+    {"sc": ["1.3.1"], "risk": "The card title is styled text, not a heading.", "build": "A heading of the level that fits the section; a list of cards as ul."},
+    {"sc": ["1.1.1"], "risk": "The teaser image repeats the title in alt, or has a filename as alt.", "build": "alt=\"\" when the title already says it; a real description only when the image adds information."},
+    {"sc": ["2.4.7"], "risk": "overflow:hidden on the card clips the focus ring of the stretched link.", "build": ":focus-within outline on the card, or a negative outline-offset."},
+    {"sc": ["1.4.3"], "risk": "Text over the card image fails where the image is light.", "build": "A scrim that guarantees the ratio at the lightest point."},
+    {"sc": ["1.4.4", "1.4.12"], "risk": "Fixed card height or line-clamp cuts text when it is enlarged.", "build": "min-height, not height; let the card grow."}
+   ]
+  },
+  "tooltip-popover": {
+   "title": "Tooltips and popovers",
+   "patterns": ["tooltip", "disclosure"],
+   "risks": [
+    {"sc": ["1.4.13"], "risk": "The tooltip cannot be dismissed, vanishes when the pointer moves onto it, or times out.", "build": "Escape dismisses, the pointer can rest on it, it stays until hover or focus leaves."},
+    {"sc": ["2.1.1"], "risk": "It appears on hover but not on keyboard focus.", "build": "Show on focus as well; the trigger is focusable."},
+    {"sc": ["4.1.2"], "risk": "The text is not tied to its trigger, or only a title attribute is used.", "build": "aria-describedby from the trigger to the tooltip."},
+    {"sc": ["2.1.1", "4.1.2"], "risk": "Links or buttons are placed inside a hover tooltip.", "build": "Interactive content goes in a click-opened popover with a button and aria-expanded."}
+   ]
+  },
+  "filter-list": {
+   "title": "Filters, search results, load more and infinite lists",
+   "patterns": ["status-update", "grouped-controls"],
+   "risks": [
+    {"sc": ["4.1.3"], "risk": "The updated result count or 'loading' state is silent.", "build": "role=\"status\" with the count, present before it is filled."},
+    {"sc": ["2.4.3"], "risk": "Focus is lost when the list re-renders or more items load.", "build": "Keep focus on the control, or move it to the first new item."},
+    {"sc": ["2.1.1"], "risk": "Infinite scroll makes the footer unreachable by keyboard.", "build": "A 'Load more' button instead of loading on scroll."},
+    {"sc": ["3.2.2"], "risk": "Changing a filter navigates or moves focus without warning.", "build": "Update in place and keep focus, or apply on a button."},
+    {"sc": ["1.3.1", "4.1.2"], "risk": "Filter groups have no group name; 'remove filter' chips have no name.", "build": "fieldset and legend; each chip is a button named 'Remove <filter>'."}
+   ]
+  },
+  "file-upload": {
+   "title": "File upload",
+   "patterns": ["drag-alternative", "field-label", "status-update", "error-message"],
+   "risks": [
+    {"sc": ["2.5.7", "2.1.1"], "risk": "Drag and drop is the only way to add a file.", "build": "A real input type=\"file\" behind the drop zone, reachable by keyboard."},
+    {"sc": ["4.1.2", "3.3.2"], "risk": "The styled trigger has no label, or the real input is display:none and loses keyboard access.", "build": "label for the input; hide the input visually, not with display:none."},
+    {"sc": ["4.1.3"], "risk": "Progress and completion are silent.", "build": "A status region for 'Uploading' and 'Uploaded <name>'."},
+    {"sc": ["3.3.1", "3.3.3"], "risk": "A rejected type or size is shown by colour only.", "build": "Text error naming the allowed types and size."}
+   ]
+  },
+  "media": {
+   "title": "Video, audio and embeds",
+   "patterns": ["reduced-motion"],
+   "risks": [
+    {"sc": ["1.2.2", "1.2.4"], "risk": "The player has no way to carry captions.", "build": "track kind=\"captions\" slot, or a provider embed with captions on."},
+    {"sc": ["1.2.1", "1.2.3", "1.2.5"], "risk": "No place for a transcript or audio description.", "build": "A transcript slot next to the player in the component."},
+    {"sc": ["1.4.2"], "risk": "Sound starts on load and plays for more than 3 seconds.", "build": "No autoplay with sound; muted autoplay only."},
+    {"sc": ["2.2.2"], "risk": "A looping background video cannot be paused.", "build": "A visible pause button; do not start it under prefers-reduced-motion."},
+    {"sc": ["2.1.1", "4.1.2"], "risk": "Custom play, mute and seek controls are divs without names.", "build": "Native controls, or buttons with names and state."},
+    {"sc": ["4.1.2"], "risk": "The iframe embed has no title.", "build": "title on the iframe naming the content."}
+   ]
+  },
+  "map": {
+   "title": "Maps",
+   "patterns": [],
+   "risks": [
+    {"sc": ["1.1.1"], "risk": "Locations exist only as pins on the map.", "build": "The same addresses as a text list next to the map."},
+    {"sc": ["2.5.1", "2.5.7"], "risk": "Zoom and pan need pinch or drag.", "build": "Zoom buttons, and the list as the non-drag route."},
+    {"sc": ["2.1.1", "4.1.2"], "risk": "The embed traps or skips the keyboard; the iframe has no title.", "build": "title on the iframe; the key task is doable from the list."}
+   ]
+  },
+  "consent-banner": {
+   "title": "Consent banners and sticky notices",
+   "patterns": ["sticky-focus", "modal-dialog", "native-button"],
+   "risks": [
+    {"sc": ["2.4.3"], "risk": "The banner is last in the DOM, so a keyboard user reaches it after the whole page.", "build": "Place it first in the DOM, or move focus to it when it appears."},
+    {"sc": ["2.4.11"], "risk": "The fixed banner covers whatever has focus underneath.", "build": "scroll-padding-bottom for its height, or make it modal."},
+    {"sc": ["4.1.2", "2.1.2"], "risk": "It blocks the page but is not a dialog, so the page behind stays reachable.", "build": "If it blocks, build it as a modal dialog; if not, it is a plain region with a label."},
+    {"sc": ["2.1.1", "4.1.2"], "risk": "Accept and reject are styled spans.", "build": "Real buttons with clear names."},
+    {"sc": ["1.4.10"], "risk": "At 320 px the banner fills the screen and cannot be scrolled.", "build": "max-height with internal scroll."}
+   ]
+  },
+  "toast-alert": {
+   "title": "Toasts, alerts and inline status messages",
+   "patterns": ["status-update"],
+   "risks": [
+    {"sc": ["4.1.3"], "risk": "The message appears visually but is not announced.", "build": "role=\"status\" for calm updates, role=\"alert\" only for urgent errors; the container exists before the text."},
+    {"sc": ["2.2.1"], "risk": "A toast with an action disappears after a few seconds.", "build": "Stays until dismissed when it carries an action or essential information."},
+    {"sc": ["2.4.3"], "risk": "The toast steals focus from what the user is doing.", "build": "Announce without moving focus."},
+    {"sc": ["1.4.1", "1.4.3"], "risk": "Success and error differ by colour only, or the text fails on the coloured fill.", "build": "Icon or word for the type; 4.5:1 for the text on the fill."}
+   ]
+  },
+  "content-block": {
+   "title": "Content blocks: text, image and text, columns, quotes",
+   "patterns": ["heading-structure", "image-alternative", "reflow", "text-contrast"],
+   "risks": [
+    {"sc": ["1.3.1", "2.4.6"], "risk": "The heading level is picked for its size, or a title is a styled paragraph.", "build": "Level follows the page structure; make the level a block setting when the block is reusable, and style with a class."},
+    {"sc": ["1.1.1"], "risk": "The image has no alt, or editors cannot set one.", "build": "An alt field in the block; alt=\"\" when the image is decorative."},
+    {"sc": ["1.3.2", "2.4.3"], "risk": "Image-left / image-right variants use CSS order, so reading order differs from what is seen.", "build": "DOM order is the reading order; reorder visually only when the meaning does not depend on it."},
+    {"sc": ["1.4.5"], "risk": "Text is baked into the image.", "build": "Real text over or beside the image."},
+    {"sc": ["1.4.10", "1.4.4", "1.4.12"], "risk": "Fixed heights or pixel widths clip text at 320 px, 200% text or wider spacing.", "build": "Fluid widths, min-height instead of height."},
+    {"sc": ["1.3.1"], "risk": "Lists, quotes and emphasis are faked with line breaks and spans.", "build": "ul/ol, blockquote, strong/em."},
+    {"sc": ["1.4.3"], "risk": "Body or caption text fails on the block's background option.", "build": "Check the text colour against every background variant the block offers."}
+   ]
+  },
+  "hero-banner": {
+   "title": "Hero and banner sections",
+   "patterns": ["text-contrast", "image-alternative", "reduced-motion", "heading-structure"],
+   "risks": [
+    {"sc": ["1.4.3"], "risk": "Text over a photo, video or gradient passes in the mock-up but fails on other images.", "build": "A scrim or solid panel behind the text that guarantees the ratio whatever image an editor picks."},
+    {"sc": ["1.1.1"], "risk": "A CSS background image carries information and has no text alternative.", "build": "img with alt when it informs; background only when decorative."},
+    {"sc": ["2.2.2"], "risk": "Background video or animation runs with no pause.", "build": "A visible pause button; still image under prefers-reduced-motion."},
+    {"sc": ["1.3.1", "2.4.6"], "risk": "The hero title is not the page's h1, or every hero on the page is an h1.", "build": "h1 only when it is the page title; otherwise a configurable level."},
+    {"sc": ["1.4.4", "1.4.10"], "risk": "A fixed or vh-based height clips the text when zoomed.", "build": "min-height; let the section grow with its text."}
+   ]
+  },
+  "page-template": {
+   "title": "Page templates and layouts",
+   "patterns": ["skip-link", "heading-structure", "language", "sticky-focus"],
+   "risks": [
+    {"sc": ["2.4.1", "1.3.1"], "risk": "No way past the repeated header; no main landmark.", "build": "header, nav, main and footer elements; a skip link to main as the first focusable element."},
+    {"sc": ["2.4.2"], "risk": "The title element is the same on every page.", "build": "Unique title: page name first, then the site."},
+    {"sc": ["3.1.1"], "risk": "html has no lang, or the wrong one.", "build": "lang on html from the page language."},
+    {"sc": ["1.4.4"], "risk": "The viewport meta blocks zoom.", "build": "No user-scalable=no and no maximum-scale below 2."},
+    {"sc": ["1.3.1", "2.4.6"], "risk": "Sections have no headings, so the page has no outline.", "build": "One h1 for the page; a heading for each section."},
+    {"sc": ["3.2.3"], "risk": "Navigation order differs from the other templates.", "build": "Reuse the shared header and footer partials unchanged."},
+    {"sc": ["2.4.3", "1.3.2"], "risk": "Template regions are ordered in the DOM for layout convenience.", "build": "DOM order follows reading order: header, main, complementary, footer."}
+   ]
+  }
+ },
+ "changes": {
+  "colour": {
+   "title": "Colours, backgrounds, themes",
+   "patterns": ["text-contrast", "focus-style"],
+   "risks": [
+    {"sc": ["1.4.3"], "risk": "A new text/background pair is below 4.5:1 (3:1 only for text of 24 px, or 18.66 px bold, and up).", "build": "Measure every pair: default, hover, focus, active, visited, placeholder, text on images. Disabled controls are exempt."},
+    {"sc": ["1.4.11"], "risk": "A control boundary, state indicator or meaningful icon drops below 3:1 against what is next to it.", "build": "3:1 for input borders, checkbox and toggle outlines, icons that carry meaning."},
+    {"sc": ["1.4.1"], "risk": "The new palette makes colour the only signal (current item, error, required, link in text, status).", "build": "Pair colour with text, an icon, an underline or a shape."},
+    {"sc": ["2.4.7", "1.4.11"], "risk": "The existing focus ring disappears on the new background.", "build": "Re-check the ring colour on every new background; a two-tone ring works on any."},
+    {"sc": ["1.4.3", "1.4.11"], "risk": "Only the default theme was checked.", "build": "Repeat for each theme and each background variant the component can sit on."}
+   ]
+  },
+  "typography": {
+   "title": "Fonts, sizes, weights, line height",
+   "patterns": ["reflow", "text-contrast", "heading-structure"],
+   "risks": [
+    {"sc": ["1.4.3"], "risk": "Smaller or lighter text leaves the 'large text' class and now needs 4.5:1.", "build": "Re-measure contrast whenever size or weight goes down."},
+    {"sc": ["1.4.4"], "risk": "Font size in vw only, so text does not grow with zoom.", "build": "rem, or clamp() with a rem term."},
+    {"sc": ["1.4.12", "1.4.4"], "risk": "Fixed heights, line-clamp or overflow:hidden clip text when spacing or size increases.", "build": "No fixed height on text containers; line-height unitless."},
+    {"sc": ["1.3.1", "2.4.6"], "risk": "A heading tag is swapped to get a different size.", "build": "Keep the level, change the class."},
+    {"sc": ["1.4.5"], "risk": "A special typeface is delivered as an image of text.", "build": "Web font and real text."}
+   ]
+  },
+  "spacing-size": {
+   "title": "Padding, margins, dimensions",
+   "patterns": ["target-size", "reflow", "sticky-focus"],
+   "risks": [
+    {"sc": ["2.5.8"], "risk": "Tighter padding takes a target under 24 by 24 CSS px with neighbours closer than 24 px.", "build": "Keep 24 px in both dimensions or 24 px spacing; links inside a sentence are exempt."},
+    {"sc": ["1.4.10"], "risk": "Fixed pixel widths or min-width cause sideways scrolling at 320 px.", "build": "max-width and percentages; test the narrowest breakpoint in the design."},
+    {"sc": ["1.4.12", "1.4.4"], "risk": "Fixed height taken from the mock-up clips longer or larger text.", "build": "min-height, padding and auto height."},
+    {"sc": ["2.4.7"], "risk": "overflow:hidden on the parent now clips the focus outline.", "build": "Inner padding, or outline-offset that keeps the ring inside."},
+    {"sc": ["2.4.11"], "risk": "A taller sticky bar hides focused elements.", "build": "Update scroll-padding to the new height."}
+   ]
+  },
+  "layout-responsive": {
+   "title": "Layout, grid, breakpoints",
+   "patterns": ["reflow", "sticky-focus"],
+   "risks": [
+    {"sc": ["1.4.10"], "risk": "Content needs two-direction scrolling at 320 px wide.", "build": "Single column at the narrowest width; wide tables and code scroll inside their own container."},
+    {"sc": ["1.3.2", "2.4.3"], "risk": "order, row-reverse, grid placement or absolute positioning make the visual order differ from the DOM order.", "build": "Write the DOM in reading order and lay out from there."},
+    {"sc": ["1.4.4", "1.4.10"], "risk": "Content or functions are display:none at small breakpoints; zoomed-in desktop users get that layout.", "build": "Same content and functions at every breakpoint, rearranged rather than removed."},
+    {"sc": ["1.3.1", "4.1.2"], "risk": "Separate desktop and mobile copies of the same markup are both exposed, with duplicate ids.", "build": "One copy where possible; otherwise display:none on the inactive one and unique ids."},
+    {"sc": ["1.3.4"], "risk": "The layout is locked to one orientation.", "build": "Works in portrait and landscape."}
+   ]
+  },
+  "states": {
+   "title": "Hover, focus, active, selected, disabled states",
+   "patterns": ["focus-style", "text-contrast"],
+   "risks": [
+    {"sc": ["2.4.7"], "risk": "Hover is styled and focus is not, or outline:none has no replacement. Designs rarely draw focus.", "build": "A :focus-visible style for every interactive element, at least as visible as hover."},
+    {"sc": ["1.4.11"], "risk": "The focus indicator is below 3:1 against the colours next to it.", "build": "Ring of 2 px or more at 3:1 on every background it appears on."},
+    {"sc": ["1.4.3"], "risk": "Hover, active or selected text colours fail on their state background.", "build": "Measure each state's own pair."},
+    {"sc": ["1.4.1"], "risk": "Selected, active or error is shown by colour only.", "build": "Add a non-colour cue: underline, border, icon, weight."},
+    {"sc": ["4.1.2"], "risk": "The visual state has no programmatic state.", "build": "aria-expanded, aria-pressed, aria-selected, aria-current, aria-invalid or disabled, updated with the class."},
+    {"sc": ["2.1.1", "4.1.2"], "risk": "'Disabled' is a class with pointer-events:none; the keyboard still activates it.", "build": "disabled attribute, or aria-disabled plus a guarded handler."}
+   ]
+  },
+  "motion": {
+   "title": "Animation, transitions, autoplay",
+   "patterns": ["reduced-motion"],
+   "risks": [
+    {"sc": ["2.2.2"], "risk": "Motion that starts by itself and runs more than 5 seconds next to other content has no pause.", "build": "A pause control, or stop within 5 seconds."},
+    {"sc": ["2.3.3"], "always": true, "risk": "Parallax, scroll-triggered and large transitions ignore the user's reduced-motion setting.", "build": "@media (prefers-reduced-motion: reduce) removes or shortens them."},
+    {"sc": ["2.4.3", "2.1.1"], "risk": "Content animated in with opacity or transform is focusable while invisible, or never appears if the script fails.", "build": "Visible by default; hide with visibility or display in the start state."},
+    {"sc": ["2.3.1"], "risk": "Flashing more than three times a second.", "build": "No strobing effects."},
+    {"sc": ["2.2.1"], "risk": "Content disappears on a timer before it can be read.", "build": "No auto-dismiss for anything the user must read or act on."}
+   ]
+  },
+  "show-hide": {
+   "title": "Showing, hiding, toggling content",
+   "patterns": ["disclosure", "status-update", "tooltip"],
+   "risks": [
+    {"sc": ["4.1.2"], "risk": "The toggle does not expose expanded/collapsed.", "build": "button with aria-expanded kept in sync."},
+    {"sc": ["2.4.3", "2.1.1"], "risk": "Content hidden with opacity, height:0, clip or off-screen position still takes focus and is read.", "build": "display:none, visibility:hidden, hidden or inert for anything meant to be gone."},
+    {"sc": ["1.3.1", "4.1.2"], "risk": "display:none removes text that was there for screen readers (hidden labels).", "build": "Use the project's visually-hidden class for text that must stay readable."},
+    {"sc": ["2.4.3"], "risk": "The focused element is hidden or removed and focus falls back to the top of the page.", "build": "Move focus to the toggle or the next logical element before hiding."},
+    {"sc": ["2.4.3"], "risk": "Revealed content sits far from its trigger in the DOM.", "build": "Place it right after the trigger, or move focus into it."},
+    {"sc": ["4.1.3"], "risk": "Inserted messages are not announced.", "build": "Insert into an existing role=\"status\" region."}
+   ]
+  },
+  "sticky-fixed": {
+   "title": "Sticky and fixed positioning",
+   "patterns": ["sticky-focus"],
+   "risks": [
+    {"sc": ["2.4.11"], "risk": "The element with focus is completely hidden under a sticky header, footer, banner or chat button.", "build": "scroll-padding on the scroll container for each sticky edge."},
+    {"sc": ["1.4.10", "1.4.4"], "risk": "Sticky bars eat most of the viewport at 320 px or 400% zoom.", "build": "Un-stick below a minimum viewport height."},
+    {"sc": ["2.4.3"], "risk": "A fixed element sits at the end of the DOM but looks like it is at the top.", "build": "DOM position matches where it is seen."}
+   ]
+  },
+  "images-icons": {
+   "title": "Images, icons, SVG",
+   "patterns": ["image-alternative", "visible-label-name", "chart-data"],
+   "risks": [
+    {"sc": ["1.1.1"], "risk": "An informative image has no alt or a filename; a decorative one has a noisy alt.", "build": "alt by purpose; alt=\"\" for decoration; an editable alt field for content images."},
+    {"sc": ["4.1.2", "1.1.1"], "risk": "An icon-only button or link has no name.", "build": "aria-label on the control, or visually-hidden text inside it."},
+    {"sc": ["1.1.1"], "risk": "A decorative inline SVG or icon font is read aloud, or a meaningful one is silent.", "build": "aria-hidden=\"true\" on decorative icons; role=\"img\" with aria-label on meaningful ones."},
+    {"sc": ["1.4.11"], "risk": "A meaningful icon is below 3:1.", "build": "3:1 against its background."},
+    {"sc": ["1.1.1", "1.4.5"], "risk": "Information lives in a CSS background image or as text inside an image.", "build": "img with alt, and real text."},
+    {"sc": ["1.4.1"], "risk": "Red and green icons of the same shape.", "build": "Different shapes or a text label."}
+   ]
+  },
+  "text-headings": {
+   "title": "Text content, headings, labels",
+   "patterns": ["heading-structure", "visible-label-name", "language"],
+   "risks": [
+    {"sc": ["1.3.1", "2.4.6"], "risk": "Heading levels do not follow the structure, or headings are used for styling.", "build": "Levels by structure; descriptive wording."},
+    {"sc": ["2.5.3"], "risk": "The visible label changes and the old aria-label stays.", "build": "Update or remove the aria-label so the name contains the visible text."},
+    {"sc": ["2.4.4"], "risk": "Link text does not say where it goes.", "build": "Specific link text."},
+    {"sc": ["3.2.4"], "risk": "The same function gets a different name here than elsewhere on the site.", "build": "Reuse the existing label."},
+    {"sc": ["1.3.3"], "risk": "Instructions rely on position or colour ('the green button on the right').", "build": "Refer to controls by name."},
+    {"sc": ["3.1.2"], "risk": "A passage in another language is not marked.", "build": "lang on the passage."}
+   ]
+  },
+  "markup-restructure": {
+   "title": "Changing the HTML structure or swapping elements",
+   "patterns": ["native-button", "field-label", "heading-structure", "skip-link"],
+   "risks": [
+    {"sc": ["4.1.2", "2.1.1"], "risk": "A native button, link, input or select becomes a div or span and loses role, name and keyboard.", "build": "Keep the native element and restyle it."},
+    {"sc": ["1.3.1", "4.1.2"], "risk": "Renamed or duplicated ids break for/id, aria-labelledby, aria-describedby and aria-controls.", "build": "Trace every id reference; generate unique ids when the component repeats."},
+    {"sc": ["1.3.1"], "risk": "List, heading, table or landmark elements are flattened to divs.", "build": "Keep the semantic element; change the class."},
+    {"sc": ["4.1.2", "1.3.1"], "risk": "Existing aria attributes, roles or visually-hidden text are removed as clean-up.", "build": "List what the old markup exposed and keep each item or replace it with an equivalent."},
+    {"sc": ["1.3.2", "2.4.3"], "risk": "The new DOM order changes reading and tab order.", "build": "DOM follows reading order."},
+    {"sc": ["2.4.1"], "risk": "The skip-link target or main landmark is renamed or removed.", "build": "Keep the id the skip link points to."}
+   ]
+  },
+  "new-interaction": {
+   "title": "New scripted behaviour",
+   "patterns": ["native-button", "pointer-cancel", "drag-alternative", "status-update", "disclosure"],
+   "risks": [
+    {"sc": ["2.1.1"], "risk": "A click handler on a non-focusable element, or mouse-only events (mouseover, dblclick, drag).", "build": "Handlers on native controls; everything works with Tab, Enter, Space and arrows where expected."},
+    {"sc": ["4.1.2"], "risk": "A custom widget has no role, name or state, or the state is not updated.", "build": "Native element first; otherwise the matching ARIA pattern, with state changed in the same handler."},
+    {"sc": ["2.4.3", "2.1.2"], "risk": "After an action (item removed, view swapped) focus is lost or trapped.", "build": "Decide where focus goes after each action."},
+    {"sc": ["2.5.2"], "risk": "The action fires on mousedown, pointerdown or touchstart.", "build": "Use click, so it fires on release and can be cancelled."},
+    {"sc": ["2.5.1", "2.5.7"], "risk": "Swipe, pinch or drag is the only way to do it.", "build": "A single-tap or button alternative."},
+    {"sc": ["3.2.1", "3.2.2"], "risk": "Focus or input alone opens a new page or a modal, or moves focus.", "build": "Context changes on explicit activation."},
+    {"sc": ["4.1.3"], "risk": "Async results appear silently.", "build": "A status region for the result."},
+    {"sc": ["2.1.4"], "risk": "Single-letter keyboard shortcuts fire while typing.", "build": "A modifier key, or active only on focus."}
+   ]
+  }
+ },
+ "cautions": [
+  {"sc": ["2.5.8"], "text": "A small target is not automatically a failure: 24 px of spacing, inline links and native controls are exceptions. 44 px is AAA."},
+  {"sc": ["1.3.1", "2.4.6"], "text": "The number of h1 elements and a skipped heading level are conventions; what counts is whether the structure is conveyed."},
+  {"sc": ["2.4.1"], "text": "A skip link is one way to bypass blocks, not the only one; landmarks and headings count too."},
+  {"sc": ["4.1.3"], "text": "Not every update needs role=\"alert\". A calm status is usually right, and some updates are not status messages."},
+  {"sc": ["2.4.3"], "text": "Focus returns to the opener after a dialog closes only if the opener still exists and that is the logical place."},
+  {"sc": ["1.1.1"], "text": "Empty alt is correct for decorative images. The word 'image' in alt is noise, not a failure."},
+  {"sc": ["4.1.2"], "text": "Prefer native elements over ARIA. aria-hidden=\"true\" on decorative content is fine; on focusable content it is a defect."},
+  {"sc": ["2.5.7"], "text": "A keyboard alternative does not satisfy the dragging criterion; a single-pointer alternative is needed."},
+  {"sc": ["2.4.7"], "text": "The 2 px and area numbers belong to 2.4.13 (AAA). At AA the indicator must be visible and, as a UI indicator, reach 3:1."},
+  {"sc": ["1.4.3"], "text": "Logos, disabled controls and purely decorative text are exempt from contrast."}
+ ]
+}

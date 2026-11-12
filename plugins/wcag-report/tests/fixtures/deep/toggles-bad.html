@@ -1,0 +1,4 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Toggles planted</title><style>body{font:16px sans-serif;margin:20px}#m[hidden]{display:none}</style></head><body>
+<main><button id="t" aria-expanded="false" aria-controls="m">Menu</button><a href="#1">Next link</a><a href="#2">Another link</a></main><ul id="m" hidden><li><a href="#s">Shop</a></li><li><a href="#c">Contact</a></li></ul>
+<script>const t=document.getElementById('t'),m=document.getElementById('m');t.onclick=()=>{const o=t.getAttribute('aria-expanded')==='true';t.setAttribute('aria-expanded',String(!o));m.hidden=o;};document.addEventListener('keydown',e=>{if(e.key==='Escape'){t.setAttribute('aria-expanded','false');m.hidden=true;}});</script>
+</body></html>

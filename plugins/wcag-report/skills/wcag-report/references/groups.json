@@ -1,0 +1,29 @@
+{
+ "order": ["screen_reader", "low_vision", "colour", "deaf", "keyboard", "dexterity", "cognitive", "seizure_motion"],
+ "en": [
+  { "id": "screen_reader", "label": "People who are blind and use a screen reader", "short": "Screen reader users", "description": "Hear the page read aloud, or read it on a braille display, and move around by keyboard or gestures.", "icon": "eye-off", "tools": ["screen_reader", "braille_display", "keyboard_navigation"] },
+  { "id": "low_vision", "label": "People with low vision", "short": "Low vision", "description": "Enlarge text, zoom the page or use a magnifier, and need strong contrast.", "icon": "zoom-in", "tools": ["browser_zoom", "magnifier", "high_contrast"] },
+  { "id": "colour", "label": "People with colour blindness", "short": "Colour blindness", "description": "Cannot rely on colour alone to tell things apart, such as red and green.", "icon": "contrast", "tools": [] },
+  { "id": "deaf", "label": "People who are deaf or hard of hearing", "short": "Deaf / hard of hearing", "description": "Need captions or a transcript to follow anything spoken or heard.", "icon": "ear-off", "tools": ["captions", "transcript"] },
+  { "id": "keyboard", "label": "People who can't use a mouse (keyboard, switch or voice control)", "short": "Keyboard & voice users", "description": "Move through the page with the keyboard, a switch device or spoken commands.", "icon": "keyboard", "tools": ["keyboard_navigation", "switch_device", "voice_control"] },
+  { "id": "dexterity", "label": "People with limited hand movement or tremor", "short": "Limited dexterity", "description": "Find small targets, dragging and fast or precise actions hard.", "icon": "hand", "tools": ["voice_control", "switch_device"] },
+  { "id": "cognitive", "label": "People with cognitive or learning disabilities", "short": "Cognitive & learning", "description": "Find complex wording, memory load, time limits and surprises hard.", "icon": "brain", "tools": ["reduce_motion"] },
+  { "id": "seizure_motion", "label": "People sensitive to flashing or motion", "short": "Flashing & motion", "description": "Flashing can trigger seizures; on-screen motion can cause dizziness or nausea.", "icon": "zap", "tools": ["reduce_motion"] }
+ ],
+ "tools": {
+  "en": {
+   "screen_reader": { "name": "Screen reader", "meaning": "Software that reads the screen aloud, or shows it on a braille display, so people can use a computer or phone without seeing it." },
+   "braille_display": { "name": "Braille display", "meaning": "A device that shows text as raised dots under the fingertips." },
+   "magnifier": { "name": "Screen magnifier", "meaning": "Software that enlarges part of the screen many times over." },
+   "browser_zoom": { "name": "Browser zoom", "meaning": "Enlarging the whole page, for example with Ctrl and +." },
+   "voice_control": { "name": "Voice control", "meaning": "Software that lets people click, type and scroll by speaking, for example by saying the words on a button." },
+   "switch_device": { "name": "Switch device", "meaning": "One or two large buttons that step through items on screen, used by people with very limited movement." },
+   "keyboard_navigation": { "name": "Keyboard navigation", "meaning": "Moving through links and buttons with the Tab, arrow and Enter keys, without a mouse." },
+   "captions": { "name": "Captions", "meaning": "On-screen text of what is said in a video, and of important sounds." },
+   "audio_description": { "name": "Audio description", "meaning": "A narrated track that describes important visual details of a video." },
+   "transcript": { "name": "Transcript", "meaning": "The full text of a video or audio recording." },
+   "high_contrast": { "name": "High-contrast mode", "meaning": "A device setting that replaces a site's colours with a few strong ones." },
+   "reduce_motion": { "name": "Reduce motion setting", "meaning": "A device setting that asks websites to limit animation." }
+  }
+ }
+}

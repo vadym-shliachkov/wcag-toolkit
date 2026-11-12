@@ -1,0 +1,8 @@
+{
+  "name": "repo-broken-fixture",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.error('planted build failure'); process.exit(1)\"",
+    "preview": "node -e \"setInterval(()=>{},1000)\""
+  }
+}

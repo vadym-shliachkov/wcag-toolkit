@@ -1,0 +1,14 @@
+{
+  "name": "wcag-build",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"tests/unit/**/*.test.mjs\"",
+    "sync-kb": "node tools/sync-kb.mjs",
+    "check-kb": "node tools/sync-kb.mjs --check"
+  }
+}

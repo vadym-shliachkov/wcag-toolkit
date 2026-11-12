@@ -1,0 +1,4 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Form planted</title><style>body{font:16px sans-serif;margin:20px}input{border:2px solid #999;display:block;margin:4px 0 12px}input.err{border-color:#d00}label{color:#333}label.req{color:#c00}</style></head><body>
+<form id="f" novalidate action="/send" method="post" aria-label="Contact"><label class="req" for="n">Name</label><input id="n" name="n" required><label class="req" for="e">E-mail</label><input id="e" name="e" type="email" required><label for="c">Company</label><input id="c" name="company"><label for="pw">Password</label><input id="pw" name="pw" type="password" onpaste="return false"><button>Send</button></form>
+<script>document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();for(const i of e.target.querySelectorAll('input'))if(!i.value&&i.required)i.classList.add('err');});</script>
+</body></html>

@@ -1,0 +1,1208 @@
+[
+ {
+  "id": "1.1.1",
+  "slug": "non-text-content",
+  "title_en": "Non-text Content",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#non-text-content",
+  "applicability": "Images, icons, charts, diagrams, CAPTCHA, graphical controls.",
+  "requirement_summary": "Provide text that serves the same purpose; exclude decorative content from what assistive technologies present.",
+  "failure_condition": "A diagram conveys a route that is not in the text; an icon button has no name.",
+  "remediation": "Provide a short alternative; move complex data into an accessible table or description; give decorative img elements alt=\"\".",
+  "exceptions_and_false_positives": "Decorative, invisible and formatting content may be ignored; media, tests, sensory experiences and CAPTCHA have special conditions. The word \"image\" in alt does not by itself prove a failure. For CAPTCHA, describe the purpose and provide alternatives for different types of sensory perception; for media, for a test that would lose its meaning in text, and for content that is primarily a sensory experience, provide at least descriptive identification.",
+  "code_patterns": [
+   "image-alternative",
+   "chart-data"
+  ]
+ },
+ {
+  "id": "1.2.1",
+  "slug": "audio-only-and-video-only-prerecorded",
+  "title_en": "Audio-only and Video-only (Prerecorded)",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#audio-only-and-video-only-prerecorded",
+  "applicability": "Prerecorded audio-only or video-only material.",
+  "requirement_summary": "For audio, provide an equivalent text alternative; for silent video, provide an equivalent text alternative or an audio track.",
+  "failure_condition": "A recorded audio interview is available only as sound.",
+  "remediation": "Add a full transcript; for silent video, describe the actions and their sequence.",
+  "exceptions_and_false_positives": "Does not apply to a media alternative for text that is already present, clearly labeled as such, if it adds no information.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.2",
+  "slug": "captions-prerecorded",
+  "title_en": "Captions (Prerecorded)",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#captions-prerecorded",
+  "applicability": "A prerecorded synchronized media program with audio.",
+  "requirement_summary": "Captions convey speech and meaningful sounds with proper synchronization and speaker identification.",
+  "failure_condition": "With the sound off, a warning that is not in the captions is lost.",
+  "remediation": "Add proofread captions and an accessible control for turning them on.",
+  "exceptions_and_false_positives": "The exception is a media alternative for text that is clearly labeled as such. The presence of a track file does not confirm caption quality. Permanently visible open captions are acceptable; a toggle is needed for the chosen implementation of closed captions, not as a separate universal requirement.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.3",
+  "slug": "audio-description-or-media-alternative-prerecorded",
+  "title_en": "Audio Description or Media Alternative (Prerecorded)",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#audio-description-or-media-alternative-prerecorded",
+  "applicability": "Prerecorded synchronized media contains meaningful visual events.",
+  "requirement_summary": "At Level A, either audio description or a full alternative for time-based media is sufficient.",
+  "failure_condition": "An assembly step is demonstrated that cannot be understood from the audio and is missing from the alternative.",
+  "remediation": "Describe the visual events and their sequence; where there is interactivity, include a way to achieve the result.",
+  "exceptions_and_false_positives": "Do not confuse this with 1.2.5: at Level AA, a text alternative alone is usually not enough. The exception for a media alternative for text that is labeled as such applies.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.4",
+  "slug": "captions-live",
+  "title_en": "Captions (Live)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#captions-live",
+  "applicability": "Live audio in synchronized media.",
+  "requirement_summary": "Provide captions for live audio content.",
+  "failure_condition": "A meeting broadcast contains an audio discussion without captions.",
+  "remediation": "Arrange synchronized captioning and a control for displaying it.",
+  "exceptions_and_false_positives": "Do not automatically extend the requirement to every audio-only broadcast: this criterion concerns synchronized media. Permanently visible open captions are acceptable; a toggle is needed for the chosen implementation of closed captions, not as a separate universal requirement. The Understanding document distinguishes broadcasting from two-way conversation: do not automatically infer that an application must caption every private call. Establish the nature of the event and the role of the content provider.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.5",
+  "slug": "audio-description-prerecorded",
+  "title_en": "Audio Description (Prerecorded)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#audio-description-prerecorded",
+  "applicability": "Prerecorded video in synchronized media contains meaningful visual information.",
+  "requirement_summary": "Convey meaningful visual events through audio description.",
+  "failure_condition": "The meaning of a silent demonstration is missing from the audio track.",
+  "remediation": "Add audio description or a version with integrated description of the visual actions.",
+  "exceptions_and_false_positives": "No additional track is needed when the main audio already conveys all important visual information. A transcript does not meet the Level AA requirement.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.6",
+  "slug": "sign-language-prerecorded",
+  "title_en": "Sign Language (Prerecorded)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#sign-language-prerecorded",
+  "applicability": "Prerecorded audio in synchronized media; AAA profile.",
+  "requirement_summary": "Provide sign language interpretation.",
+  "failure_condition": "In a required AAA profile, a recorded lecture has no sign language interpretation.",
+  "remediation": "Add synchronized sign language interpretation and clear access to that version.",
+  "exceptions_and_false_positives": "Do not require this criterion for a Level A or AA conclusion; captions are not equivalent to sign language interpretation.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.7",
+  "slug": "extended-audio-description-prerecorded",
+  "title_en": "Extended Audio Description (Prerecorded)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#extended-audio-description-prerecorded",
+  "applicability": "The video content needs description, and its natural pauses are not long enough for it; AAA.",
+  "requirement_summary": "Provide extended audio description that pauses the video for the time of the additional narration.",
+  "failure_condition": "A fast demonstration leaves no time to describe essential actions, and there is no extended version.",
+  "remediation": "Create a version with additional pauses for description.",
+  "exceptions_and_false_positives": "If the pauses are long enough for standard description, extended description is not required by this criterion.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.8",
+  "slug": "media-alternative-prerecorded",
+  "title_en": "Media Alternative (Prerecorded)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#media-alternative-prerecorded",
+  "applicability": "All prerecorded synchronized media and prerecorded video without audio; AAA.",
+  "requirement_summary": "Provide a full alternative that conveys auditory and visual information in the correct order.",
+  "failure_condition": "The transcript contains the speech but loses an important silent demonstration.",
+  "remediation": "Prepare a coherent description of all essential events and interactions.",
+  "exceptions_and_false_positives": "A plain list of spoken lines may not be a full media alternative; there is no general exception here for a \"media alternative for text\" as there is in several Level A criteria.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.2.9",
+  "slug": "audio-only-live",
+  "title_en": "Audio-only (Live)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#audio-only-live",
+  "applicability": "A live audio-only broadcast without video; AAA.",
+  "requirement_summary": "Provide a text alternative that conveys information equivalent to the live audio.",
+  "failure_condition": "Audio announcements are available on air without equivalent text.",
+  "remediation": "Provide a text stream or another way to get equivalent information, as the conditions of the event allow.",
+  "exceptions_and_false_positives": "Do not mix this up with captions for synchronized live media under 1.2.4; the content and format of the alternative are assessed in context.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.3.1",
+  "slug": "info-and-relationships",
+  "title_en": "Info and Relationships",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#info-and-relationships",
+  "applicability": "Headings, lists, tables, field groups, labels and other visually expressed relationships.",
+  "requirement_summary": "Relationships and structure can be programmatically determined or are available in text.",
+  "failure_condition": "Column names are shown in bold but are not associated with the data cells.",
+  "remediation": "Use semantic elements and explicit programmatic associations.",
+  "exceptions_and_false_positives": "Not every skipped heading level or missing landmark is automatically a failure. A loss of expressed information or relationships must be shown.",
+  "code_patterns": [
+   "chart-data",
+   "field-label",
+   "grouped-controls",
+   "heading-structure",
+   "error-message"
+  ]
+ },
+ {
+  "id": "1.3.2",
+  "slug": "meaningful-sequence",
+  "title_en": "Meaningful Sequence",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#meaningful-sequence",
+  "applicability": "The reading order affects meaning.",
+  "requirement_summary": "Ensure a programmatically determinable sequence that preserves meaning.",
+  "failure_condition": "The answer is read out before the question, so the relationship between them is lost.",
+  "remediation": "Order the DOM by meaning; build the visual layout without changing the meaningful sequence.",
+  "exceptions_and_false_positives": "Several correct sequences are acceptable. A difference between the visual order and the DOM order is not enough on its own.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.3.3",
+  "slug": "sensory-characteristics",
+  "title_en": "Sensory Characteristics",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#sensory-characteristics",
+  "applicability": "Instructions refer to shape, color, position, orientation or sound.",
+  "requirement_summary": "Do not base instructions on a sensory characteristic alone.",
+  "failure_condition": "A task asks the user to press \"the round element on the right\" without naming its purpose.",
+  "remediation": "Add an accessible name and a meaningful cue to the instruction.",
+  "exceptions_and_false_positives": "Color is also checked under 1.4.1; common spatial phrases are judged by whether the instruction can be understood without the sensory characteristic.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.3.4",
+  "slug": "orientation",
+  "title_en": "Orientation",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#orientation",
+  "applicability": "An interface on devices whose orientation can change.",
+  "requirement_summary": "Do not restrict the display and operation to a single orientation unless that orientation is essential to the function.",
+  "failure_condition": "A form does not let the user continue in landscape orientation although there is no functional need for this.",
+  "remediation": "Remove the lock and adapt the layout.",
+  "exceptions_and_false_positives": "A restriction that is essential to the function is allowed, for example a realistic layout of a musical instrument; a design preference does not make it essential.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.3.5",
+  "slug": "identify-input-purpose",
+  "title_en": "Identify Input Purpose",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#identify-input-purpose",
+  "applicability": "Fields collect information about the user and serve one of the purposes listed in the standard.",
+  "requirement_summary": "Programmatically identify the purpose where the technology supports it.",
+  "failure_condition": "A field for the user's own postal code does not expose a supported purpose.",
+  "remediation": "Set a correct autocomplete token and keep a visible label.",
+  "exceptions_and_false_positives": "Do not require tokens for every search, arbitrary identifier or information about another person; type alone does not always convey the required purpose.",
+  "code_patterns": [
+   "autocomplete"
+  ]
+ },
+ {
+  "id": "1.3.6",
+  "slug": "identify-purpose",
+  "title_en": "Identify Purpose",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#identify-purpose",
+  "applicability": "Interface components, icons and regions in markup; AAA.",
+  "requirement_summary": "The purpose must be programmatically determinable so that the presentation can be adapted.",
+  "failure_condition": "Repeated regions and buttons do not expose a programmatically determinable purpose.",
+  "remediation": "Apply suitable semantic elements and supported mechanisms for identifying purpose.",
+  "exceptions_and_false_positives": "Do not reduce the criterion to one mandatory attribute; a good accessible name does not always fully convey a component's purpose.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.4.1",
+  "slug": "use-of-color",
+  "title_en": "Use of Color",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#use-of-color",
+  "applicability": "Color conveys information, distinguishes elements, or indicates an action or state.",
+  "requirement_summary": "Convey the same information by an additional visual means.",
+  "failure_condition": "Errors are marked only by a red border without any other visual cue.",
+  "remediation": "Add error text, a series label, a symbol or a distinct pattern.",
+  "exceptions_and_false_positives": "A programmatic announcement of state may not be enough for sighted users who do not perceive color. Contrast and color are separate checks.",
+  "code_patterns": [
+   "chart-data"
+  ]
+ },
+ {
+  "id": "1.4.2",
+  "slug": "audio-control",
+  "title_en": "Audio Control",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#audio-control",
+  "applicability": "Audio plays automatically for more than 3 seconds.",
+  "requirement_summary": "Provide a way to stop or pause the audio, or to control its volume independently of the overall system volume.",
+  "failure_condition": "Background audio starts by itself and continues with no accessible way to turn it off.",
+  "remediation": "Do not start audio automatically, or provide an accessible control mechanism.",
+  "exceptions_and_false_positives": "Audio that lasts 3 seconds or less is not covered by this criterion; playback started by a deliberate user action must be distinguished from autoplay.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.4.3",
+  "slug": "contrast-minimum",
+  "title_en": "Contrast (Minimum)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#contrast-minimum",
+  "applicability": "Text and images of text, including labels, placeholder text and states.",
+  "requirement_summary": "Contrast of at least 4.5:1; 3:1 for large text.",
+  "failure_condition": "A regular-size label has a measured ratio of 3.2:1.",
+  "remediation": "Change the colors or the background to reach the threshold; check the contrast again in each state.",
+  "exceptions_and_false_positives": "Large text is at least 18 pt, or 14 pt bold, roughly 24 and 18.67 CSS px. There are exceptions for inactive, incidental and invisible text and for logotypes.",
+  "code_patterns": [
+   "text-contrast"
+  ]
+ },
+ {
+  "id": "1.4.4",
+  "slug": "resize-text",
+  "title_en": "Resize Text",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#resize-text",
+  "applicability": "Text, except captions and images of text.",
+  "requirement_summary": "Enlarging text up to 200% without assistive technology does not lose content or functionality.",
+  "failure_condition": "At 200%, a button's text is clipped and its function cannot be determined or carried out.",
+  "remediation": "Remove fixed heights; allow wrapping and scaling.",
+  "exceptions_and_false_positives": "Horizontal scrolling is not always a failure of this criterion; its conditions are checked separately under 1.4.10.",
+  "code_patterns": [
+   "reflow"
+  ]
+ },
+ {
+  "id": "1.4.5",
+  "slug": "images-of-text",
+  "title_en": "Images of Text",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#images-of-text",
+  "applicability": "The technology can produce the required visual presentation with ordinary text.",
+  "requirement_summary": "Use text instead of an image of it, except for presentation that is customizable or essential.",
+  "failure_condition": "An announcement heading is baked into an image for the sake of a chosen font.",
+  "remediation": "Replace the image with live text styled with CSS.",
+  "exceptions_and_false_positives": "A logotype is considered essential; the mere fact that an image contains text does not yet rule out the exceptions. Text in a photograph of a real object is assessed in context.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.4.6",
+  "slug": "contrast-enhanced",
+  "title_en": "Contrast (Enhanced)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#contrast-enhanced",
+  "applicability": "Text and images of text; AAA.",
+  "requirement_summary": "Contrast of at least 7:1; 4.5:1 for large text.",
+  "failure_condition": "In an AAA profile, regular text has a contrast of 5:1.",
+  "remediation": "Choose colors that reach 7:1 for regular text.",
+  "exceptions_and_false_positives": "The same main exceptions apply for inactive, incidental and invisible text and for logotypes; do not apply the AAA thresholds as mandatory for AA.",
+  "code_patterns": [
+   "text-contrast"
+  ]
+ },
+ {
+  "id": "1.4.7",
+  "slug": "low-or-no-background-audio",
+  "title_en": "Low or No Background Audio",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#low-or-no-background-audio",
+  "applicability": "Prerecorded audio-only content that is primarily speech, is not a CAPTCHA and is not an audio logo; AAA.",
+  "requirement_summary": "There is no background sound, it can be turned off, or it is at least 20 dB quieter than the speech.",
+  "failure_condition": "Background music masks the speech and cannot be turned off, and the difference in levels is insufficient.",
+  "remediation": "Remove the background, provide a separate control, or lower its level.",
+  "exceptions_and_false_positives": "Singing and rapping are excluded; occasional background sounds lasting 1–2 seconds are allowed. Judging by ear does not replace measuring the 20 dB.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.4.8",
+  "slug": "visual-presentation",
+  "title_en": "Visual Presentation",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#visual-presentation",
+  "applicability": "Blocks of text; AAA.",
+  "requirement_summary": "Provide a mechanism for selecting colors; limit lines to 80 characters, 40 for CJK; avoid justification to both edges; provide line spacing of 1.5 and paragraph spacing of 1.5 times the line spacing; at 200% zoom, no horizontal scrolling is needed to read a line in a full-screen window.",
+  "failure_condition": "Long lines and dense paragraphs cannot be changed with an available mechanism.",
+  "remediation": "Provide reading settings or a compatible presentation with the required parameters.",
+  "exceptions_and_false_positives": "The criterion requires a mechanism; the parameters do not all have to be defaults. Do not mix this up with the spacing override test of 1.4.12. The mechanism may be provided by the user agent; a page's own settings panel is not required.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.4.9",
+  "slug": "images-of-text-no-exception",
+  "title_en": "Images of Text (No Exception)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#images-of-text-no-exception",
+  "applicability": "Images of text; AAA.",
+  "requirement_summary": "Use images of text only for pure decoration or where the particular presentation is essential.",
+  "failure_condition": "Even a customizable image replaces ordinary meaningful text without an essential reason.",
+  "remediation": "Present meaningful text as text.",
+  "exceptions_and_false_positives": "Logotypes are essential presentation. Unlike 1.4.5, an image being customizable is not an exception on its own.",
+  "code_patterns": []
+ },
+ {
+  "id": "1.4.10",
+  "slug": "reflow",
+  "title_en": "Reflow",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#reflow",
+  "applicability": "Content that scrolls vertically or horizontally.",
+  "requirement_summary": "At a width of 320 CSS px for vertically scrolling content, or a height of 256 CSS px for horizontally scrolling content, no information or functionality is lost and scrolling in two dimensions is not required.",
+  "failure_condition": "Reading an ordinary paragraph on a narrow screen requires moving both horizontally and vertically.",
+  "remediation": "Allow wrapping and a responsive layout; confine any necessary two-dimensional scrolling to its own area.",
+  "exceptions_and_false_positives": "Data tables, maps and other areas where two-dimensional layout is essential to meaning or use may be excluded; the exception does not extend to the whole page.",
+  "code_patterns": [
+   "reflow"
+  ]
+ },
+ {
+  "id": "1.4.11",
+  "slug": "non-text-contrast",
+  "title_en": "Non-text Contrast",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#non-text-contrast",
+  "applicability": "Visual indicators of components and their states, and meaningful parts of graphics.",
+  "requirement_summary": "The parts needed for identification have a contrast of at least 3:1 against adjacent colors.",
+  "failure_condition": "The only border of a field has a contrast of 1.6:1, and the field cannot be distinguished.",
+  "remediation": "Strengthen the necessary border, icon or other identifying cue.",
+  "exceptions_and_false_positives": "Inactive components and unmodified user agent presentation are excluded; graphics have an exception for essential presentation. Not every decorative border has to reach 3:1.",
+  "code_patterns": [
+   "focus-style"
+  ]
+ },
+ {
+  "id": "1.4.12",
+  "slug": "text-spacing",
+  "title_en": "Text Spacing",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#text-spacing",
+  "applicability": "Content in markup that supports the listed properties.",
+  "requirement_summary": "When line-height is overridden to 1.5, spacing after paragraphs to 2 times the font size, letter-spacing to 0.12em and word-spacing to 0.16em, no content or functionality is lost.",
+  "failure_condition": "After the spacing is increased, a label overlaps the adjacent field and becomes unusable.",
+  "remediation": "Allow containers to grow and text to wrap; remove constraints that clip text.",
+  "exceptions_and_false_positives": "These values do not have to be applied by default. Properties that the given language or script does not use are not required in that case.",
+  "code_patterns": [
+   "reflow"
+  ]
+ },
+ {
+  "id": "1.4.13",
+  "slug": "content-on-hover-or-focus",
+  "title_en": "Content on Hover or Focus",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#content-on-hover-or-focus",
+  "applicability": "Additional content appears and disappears on pointer hover or keyboard focus.",
+  "requirement_summary": "Make the content dismissible without moving focus or the pointer, make it possible to move the pointer over it, and keep it visible until the trigger is removed, the user dismisses it, or its information is no longer valid.",
+  "failure_condition": "A tooltip disappears when the user tries to move the pointer onto it, or it cannot be dismissed while it covers text.",
+  "remediation": "Add dismissal, a stable hover area and persistent display.",
+  "exceptions_and_false_positives": "A dismissal mechanism is not required if the additional content communicates an input error or does not obscure or replace other content. Criterion exception: the visual presentation is controlled by the user agent and is not modified by the author.",
+  "code_patterns": [
+   "tooltip"
+  ]
+ },
+ {
+  "id": "2.1.1",
+  "slug": "keyboard",
+  "title_en": "Keyboard",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#keyboard",
+  "applicability": "All functionality, except input that essentially depends on the path of the user's movement.",
+  "requirement_summary": "Make functionality operable through a keyboard interface without requiring specific timings for keystrokes.",
+  "failure_condition": "A section disclosure button works only on a mouse click.",
+  "remediation": "Use a native button, or implement full keyboard operation with correct semantics.",
+  "exceptions_and_false_positives": "Freehand drawing can essentially depend on the path; ordinary moving of an item by coordinates does not automatically qualify for this exception.",
+  "code_patterns": [
+   "native-button",
+   "disclosure",
+   "drag-alternative",
+   "modal-dialog",
+   "tabs",
+   "tooltip"
+  ]
+ },
+ {
+  "id": "2.1.2",
+  "slug": "no-keyboard-trap",
+  "title_en": "No Keyboard Trap",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#no-keyboard-trap",
+  "applicability": "Focus can be moved into a component using the keyboard.",
+  "requirement_summary": "Provide a way to move focus away using the keyboard; if the way out is non-standard, tell the user what it is.",
+  "failure_condition": "Focus enters a calendar and never returns to the page.",
+  "remediation": "Fix the focus loop; provide a standard way out or explain the non-standard one.",
+  "exceptions_and_false_positives": "Keeping focus inside an open modal dialog is acceptable when there is an accessible keyboard way to close it and exit the modal state.",
+  "code_patterns": [
+   "modal-dialog"
+  ]
+ },
+ {
+  "id": "2.1.3",
+  "slug": "keyboard-no-exception",
+  "title_en": "Keyboard (No Exception)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#keyboard-no-exception",
+  "applicability": "All functionality; AAA.",
+  "requirement_summary": "All functionality is operable through a keyboard interface, with no exception for path-dependent input. Specific timings for individual keystrokes are not required.",
+  "failure_condition": "In an AAA profile, an editor requires drawing a path with the mouse, with no keyboard alternative.",
+  "remediation": "Provide a keyboard way to produce an equivalent result.",
+  "exceptions_and_false_positives": "The 2.1.1 exception for an essential path does not apply here; do not require AAA when assessing AA.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.1.4",
+  "slug": "character-key-shortcuts",
+  "title_en": "Character Key Shortcuts",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#character-key-shortcuts",
+  "applicability": "The shortcut consists only of letters (including upper- and lower-case letters), numbers, punctuation or symbol characters.",
+  "requirement_summary": "Provide a way to turn it off, to remap it to include a non-printable key, or to make it active only when the relevant component has focus.",
+  "failure_condition": "The letter \"g\" deletes a record globally and cannot be turned off or remapped.",
+  "remediation": "Use a modifier key or settings, or limit the action to when the component has focus.",
+  "exceptions_and_false_positives": "Combinations with non-printable keys, and character-key commands that work only in a focusable component while it has focus, are assessed with these conditions in mind.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.2.1",
+  "slug": "timing-adjustable",
+  "title_en": "Timing Adjustable",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#timing-adjustable",
+  "applicability": "Content sets a time limit for an action, for reading or for a session.",
+  "requirement_summary": "Allow the user to turn the limit off, to adjust it in advance to at least 10 times the default, or to extend it after a warning, with at least 20 seconds for a simple action and at least 10 extensions.",
+  "failure_condition": "A form is cleared after one minute with no way to extend the time.",
+  "remediation": "Provide adjustment or a warning with a working extension; preserve the data entered.",
+  "exceptions_and_false_positives": "Exceptions: a real-time event, an essential time limit, or a limit longer than 20 hours; essentiality must be justified, not merely claimed.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.2.2",
+  "slug": "pause-stop-hide",
+  "title_en": "Pause, Stop, Hide",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#pause-stop-hide",
+  "applicability": "Automatic moving, blinking or scrolling that lasts more than 5 seconds and is presented in parallel with other content; or automatic updating presented in parallel with other content.",
+  "requirement_summary": "For moving content, provide pause/stop/hide; for updating content, also allow control of the update frequency, unless the activity is essential.",
+  "failure_condition": "A carousel moves endlessly with no accessible way to stop it.",
+  "remediation": "Add an explicit control; keep the pause in effect until the user acts.",
+  "exceptions_and_false_positives": "The 5-second threshold applies to moving, blinking and scrolling, but not to auto-updating information. Essential activity is an exception.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.2.3",
+  "slug": "no-timing",
+  "title_en": "No Timing",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#no-timing",
+  "applicability": "Events and activities with a time limit; AAA.",
+  "requirement_summary": "Timing must not be an essential part of the activity, except for non-interactive synchronized media and real-time events.",
+  "failure_condition": "A task requires ordinary input to be completed within a fixed time, and no exception applies.",
+  "remediation": "Remove the time dependency from ordinary operations.",
+  "exceptions_and_false_positives": "The AAA conditions are stricter than 2.2.1; an extension mechanism by itself does not substitute for the absence of a time dependency.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.2.4",
+  "slug": "interruptions",
+  "title_en": "Interruptions",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#interruptions",
+  "applicability": "Content creates interruptions; AAA.",
+  "requirement_summary": "Allow the user to postpone or suppress interruptions, except those involving an emergency.",
+  "failure_condition": "A non-urgent notification keeps interrupting input and cannot be postponed.",
+  "remediation": "Add settings for deferred display and a no-interruptions mode.",
+  "exceptions_and_false_positives": "Emergency messages are allowed; not every page update is an interruption, so describe the effect.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.2.5",
+  "slug": "re-authenticating",
+  "title_en": "Re-authenticating",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#re-authenticating",
+  "applicability": "A session expires during an activity, after which sign-in is required; AAA.",
+  "requirement_summary": "After re-authenticating, the user can continue the activity without loss of data.",
+  "failure_condition": "Signing in again deletes a long unfinished request.",
+  "remediation": "Save the state and restore it after authentication.",
+  "exceptions_and_false_positives": "Having a time extension under 2.2.1 does not prove that data is preserved after re-authentication.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.2.6",
+  "slug": "timeouts",
+  "title_en": "Timeouts",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#timeouts",
+  "applicability": "User inactivity could cause data loss; AAA.",
+  "requirement_summary": "Tell users how long a period of inactivity causes data loss, unless the data is preserved for more than 20 hours with no user activity.",
+  "failure_condition": "A form silently deletes input after 15 minutes of inactivity.",
+  "remediation": "State the duration in advance, or preserve the data for more than 20 hours.",
+  "exceptions_and_false_positives": "Do not confuse this with the warning, seconds before an imminent sign-out, under 2.2.1; what matters is knowing the duration of inactivity that leads to data loss.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.3.1",
+  "slug": "three-flashes-or-below-threshold",
+  "title_en": "Three Flashes or Below Threshold",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#three-flashes-or-below-threshold",
+  "applicability": "Flashes in any content.",
+  "requirement_summary": "No more than three flashes in any 1-second period, or the flashes are below the general flash and red flash thresholds.",
+  "failure_condition": "The material exceeds the frequency threshold and the corresponding area-and-luminance threshold.",
+  "remediation": "Remove the flashes or reduce their characteristics to within the permitted thresholds.",
+  "exceptions_and_false_positives": "A counter of CSS animations alone cannot prove that a threshold is exceeded. Manually playing potentially dangerous material is not a required test method.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.3.2",
+  "slug": "three-flashes",
+  "title_en": "Three Flashes",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#three-flashes",
+  "applicability": "Flashes in content; AAA.",
+  "requirement_summary": "No more than three flashes in any 1-second period.",
+  "failure_condition": "The frequency exceeds three flashes per second, even over a small area.",
+  "remediation": "Replace the effect or reduce the frequency.",
+  "exceptions_and_false_positives": "Unlike 2.3.1, the \"below the area/luminance threshold\" exception does not allow more frequent flashes here.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.3.3",
+  "slug": "animation-from-interactions",
+  "title_en": "Animation from Interactions",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#animation-from-interactions",
+  "applicability": "Interaction triggers motion animation; AAA.",
+  "requirement_summary": "Provide a way to disable motion, unless it is essential to the functionality or the information.",
+  "failure_condition": "Scrolling triggers non-essential motion that cannot be disabled.",
+  "remediation": "Respect prefers-reduced-motion or provide a reliable toggle; replace motion with static feedback.",
+  "exceptions_and_false_positives": "Essential motion is allowed. A change of color or opacity without movement does not automatically fall under the definition of motion animation.",
+  "code_patterns": [
+   "reduced-motion"
+  ]
+ },
+ {
+  "id": "2.4.1",
+  "slug": "bypass-blocks",
+  "title_en": "Bypass Blocks",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#bypass-blocks",
+  "applicability": "Blocks are repeated on multiple pages.",
+  "requirement_summary": "Provide a mechanism to bypass blocks of content that are repeated.",
+  "failure_condition": "Before the content of every page, a large repeated block must be passed through with no way to bypass it.",
+  "remediation": "Add a working link to the main content, or another supported mechanism.",
+  "exceptions_and_false_positives": "A skip link specifically is not the only acceptable solution. The absence of main does not by itself prove a failure.",
+  "code_patterns": [
+   "skip-link"
+  ]
+ },
+ {
+  "id": "2.4.2",
+  "slug": "page-titled",
+  "title_en": "Page Titled",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#page-titled",
+  "applicability": "Every web page, including single-page application routes.",
+  "requirement_summary": "The page title describes its topic or purpose.",
+  "failure_condition": "Different pages have the meaningless title \"Document\".",
+  "remediation": "Set a clear, distinguishing title and update it on routing.",
+  "exceptions_and_false_positives": "Absolute uniqueness of every title, out of context, is not required; an h1 does not replace the page title.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.4.3",
+  "slug": "focus-order",
+  "title_en": "Focus Order",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#focus-order",
+  "applicability": "Sequential navigation affects meaning or operation.",
+  "requirement_summary": "The focus order preserves meaning and operability.",
+  "failure_condition": "After a form opens, focus lands behind it, which disrupts the task.",
+  "remediation": "Align the DOM with the focus order; manage focus sensibly on dynamic changes.",
+  "exceptions_and_false_positives": "The order does not have to match the visual order literally, as long as meaning and operation are preserved. A positive tabindex is a risk signal, not a failure in itself.",
+  "code_patterns": [
+   "skip-link",
+   "modal-dialog",
+   "tabs"
+  ]
+ },
+ {
+  "id": "2.4.4",
+  "slug": "link-purpose-in-context",
+  "title_en": "Link Purpose (In Context)",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context",
+  "applicability": "All links.",
+  "requirement_summary": "The purpose can be determined from the link text alone or together with its programmatically determined context.",
+  "failure_condition": "\"Open\" leads to an unknown document, and there is no programmatic context.",
+  "remediation": "Make the name more specific, or provide correctly associated context.",
+  "exceptions_and_false_positives": "If the purpose would be ambiguous to users in general, the exception applies. Do not require full understandability out of context: that is 2.4.9.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.4.5",
+  "slug": "multiple-ways",
+  "title_en": "Multiple Ways",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#multiple-ways",
+  "applicability": "The page is part of a set of web pages.",
+  "requirement_summary": "Provide more than one way to locate the page within the set.",
+  "failure_condition": "A page in the set is reachable through only one path, with no alternative.",
+  "remediation": "Add a working search, site map or other additional means.",
+  "exceptions_and_false_positives": "Pages that are the result of, or a step in, a process are exempt. Two visual instances of the same menu are not necessarily two ways.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.4.6",
+  "slug": "headings-and-labels",
+  "title_en": "Headings and Labels",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#headings-and-labels",
+  "applicability": "Headings and labels that are present.",
+  "requirement_summary": "They describe the topic or purpose.",
+  "failure_condition": "A start-date field is labeled \"Value\", which does not describe the expected input.",
+  "remediation": "Name the subject of each section and the purpose of each field.",
+  "exceptions_and_false_positives": "The criterion assesses how descriptive the existing headings and labels are. Do not turn it into a requirement for an h1 or for a separate heading on every container.",
+  "code_patterns": [
+   "heading-structure"
+  ]
+ },
+ {
+  "id": "2.4.7",
+  "slug": "focus-visible",
+  "title_en": "Focus Visible",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#focus-visible",
+  "applicability": "The interface is keyboard operable.",
+  "requirement_summary": "When operated by keyboard, a focus indicator is visible.",
+  "failure_condition": "The outline is removed and there is no other visible indicator.",
+  "remediation": "Keep the default indicator or add a robust :focus-visible style.",
+  "exceptions_and_false_positives": "Do not automatically carry the numeric area requirements of 2.4.13 over to this AA criterion; also check contrast under 1.4.11 where applicable.",
+  "code_patterns": [
+   "focus-style"
+  ]
+ },
+ {
+  "id": "2.4.8",
+  "slug": "location",
+  "title_en": "Location",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#location",
+  "applicability": "A set of web pages; AAA.",
+  "requirement_summary": "Provide information about the user's location within the set.",
+  "failure_condition": "In a deep set of sections, there is no way to tell the current section.",
+  "remediation": "Add a clear indication of location.",
+  "exceptions_and_false_positives": "Breadcrumbs specifically are not required; another clear mechanism is enough.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.4.9",
+  "slug": "link-purpose-link-only",
+  "title_en": "Link Purpose (Link Only)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#link-purpose-link-only",
+  "applicability": "Links; AAA.",
+  "requirement_summary": "Provide a mechanism that allows the purpose to be identified from the link text alone.",
+  "failure_condition": "A list of links contains several indistinguishable \"Learn more\" links.",
+  "remediation": "Make the name self-sufficient, or provide a mechanism that makes the link text more specific.",
+  "exceptions_and_false_positives": "Ambiguity to users in general is an exception. At AA, programmatic context under 2.4.4 is acceptable.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.4.10",
+  "slug": "section-headings",
+  "title_en": "Section Headings",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#section-headings",
+  "applicability": "Content is organized into sections; AAA.",
+  "requirement_summary": "Use section headings to organize the content.",
+  "failure_condition": "Long instructions consist of different sections with no headings.",
+  "remediation": "Add meaningful headings and a semantic hierarchy.",
+  "exceptions_and_false_positives": "Not every short text or interface block has to become a section; apply this to the real structure of the content.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.4.11",
+  "slug": "focus-not-obscured-minimum",
+  "title_en": "Focus Not Obscured (Minimum)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum",
+  "applicability": "A component receives keyboard focus.",
+  "requirement_summary": "Author-created content does not entirely hide the component.",
+  "failure_condition": "When focused, a button is entirely hidden by a sticky banner.",
+  "remediation": "Fix the scrolling, scroll-padding or the position of the overlapping layer.",
+  "exceptions_and_false_positives": "Partial obscuring is not a failure of 2.4.11 specifically; the AAA criterion 2.4.12 covers it. For user-movable interface and content opened by the user, take the normative notes into account.",
+  "code_patterns": [
+   "sticky-focus"
+  ]
+ },
+ {
+  "id": "2.4.12",
+  "slug": "focus-not-obscured-enhanced",
+  "title_en": "Focus Not Obscured (Enhanced)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-enhanced",
+  "applicability": "A component receives keyboard focus; AAA.",
+  "requirement_summary": "No part of the component is hidden by author-created content.",
+  "failure_condition": "The lower part of a focused button is covered by a sticky bar.",
+  "remediation": "Ensure the component is fully visible when focused.",
+  "exceptions_and_false_positives": "Do not apply AAA strictness to an AA report. Take into account the normative notes on user-movable interface and on content opened by the user.",
+  "code_patterns": [
+   "sticky-focus"
+  ]
+ },
+ {
+  "id": "2.4.13",
+  "slug": "focus-appearance",
+  "title_en": "Focus Appearance",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#focus-appearance",
+  "applicability": "A visible keyboard focus indicator; AAA.",
+  "requirement_summary": "The indicator area is at least as large as the area of a 2 CSS px thick perimeter of the unfocused component or sub-component; the same pixels have a contrast ratio of at least 3:1 between the focused and unfocused states.",
+  "failure_condition": "An author-supplied indicator has insufficient area or contrast change.",
+  "remediation": "Make an indicator with sufficient area and contrast change.",
+  "exceptions_and_false_positives": "The exceptions concern a user agent indicator that the author cannot change, or the author not having modified the indicator and its background; check the exact conditions. This is not a rule that \"any 2px border always passes\".",
+  "code_patterns": [
+   "focus-style"
+  ]
+ },
+ {
+  "id": "2.5.1",
+  "slug": "pointer-gestures",
+  "title_en": "Pointer Gestures",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#pointer-gestures",
+  "applicability": "Functionality uses a multipoint or path-based gesture.",
+  "requirement_summary": "Provide operation with a single pointer without a path-based gesture, unless the gesture is essential.",
+  "failure_condition": "A map can be zoomed only by pinching, with no zoom buttons.",
+  "remediation": "Add buttons or another simple single-point input.",
+  "exceptions_and_false_positives": "Ordinary dragging is not always a path-based gesture; check 2.5.7 separately. The essential exception must relate to the function, not the implementation.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.5.2",
+  "slug": "pointer-cancellation",
+  "title_en": "Pointer Cancellation",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#pointer-cancellation",
+  "applicability": "Functionality is operated with a single pointer.",
+  "requirement_summary": "One branch is enough: the down-event does not execute any part of the function; or completion is on the up-event, with a way to abort before completion or undo after it; or the up-event reverses any outcome of the down-event; or completing on the down-event is essential.",
+  "failure_condition": "The action completes on pointerdown, the up-event does not reverse it, and completing on down is not essential.",
+  "remediation": "Prefer click/up with abort when the pointer moves away; alternatively, implement one of the other normative branches in full.",
+  "exceptions_and_false_positives": "Undo alone does not make ordinary completion on the down-event acceptable: the abort/undo branch requires completion on the up-event. Check essentiality separately, for example for key emulation.",
+  "code_patterns": [
+   "pointer-cancel"
+  ]
+ },
+ {
+  "id": "2.5.3",
+  "slug": "label-in-name",
+  "title_en": "Label in Name",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#label-in-name",
+  "applicability": "A component has a visible label with text or an image of text.",
+  "requirement_summary": "The accessible name contains the text of the visible label.",
+  "failure_condition": "A visible \"Sign up\" button has the name \"Submit application\".",
+  "remediation": "Include the visible text in the accessible name; preferably start the name with it.",
+  "exceptions_and_false_positives": "Do not require the names to be identical. Assess the human-readable label text, not a mechanical match of every decorative character; icons without text are a different case.",
+  "code_patterns": [
+   "visible-label-name"
+  ]
+ },
+ {
+  "id": "2.5.4",
+  "slug": "motion-actuation",
+  "title_en": "Motion Actuation",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#motion-actuation",
+  "applicability": "Functionality is triggered by device motion or user motion.",
+  "requirement_summary": "Provide a user interface alternative and a way to disable responding to motion.",
+  "failure_condition": "Input can be undone only by shaking, and the response to accidental shaking cannot be disabled.",
+  "remediation": "Add a button and a setting that disables sensor-based control.",
+  "exceptions_and_false_positives": "Exceptions: the motion is used through an accessibility supported interface, or the motion is essential. Both requirements must be checked: the alternative and the ability to disable.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.5.5",
+  "slug": "target-size-enhanced",
+  "title_en": "Target Size (Enhanced)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#target-size-enhanced",
+  "applicability": "Pointer input targets; AAA.",
+  "requirement_summary": "The size is at least 44×44 CSS px, except for the normative exceptions.",
+  "failure_condition": "A standalone button has a 20×20 area and no exception applies.",
+  "remediation": "Enlarge the area to 44×44 CSS px.",
+  "exceptions_and_false_positives": "Exceptions: equivalent target, inline text, unmodified user agent control, essential presentation. The 24px spacing rule belongs to 2.5.8, not to this criterion. The equivalent target must be on the same page and be at least 44×44 CSS px.",
+  "code_patterns": [
+   "target-size"
+  ]
+ },
+ {
+  "id": "2.5.6",
+  "slug": "concurrent-input-mechanisms",
+  "title_en": "Concurrent Input Mechanisms",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#concurrent-input-mechanisms",
+  "applicability": "The platform supports different input modalities; AAA.",
+  "requirement_summary": "Do not restrict the available input modalities, unless the restriction is essential, required for security, or required to respect user settings.",
+  "failure_condition": "After the first touch, the interface disables the keyboard for no reason.",
+  "remediation": "Keep supporting input modalities concurrently.",
+  "exceptions_and_false_positives": "A different layout is not the same as restricting input; the permitted exceptions require a specific justification.",
+  "code_patterns": []
+ },
+ {
+  "id": "2.5.7",
+  "slug": "dragging-movements",
+  "title_en": "Dragging Movements",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#dragging-movements",
+  "applicability": "Functionality uses a dragging movement.",
+  "requirement_summary": "Provide a way to achieve the function with a single pointer without dragging, unless dragging is essential or the behavior is determined by the user agent and not modified by the author.",
+  "failure_condition": "A card can be moved to a column only by drag-and-drop.",
+  "remediation": "Add a destination menu, move buttons or another single-pointer method.",
+  "exceptions_and_false_positives": "A keyboard alternative alone is not enough: this criterion needs a single-pointer alternative without dragging.",
+  "code_patterns": [
+   "drag-alternative"
+  ]
+ },
+ {
+  "id": "2.5.8",
+  "slug": "target-size-minimum",
+  "title_en": "Target Size (Minimum)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#target-size-minimum",
+  "applicability": "Pointer input targets.",
+  "requirement_summary": "The size is at least 24×24 CSS px, or one of the exceptions is met, including sufficient spacing.",
+  "failure_condition": "Dense, small, separate buttons meet neither the size nor the spacing conditions.",
+  "remediation": "Enlarge the targets or the spacing; where an alternative is relied on, check the equivalent target on the same page.",
+  "exceptions_and_false_positives": "There are exceptions for inline targets, unmodified user agent controls, essential presentation, an equivalent target and spacing. Do not declare every element smaller than 24px a failure. Inline: the target is in a sentence, or its size is constrained by the line-height of the surrounding non-target text. Essential presentation also includes presentation that is legally required.",
+  "code_patterns": [
+   "target-size"
+  ]
+ },
+ {
+  "id": "3.1.1",
+  "slug": "language-of-page",
+  "title_en": "Language of Page",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#language-of-page",
+  "applicability": "Any web page.",
+  "requirement_summary": "The default human language can be programmatically determined.",
+  "failure_condition": "A Russian-language page has no determinable language.",
+  "remediation": "Set a correct lang on html.",
+  "exceptions_and_false_positives": "Do not infer the language from the domain, the browser interface or a single word alone. A language mismatch requires checking the actual content.",
+  "code_patterns": [
+   "language"
+  ]
+ },
+ {
+  "id": "3.1.2",
+  "slug": "language-of-parts",
+  "title_en": "Language of Parts",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#language-of-parts",
+  "applicability": "Passages in a different human language.",
+  "requirement_summary": "Programmatically identify the language of each such passage, except for the normative exceptions.",
+  "failure_condition": "A long English quotation inherits the Russian language and has no language markup of its own.",
+  "remediation": "Mark up the passage with the correct lang.",
+  "exceptions_and_false_positives": "Proper names, technical terms, words of indeterminate language, and borrowed words that have become part of the surrounding language can be exceptions.",
+  "code_patterns": [
+   "language"
+  ]
+ },
+ {
+  "id": "3.1.3",
+  "slug": "unusual-words",
+  "title_en": "Unusual Words",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#unusual-words",
+  "applicability": "Idioms, jargon, and words used in an unusual or restricted way; AAA.",
+  "requirement_summary": "Provide a mechanism for identifying the specific definition.",
+  "failure_condition": "A specialized term is used without an available explanation.",
+  "remediation": "Add a definition nearby, a link to a glossary, or another mechanism.",
+  "exceptions_and_false_positives": "Not every long word is automatically unusual; the meaning is judged for the target audience and the context.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.1.4",
+  "slug": "abbreviations",
+  "title_en": "Abbreviations",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#abbreviations",
+  "applicability": "Abbreviations; AAA.",
+  "requirement_summary": "Provide a mechanism for identifying the expanded form or the meaning.",
+  "failure_condition": "An abbreviation matters for an action but is not explained anywhere.",
+  "remediation": "Expand it on first use or provide an accessible glossary.",
+  "exceptions_and_false_positives": "A title attribute alone cannot be assumed to be a universally accessible mechanism; check real access to the definition.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.1.5",
+  "slug": "reading-level",
+  "title_en": "Reading Level",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#reading-level",
+  "applicability": "After removal of proper names and titles, the text requires reading ability more advanced than the lower secondary education level; AAA.",
+  "requirement_summary": "Provide supplemental content or a version that does not require a higher reading level.",
+  "failure_condition": "Complex conditions are available only as difficult text with no supplemental material.",
+  "remediation": "Prepare a plain-language version, explanations and visual support.",
+  "exceptions_and_false_positives": "A numeric readability score is a signal, not a final conclusion; age, language and context matter.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.1.6",
+  "slug": "pronunciation",
+  "title_en": "Pronunciation",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#pronunciation",
+  "applicability": "The meaning of a word in context is ambiguous without knowing its pronunciation; AAA.",
+  "requirement_summary": "Provide a mechanism for identifying the correct pronunciation.",
+  "failure_condition": "The meaning of a key word depends on stress that cannot be determined from the context.",
+  "remediation": "Add a stress mark, a phonetic explanation or accessible audio.",
+  "exceptions_and_false_positives": "Do not require pronunciation for every word; the meaning must be ambiguous without the pronunciation.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.2.1",
+  "slug": "on-focus",
+  "title_en": "On Focus",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#on-focus",
+  "applicability": "Any component receives focus.",
+  "requirement_summary": "Receiving focus does not by itself cause a change of context.",
+  "failure_condition": "When a link receives focus, another page opens automatically.",
+  "remediation": "Move the navigation to explicit activation.",
+  "exceptions_and_false_positives": "A tooltip appearing or a small update is not necessarily a change of context; assess it against the definition of change of context.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.2.2",
+  "slug": "on-input",
+  "title_en": "On Input",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#on-input",
+  "applicability": "Changing the setting of a component, for example selecting an option.",
+  "requirement_summary": "Do not change the context automatically unless the user has been advised of it before using the component.",
+  "failure_condition": "Selecting a value immediately takes the user to another page without warning.",
+  "remediation": "Add an explicit apply button or explain the change of context in advance.",
+  "exceptions_and_false_positives": "Updating results without a change of context is not automatically a failure; assess status messages separately under 4.1.3.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.2.3",
+  "slug": "consistent-navigation",
+  "title_en": "Consistent Navigation",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#consistent-navigation",
+  "applicability": "Navigation mechanisms are repeated across a set of web pages.",
+  "requirement_summary": "Their relative order is the same, except for changes initiated by the user.",
+  "failure_condition": "The same menu arbitrarily changes the order of its items between pages.",
+  "remediation": "Keep a stable relative order.",
+  "exceptions_and_false_positives": "The same absolute position and an identical set of items are not required; changes made by the user are allowed.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.2.4",
+  "slug": "consistent-identification",
+  "title_en": "Consistent Identification",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#consistent-identification",
+  "applicability": "Components that have the same functionality within a set of web pages.",
+  "requirement_summary": "The same functionality is identified consistently.",
+  "failure_condition": "The same search button has unrelated identification in different sections.",
+  "remediation": "Unify the names and semantics of identical functions.",
+  "exceptions_and_false_positives": "Different functions can have different identification; contextual clarifications are acceptable. Do not require every string to match literally.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.2.5",
+  "slug": "change-on-request",
+  "title_en": "Change on Request",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#change-on-request",
+  "applicability": "Any change of context; AAA.",
+  "requirement_summary": "Changes of context happen on user request, or a mechanism is available to turn them off.",
+  "failure_condition": "The page moves the user to another section on its own, with no way to stop it.",
+  "remediation": "Remove the automatic transition or provide a reliable way to turn it off.",
+  "exceptions_and_false_positives": "A warning that is sufficient in some cases for 3.2.2 does not always satisfy this stricter AAA criterion.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.2.6",
+  "slug": "consistent-help",
+  "title_en": "Consistent Help",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#consistent-help",
+  "applicability": "At least one of the listed help mechanisms is repeated across a set of web pages.",
+  "requirement_summary": "Human contact details, a human contact mechanism, a self-help option or a fully automated contact mechanism occur in the same order relative to other page content, except for changes initiated by the user.",
+  "failure_condition": "The same help mechanism moves arbitrarily relative to the other blocks.",
+  "remediation": "Use a stable placement for help.",
+  "exceptions_and_false_positives": "This does not require help to be created if there is none, or to be shown on every page. Changes caused by user settings and responsive modes are assessed according to the normative notes.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.3.1",
+  "slug": "error-identification",
+  "title_en": "Error Identification",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#error-identification",
+  "applicability": "An input error is automatically detected.",
+  "requirement_summary": "Identify the item in error and describe the error in text.",
+  "failure_condition": "An invalid field is marked only with a border, without a text description.",
+  "remediation": "Provide a clear text message that identifies the field.",
+  "exceptions_and_false_positives": "The criterion does not require every possible error to be detected automatically; it governs input errors that are already detected.",
+  "code_patterns": [
+   "error-message"
+  ]
+ },
+ {
+  "id": "3.3.2",
+  "slug": "labels-or-instructions",
+  "title_en": "Labels or Instructions",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#labels-or-instructions",
+  "applicability": "The content requires user input.",
+  "requirement_summary": "Provide labels or instructions sufficient for input.",
+  "failure_condition": "A field requires a special format, but the user learns it only after the input is rejected.",
+  "remediation": "Provide a visible label and the needed instructions in advance.",
+  "exceptions_and_false_positives": "An accessible name on its own does not always replace an instruction for all users; unnecessary instructions are not required for obvious input.",
+  "code_patterns": [
+   "field-label",
+   "grouped-controls"
+  ]
+ },
+ {
+  "id": "3.3.3",
+  "slug": "error-suggestion",
+  "title_en": "Error Suggestion",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#error-suggestion",
+  "applicability": "An error is detected automatically and a way to correct it is known.",
+  "requirement_summary": "Suggest a correction, unless this would jeopardize the security or purpose of the content.",
+  "failure_condition": "The message \"Error\" does not explain the known rule for a valid value.",
+  "remediation": "State the allowed range, format or another specific way to correct the input.",
+  "exceptions_and_false_positives": "Do not disclose information that would jeopardize security or purpose. Do not require a suggestion if the way to correct the error is not known.",
+  "code_patterns": [
+   "error-message"
+  ]
+ },
+ {
+  "id": "3.3.4",
+  "slug": "error-prevention-legal-financial-data",
+  "title_en": "Error Prevention (Legal, Financial, Data)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#error-prevention-legal-financial-data",
+  "applicability": "Legal commitments, financial transactions, modifying or deleting user-controllable data in data storage systems, or submitting test responses.",
+  "requirement_summary": "Provide reversibility, checking with an opportunity to correct, or review/confirmation/correction before finalizing.",
+  "failure_condition": "Irreversible deletion of a saved collection completes without checking or confirmation.",
+  "remediation": "Provide recovery, or a review/confirmation step with correction.",
+  "exceptions_and_false_positives": "Not every ordinary search falls under this criterion; the applicability conditions are mandatory. One of the three specified mechanisms is enough.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.3.5",
+  "slug": "help",
+  "title_en": "Help",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#help",
+  "applicability": "Input and other functions for which a label alone is not enough to explain the action; AAA.",
+  "requirement_summary": "Provide help relevant to the current context.",
+  "failure_condition": "The user cannot get an explanation of a complex data format in the current form.",
+  "remediation": "Add help that explains the purpose and how to fill it in.",
+  "exceptions_and_false_positives": "A general contact in the footer is not always context-sensitive help; assess its usefulness for the current input. According to the Understanding document, separate help is needed where the label does not explain the whole function; the availability of help must be obvious.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.3.6",
+  "slug": "error-prevention-all",
+  "title_en": "Error Prevention (All)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#error-prevention-all",
+  "applicability": "Submitting user information; AAA.",
+  "requirement_summary": "Provide reversibility, checking with correction, or review/confirmation/correction before finalizing.",
+  "failure_condition": "Data is submitted before it can be reviewed and corrected; there is also no reversibility and no checking with correction.",
+  "remediation": "Add a preview with correction, or reversibility.",
+  "exceptions_and_false_positives": "The scope is wider than 3.3.4; do not carry this AAA requirement over to all forms when evaluating AA. A separate preview screen is not required: the ability to review/correct input before explicit confirmation can satisfy the Confirmed branch.",
+  "code_patterns": []
+ },
+ {
+  "id": "3.3.7",
+  "slug": "redundant-entry",
+  "title_en": "Redundant Entry",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#redundant-entry",
+  "applicability": "Information was previously entered by or provided to the user and is required again in the same process.",
+  "requirement_summary": "Auto-populate it or let the user select the previously entered information.",
+  "failure_condition": "On the next step the user has to type an address they already provided again by hand.",
+  "remediation": "Prefill the data or offer a \"Use previous address\" choice.",
+  "exceptions_and_false_positives": "Exceptions: re-entering the information is essential, is required for security, or the previously entered information is no longer valid. Do not merge independent processes automatically.",
+  "code_patterns": [
+   "repeat-entry"
+  ]
+ },
+ {
+  "id": "3.3.8",
+  "slug": "accessible-authentication-minimum",
+  "title_en": "Accessible Authentication (Minimum)",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#accessible-authentication-minimum",
+  "applicability": "Any step in an authentication process.",
+  "requirement_summary": "Do not require a cognitive function test, except where an alternative method, a mechanism to assist, object recognition, or identification of the user's own non-text content is available.",
+  "failure_condition": "Sign-in requires memorizing and manually transcribing a code, while paste and other assistance are blocked.",
+  "remediation": "Allow paste and compatible mechanisms to assist, or provide a sign-in without a cognitive function test.",
+  "exceptions_and_false_positives": "A password is not prohibited if a mechanism to assist works. Object recognition and recognition of the user's own content are Level AA exceptions; check the applicability of each separately.",
+  "code_patterns": [
+   "password-assistance"
+  ]
+ },
+ {
+  "id": "3.3.9",
+  "slug": "accessible-authentication-enhanced",
+  "title_en": "Accessible Authentication (Enhanced)",
+  "level": "AAA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#accessible-authentication-enhanced",
+  "applicability": "Any authentication step; AAA.",
+  "requirement_summary": "Do not require a cognitive function test without an alternative or a mechanism to assist.",
+  "failure_condition": "Sign-in depends on image recognition with no alternative or assistance.",
+  "remediation": "Provide an accessible authentication method without such a task.",
+  "exceptions_and_false_positives": "The 3.3.8 exceptions for objects and the user's own content do not apply here; the alternative method and the mechanism to assist remain.",
+  "code_patterns": []
+ },
+ {
+  "id": "4.1.2",
+  "slug": "name-role-value",
+  "title_en": "Name, Role, Value",
+  "level": "A",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#name-role-value",
+  "applicability": "All user interface components, including custom widgets.",
+  "requirement_summary": "The name and role can be programmatically determined; states, properties and values that can be set by the user can be programmatically set, and changes are available to assistive technologies.",
+  "failure_condition": "A toggle changes visually, but its state is not programmatically available.",
+  "remediation": "Use a native element, or complete and correct semantics with property updates.",
+  "exceptions_and_false_positives": "The presence of an ARIA attribute does not confirm a correct implementation. Invalid HTML on its own is not a substitute for evidence of a name, role or state problem.",
+  "code_patterns": [
+   "field-label",
+   "native-button",
+   "disclosure",
+   "visible-label-name",
+   "modal-dialog",
+   "tabs"
+  ]
+ },
+ {
+  "id": "4.1.3",
+  "slug": "status-messages",
+  "title_en": "Status Messages",
+  "level": "AA",
+  "normative_url": "https://www.w3.org/TR/WCAG22/#status-messages",
+  "applicability": "A status message appears without a change of context.",
+  "requirement_summary": "Programmatically determine the role/properties so that assistive technologies can present the message without it receiving focus.",
+  "failure_condition": "The text \"Saved\" appears visually, but the status is not programmatically determined.",
+  "remediation": "Use an appropriate role=\"status\", alert or live region, taking urgency and frequency into account.",
+  "exceptions_and_false_positives": "Not every DOM update is a status message. Do not make whole pages aria-live, and do not use alert for every minor update.",
+  "code_patterns": [
+   "status-update"
+  ]
+ }
+]

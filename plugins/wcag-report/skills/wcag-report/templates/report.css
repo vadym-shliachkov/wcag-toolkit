@@ -1,0 +1,451 @@
+/* wcag-report print design system.
+   Concept: verdict, then people, then proof. One focal point per front page; large type is always ink; colour only in
+   small marks (a rule, a glyph, a number). Severity is always glyph + word + colour; groups are icon + label, never a
+   colour. Every colour pair below meets 4.5:1 for text and 3:1 for meaningful graphics.
+   - Type: Atkinson Hyperlegible Next (designed for low-vision readers) for text, Atkinson Hyperlegible Mono for URLs and
+     numbers of requirements. A report whose text is mostly in another script (quoted Cyrillic or Greek site labels)
+     switches both to Noto Sans / Noto Sans Mono (set per report).
+   - Scale: major third from a 10.5 pt body; nothing below 8.5 pt.
+   - Spacing: 4 pt grid. Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   Chrome print rules learnt the hard way:
+   - Chrome does not paint into page margins: full-bleed only on the cover, whose @page has no margin.
+   - Side-by-side boxes do not break across pages: long content is stacked full width; side by side only for small,
+     unbreakable units (tiles, a figure pair, a dl row).
+   - An unbreakable box taller than the page body is pushed whole to the next page and leaves a gap: every
+     break-inside: avoid unit is kept well under a page (screenshots capped at 80 mm, so a card heading and its first
+     screenshot fit in half a page and a card can start below the end of the previous one).
+   - Space, not rules, separates cards: a rule left at the top of a page looks stray.
+   - Meaningful text never comes from ::before/::after content: it would not be tagged in the PDF. */
+
+@page {
+  size: A4;
+  margin: 20mm 20mm 22mm;
+  @top-left { font: 8.5pt var(--font-text); color: #596273; vertical-align: bottom; padding-bottom: 4mm; }
+  @top-right { font: 8.5pt var(--font-mono); color: #596273; vertical-align: bottom; padding-bottom: 4mm; }
+  @bottom-left { font: 8.5pt var(--font-text); color: #596273; vertical-align: top; padding-top: 5mm; }
+  @bottom-right { font: 8.5pt var(--font-text); color: #596273; vertical-align: top; padding-top: 5mm; }
+}
+@page cover { margin: 0; @top-left { content: none; } @top-right { content: none; } @bottom-left { content: none; } @bottom-right { content: none; } @top-center { content: none; } }
+
+:root {
+  --font-text: "Atkinson Hyperlegible Next", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono", "Cascadia Mono", Consolas, monospace;
+  --t-cap: 8.5pt; --t-sm: 9.5pt; --t-body: 10.5pt; --t-md: 13pt; --t-lg: 15pt; --t-xl: 19pt; --t-2xl: 26pt; --t-hero: 34pt; --t-num: 38pt;
+  --sp-1: 4pt; --sp-2: 8pt; --sp-3: 12pt; --sp-4: 16pt; --sp-5: 24pt; --sp-6: 32pt; --sp-7: 48pt;
+  --radius: 4pt; --prose: 150mm; --shot-max-h: 80mm;
+  --paper: #FFFFFF; --ink: #141821; --text: #2C3340; --muted: #596273;
+  --line: #D5DAE1; --line-strong: #7D8696; --surface: #F4F5F7;
+  --accent: #1F4E8C; --accent-soft: #EBF1F9;
+  --pass: #0B6B3A; --pass-soft: #E7F4EC; --manual: #5B3FB0; --manual-soft: #F1EDFB;
+  --sev-critical: #A8161F; --sev-critical-soft: #FCEBEC; --sev-critical-fill: #A8161F;
+  --sev-serious: #B2410C; --sev-serious-soft: #FDF0E8; --sev-serious-fill: #E06A2C;
+  --sev-moderate: #7F5A00; --sev-moderate-soft: #FBF4E2; --sev-moderate-fill: #F0B84A;
+  --sev-minor: #4A5566; --sev-minor-soft: #EEF0F3; --sev-minor-fill: #E2E6EC;
+  --hl: #D1006F; --hl-halo: #FFFFFF; --scrim: rgb(20 24 33 / .42); --marker: #141821;
+}
+.sev-critical { --sev: var(--sev-critical); --sev-soft: var(--sev-critical-soft); --sev-fill: var(--sev-critical-fill); }
+.sev-serious { --sev: var(--sev-serious); --sev-soft: var(--sev-serious-soft); --sev-fill: var(--sev-serious-fill); }
+.sev-moderate { --sev: var(--sev-moderate); --sev-soft: var(--sev-moderate-soft); --sev-fill: var(--sev-moderate-fill); }
+.sev-minor { --sev: var(--sev-minor); --sev-soft: var(--sev-minor-soft); --sev-fill: var(--sev-minor-fill); }
+
+* { box-sizing: border-box; }
+html { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+body { margin: 0; background: var(--paper); font: 400 var(--t-body)/1.5 var(--font-text); color: var(--text); font-variant-numeric: tabular-nums; }
+main { display: block; }
+h1, h2, h3, h4 { color: var(--ink); font-weight: 700; line-height: 1.2; break-after: avoid; margin: 0; }
+h2 { font-size: var(--t-2xl); margin: 0 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-6) 0 var(--sp-2); }
+p { margin: 0 0 var(--sp-2); }
+p, li, dd { orphans: 3; widows: 3; }
+ul, ol { margin: 0; padding-left: 14pt; }
+li { margin: 0 0 var(--sp-1); }
+strong, b { color: var(--ink); font-weight: 700; }
+a { color: var(--accent); text-decoration: underline; text-decoration-thickness: .5pt; text-underline-offset: 2pt; }
+code, .url, .sc { font-family: var(--font-mono); }
+.url { font-size: .92em; overflow-wrap: break-word; }
+code { font-size: .92em; overflow-wrap: anywhere; }
+q { quotes: "\201C" "\201D"; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.muted { color: var(--muted); }
+.small { font-size: var(--t-sm); }
+.block { display: block; }
+.label { font-weight: 700; color: var(--ink); }
+.lead { font-size: 11.5pt; line-height: 1.5; color: var(--muted); max-width: var(--prose); margin: 0 0 var(--sp-5); }
+.pass-text { color: var(--pass); }
+
+/* Parts. Each named page carries its running header; a change of named page forces a break anyway. */
+.cover { page: cover; }
+.front { page: front; }
+.issues-sec { page: issues; }
+.review-sec { page: review; }
+.reference { page: reference; }
+.appendix { page: appendix; }
+.glance, .howto, .issues-sec, .review-sec, .templates-sec, .criteria-sec, .limits-sec, .pages-sec { break-before: page; }
+/* A section that is only a heading and a sentence (no problems to rank or describe) does not take a page of its own:
+   it follows the previous section, and the next one follows it. */
+.short { break-before: auto; margin-top: var(--sp-6); }
+/* "Fix these first" follows the summary on the same page when it fits: a summary that runs onto a second page would
+   otherwise leave that page mostly empty. Its heading stays with its table. */
+.priorities { break-before: auto; margin-top: var(--sp-7); }
+.priorities > h2, .priorities > .lead { break-after: avoid; }
+/* A change of named page always starts a new page, whatever break-before says: an empty "Problems" section takes the
+   page name of the items to check that follow it, so both share a page. */
+.issues-sec.short { page: review; }
+.issues-sec.short + .review-sec { break-before: avoid; margin-top: var(--sp-6); }
+/* A section's lead sentence stays with what it introduces (the first card or the table). */
+section > .lead { break-after: avoid; break-inside: avoid; }
+/* A long list of recommended replacements may continue on the next page instead of leaving a page mostly empty. */
+.issue-body > div.row-rec { break-inside: auto; }
+.rec { list-style: none; padding: 0; margin: 0; }
+.rec li { break-inside: avoid; }
+.rec li { margin: 0 0 var(--sp-1); }
+.rec code { font-family: var(--font-mono); font-size: var(--t-sm); background: var(--surface); padding: 1pt 3pt; border-radius: 2pt; }
+/* What to change, one row per picture or wording. The close-up is always shown, so the owner recognises the image
+   without reading code; the table may continue on the next page, its rows never split. */
+.rec-wrap { margin: var(--sp-3) 0 0; }
+.rec-label { font-weight: 700; color: var(--ink); margin: 0 0 var(--sp-1); break-after: avoid; }
+.rec-table { margin: 0 0 var(--sp-2); table-layout: fixed; }
+.rec-table th, .rec-table td { text-align: left; vertical-align: top; padding: 3pt 5pt; border-bottom: .75pt solid var(--line); overflow-wrap: break-word; }
+.rec-table thead th { font-size: var(--t-cap); color: var(--muted); border-bottom: .75pt solid var(--line-strong); }
+.rec-table tr { break-inside: avoid; }
+.rec-table th.rec-img, .rec-table td.rec-img { width: 30mm; }
+.rec-table td.rec-img img { display: block; max-width: 28mm; max-height: 22mm; width: auto; height: auto; border: .5pt solid var(--line); border-radius: 2pt; }
+.rec-file { display: block; font: var(--t-cap) var(--font-mono); color: var(--muted); margin-top: 2pt; overflow-wrap: break-word; }
+.rec-table td.rec-where { width: 34%; font-size: var(--t-cap); }
+.rec-table code { font-family: var(--font-mono); font-size: var(--t-sm); background: var(--surface); padding: 1pt 3pt; border-radius: 2pt; }
+.confidence-note { margin: var(--sp-2) 0 0; padding-left: 14pt; border-left: 3pt solid var(--sev); font-size: var(--t-sm); color: var(--muted); }
+.journeys-sec, .method-sec, .glossary-sec { margin-top: var(--sp-7); }
+/* A section heading is introduced by a short accent rule; the two never part at a page break. */
+section > h2 { break-inside: avoid; }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+
+/* ---- Severity marks ---- */
+.sev-glyph { width: 15pt; height: 11pt; vertical-align: -1pt; margin-right: 4pt; flex: none; }
+.sev-glyph rect.on { fill: var(--sev, var(--ink)); }
+.sev-glyph rect.off { fill: none; stroke: var(--line-strong); stroke-width: .8; }
+.sev-tag { display: inline-flex; align-items: center; white-space: nowrap; font-size: var(--t-sm); font-weight: 700; color: var(--sev); }
+.sev-tag .sev-hint { font-weight: 400; color: var(--muted); margin-left: .3em; }
+.sev-tag .sep { margin-right: .3em; }
+.issue-id { font-family: var(--font-mono); font-weight: 700; color: var(--accent); margin-right: 3pt; white-space: nowrap; }
+.id-link { font-family: var(--font-mono); font-weight: 700; white-space: nowrap; }
+.sc { font-weight: 700; color: var(--ink); background: var(--surface); border: .75pt solid var(--line-strong); border-radius: 3pt; padding: 0 4pt; white-space: nowrap; }
+
+/* ---- Groups ---- */
+.gicon { width: 13pt; height: 13pt; vertical-align: -3pt; color: var(--ink); flex: none; }
+.gchip { display: inline-flex; align-items: center; gap: 5pt; margin-right: 8pt; white-space: nowrap; }
+.gchip span { white-space: normal; }
+
+/* ================================================================== Cover */
+.cover-bar { height: 7mm; background: var(--accent); }
+.cover-inner { padding: 14mm 20mm 0; }
+.cover-head { display: flex; gap: 10mm; align-items: flex-start; justify-content: space-between; }
+.cover-title { flex: 1 1 auto; min-width: 0; }
+.kicker { font-size: var(--t-sm); font-weight: 700; color: var(--accent); margin: 0 0 var(--sp-2); }
+.cover h1 { font-size: var(--t-hero); line-height: 1.08; margin: 0 0 var(--sp-2); overflow-wrap: anywhere; }
+.cover-url { margin: 0 0 var(--sp-3); font-size: var(--t-body); }
+.cover-meta { color: var(--muted); font-size: var(--t-sm); margin: 0; }
+.browser { flex: none; width: 64mm; margin: 0; border: .75pt solid var(--line-strong); border-radius: var(--radius); overflow: hidden; }
+.browser-bar { display: flex; align-items: center; gap: 3pt; height: 13pt; padding: 0 6pt; background: var(--surface); border-bottom: .75pt solid var(--line); font: var(--t-cap) var(--font-mono); color: var(--muted); }
+.browser-bar i { width: 5pt; height: 5pt; border-radius: 50%; background: var(--line-strong); }
+.browser-bar span { margin-left: 4pt; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.browser img { display: block; width: 100%; height: auto; max-height: 52mm; object-fit: cover; object-position: top; }
+
+.verdict { margin: 12mm 0 0; padding: var(--sp-4) var(--sp-5) var(--sp-3); border-left: 6pt solid var(--tone); background: var(--surface); border-radius: 0 var(--radius) var(--radius) 0; break-inside: avoid; }
+.tone-critical { --tone: var(--sev-critical); --sev: var(--sev-critical); }
+.tone-serious { --tone: var(--sev-serious); --sev: var(--sev-serious); }
+.tone-moderate { --tone: var(--sev-moderate); --sev: var(--sev-moderate); }
+.tone-pass { --tone: var(--pass); }
+/* Nothing confirmed but questions open: neutral ink, never the green of a pass. */
+.tone-open { --tone: var(--ink); }
+.verdict-label { font-size: var(--t-md); color: var(--tone); display: flex; align-items: center; margin: 0 0 var(--sp-2); }
+.verdict-label::before { display: none; }
+.verdict-label .sev-glyph { width: 18pt; height: 13pt; }
+.verdict-headline { font-size: 18pt; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0 0 var(--sp-3); max-width: 160mm; }
+.verdict-summary { max-width: var(--prose); margin: 0 0 var(--sp-3); }
+.conformance { font-size: var(--t-sm); margin: 0 0 var(--sp-1); }
+.coverage { font-size: var(--t-sm); color: var(--muted); margin: 0; }
+
+.tiles { list-style: none; padding: 0; margin: 9mm 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+.tile { margin: 0; padding: var(--sp-3) var(--sp-3) var(--sp-2); border-top: 3pt solid var(--line-strong); display: flex; flex-direction: column; break-inside: avoid; }
+.tile-critical { border-top-color: var(--sev-critical); --sev: var(--sev-critical); }
+.tile-label { font-size: var(--t-sm); font-weight: 700; color: var(--ink); line-height: 1.3; min-height: 2.6em; }
+.tile-value { font-size: var(--t-num); font-weight: 700; line-height: 1.05; color: var(--ink); display: flex; align-items: center; margin: var(--sp-1) 0; }
+.tile-value .sev-glyph { width: 20pt; height: 15pt; margin-right: 6pt; }
+.tile-note { font-size: var(--t-cap); color: var(--muted); }
+.not-cert { margin-top: 9mm; font-size: var(--t-sm); color: var(--muted); max-width: var(--prose); }
+
+/* ================================================================== Tables (shared) */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: var(--t-sm); line-height: 1.4; }
+caption { text-align: left; caption-side: bottom; font-size: var(--t-cap); color: var(--muted); padding-top: var(--sp-2); }
+th { text-align: left; font-weight: 700; color: var(--ink); }
+thead th { font-size: var(--t-cap); color: var(--muted); padding: 0 var(--sp-2) var(--sp-2); border-bottom: 1.5pt solid var(--ink); vertical-align: bottom; }
+td, tbody th { padding: var(--sp-2); border-bottom: .75pt solid var(--line); vertical-align: top; }
+tr { break-inside: avoid; }
+thead { display: table-header-group; }
+tbody tr:last-child { break-before: avoid; }
+/* A recommendation table may end on the next page with one row: keeping its last two rows together pushed the whole
+   table, and the half page above it stayed blank. */
+.rec-table tbody tr:last-child { break-before: auto; }
+.num { text-align: right; white-space: nowrap; }
+td.zero { color: var(--muted); }
+
+/* ================================================================== At a glance */
+.barrier { table-layout: fixed; }
+.barrier th.sev-col { width: 13mm; }
+.barrier th.sev-col .sev-glyph { margin: 0; width: 17pt; height: 12pt; }
+.barrier thead th:first-child { width: 70mm; }
+.barrier thead th:nth-child(2) { width: 36mm; }
+.barrier thead th:last-child { width: 14mm; }
+.barrier th[scope=row], .barrier td { padding-top: 5pt; padding-bottom: 5pt; }
+.barrier th[scope=row] { font-weight: 400; color: var(--text); line-height: 1.3; }
+.barrier .most { margin-left: 18pt; }
+.glance h3 { margin-top: var(--sp-5); }
+.glance h3.first { margin-top: 0; }
+.keep { break-inside: avoid; }
+/* Set before printing on cards and short tables that fit on one page (lib/render.mjs). */
+.wr-keep { break-inside: avoid; }
+.glance .stiles { margin-bottom: var(--sp-2); }
+.glance .lead { margin-bottom: var(--sp-3); }
+.barrier tr.top th[scope=row] { font-weight: 700; color: var(--ink); }
+.barrier .bar-cell { width: 40mm; vertical-align: middle; }
+.barrier td.num { width: 13mm; }
+.barrier td.total { font-weight: 700; color: var(--ink); }
+.most { display: inline-block; margin-top: 2pt; font-size: var(--t-cap); font-weight: 700; color: #fff; background: var(--ink); border-radius: 3pt; padding: 0 5pt; }
+.stack { display: flex; height: 9pt; gap: 1pt; }
+.stack i { display: block; height: 100%; border-radius: 1.5pt; }
+.fill-critical { background: var(--sev-critical-fill); }
+.fill-serious { background: var(--sev-serious-fill); }
+.fill-moderate { background: var(--sev-moderate-fill); }
+.fill-minor { background: var(--sev-minor-fill); box-shadow: inset 0 0 0 .75pt var(--line-strong); }
+.fill-ink { background: var(--ink); }
+tr.none td { font-size: var(--t-sm); }
+
+.stiles { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; }
+.stile { margin: 0; padding: var(--sp-2) var(--sp-3); border-left: 3pt solid var(--sev); background: var(--surface); display: flex; flex-direction: column; break-inside: avoid; }
+.stile-head { display: flex; align-items: center; font-weight: 700; color: var(--sev); font-size: var(--t-sm); }
+.stile-num { font-size: 20pt; font-weight: 700; color: var(--ink); line-height: 1.1; }
+.stile-note { font-size: var(--t-cap); color: var(--muted); }
+
+.ptiles { list-style: none; padding: 0; margin: var(--sp-2) 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; }
+.ptile { margin: 0; padding: var(--sp-2) var(--sp-3) var(--sp-3); border: .75pt solid var(--line); border-radius: var(--radius); display: flex; flex-direction: column; break-inside: avoid; }
+.ptile-name { font-weight: 700; color: var(--ink); }
+.ptile-q { font-size: var(--t-cap); color: var(--muted); line-height: 1.3; min-height: 2.6em; }
+.ptile-count { font-size: var(--t-sm); font-weight: 700; color: var(--ink); margin: var(--sp-1) 0 var(--sp-2); }
+.grid { display: flex; flex-wrap: wrap; gap: 2pt; }
+.sq { display: inline-block; width: 9pt; height: 9pt; border-radius: 1.5pt; flex: none; vertical-align: -1pt; }
+.sq-fail { background: var(--sev-critical); }
+/* A solid fill with a white bar: a fine hatch rendered unevenly at this size in print. */
+.sq-needs_review { background: var(--manual); box-shadow: inset 0 0 0 .75pt var(--manual); background-image: linear-gradient(#fff, #fff); background-size: 5pt 1.2pt; background-position: center; background-repeat: no-repeat; }
+.sq-pass { background: #fff; box-shadow: inset 0 0 0 .75pt var(--pass); position: relative; }
+.sq-pass::after { content: ""; position: absolute; left: 3pt; top: 1pt; width: 2.2pt; height: 4.5pt; border: solid var(--pass); border-width: 0 1.1pt 1.1pt 0; transform: rotate(45deg); }
+.sq-not_applicable { background: var(--surface); box-shadow: inset 0 0 0 .75pt var(--line); }
+.sq-not_tested { background: #fff; box-shadow: inset 0 0 0 .75pt var(--line-strong); background-image: linear-gradient(var(--line-strong), var(--line-strong)); background-size: 5pt .9pt; background-position: center; background-repeat: no-repeat; }
+.legend { list-style: none; padding: 0; margin: var(--sp-3) 0 0; display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); font-size: var(--t-cap); color: var(--muted); }
+.legend li { margin: 0; display: inline-flex; align-items: center; gap: 4pt; }
+
+/* ================================================================== Priorities & key tasks */
+.prio td { vertical-align: top; padding: var(--sp-2) var(--sp-2) var(--sp-3); }
+.prio .rank { width: 10mm; font-size: 18pt; font-weight: 700; color: var(--ink); line-height: 1; padding-top: var(--sp-2); }
+.prio thead .rank { font-size: var(--t-cap); }
+.prio-title { color: var(--ink); text-decoration: none; font-weight: 700; font-size: var(--t-body); }
+.prio-title .issue-id { color: var(--accent); }
+.who-cell { width: 44mm; }
+.who-cell .gchip { display: flex; margin: 0 0 2pt; font-size: var(--t-cap); }
+.who-cell .gicon { width: 11pt; height: 11pt; }
+.reach-cell { width: 30mm; font-size: var(--t-cap); color: var(--muted); }
+.prio td:last-child { width: 24mm; }
+.soon { margin-top: var(--sp-5); padding: var(--sp-3) var(--sp-4) var(--sp-2); border: 1pt dashed var(--manual); border-radius: var(--radius); break-inside: avoid; }
+.soon h3 { margin: 0 0 var(--sp-1); color: var(--manual); }
+.soon ul { padding-left: 12pt; }
+
+.journeys th[scope=row] { width: 58mm; font-weight: 400; color: var(--text); }
+.journeys th[scope=row] .gchip { font-size: var(--t-sm); }
+.journeys thead th { color: var(--ink); font-size: var(--t-sm); }
+.js { font-size: var(--t-sm); }
+.js-state { display: block; font-weight: 700; }
+.js-ids { display: block; font-size: var(--t-cap); }
+.js-blocked .js-state { color: var(--sev-critical); }
+.js-blocked { background: var(--sev-critical-soft); }
+.js-very_hard .js-state { color: var(--sev-serious); }
+.js-some_problems .js-state { color: var(--sev-moderate); }
+.js-no_barrier_found .js-state { color: var(--pass); font-weight: 400; }
+.js-not_tested .js-state { color: var(--muted); font-weight: 400; font-style: italic; }
+.js-to_check .js-state { color: var(--muted); font-weight: 400; }
+.js-notes { padding-left: 12pt; margin-top: var(--sp-2); }
+
+/* ================================================================== How to read */
+.howto h3 { margin-top: var(--sp-5); }
+.sev-key { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+.sev-key li { margin: 0; padding-left: var(--sp-2); border-left: 3pt solid var(--sev); break-inside: avoid; }
+.sev-key p { font-size: var(--t-sm); margin: var(--sp-1) 0 0; line-height: 1.4; }
+.sev-key .sev-hint { display: block; flex-basis: 100%; margin-left: 0; }
+.sev-key .sep { display: none; }
+.sev-key .sev-tag { flex-wrap: wrap; white-space: normal; }
+.key-list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2) 8mm; margin: 0; font-size: var(--t-sm); }
+.key-list > div { break-inside: avoid; }
+.key-list dt { font-weight: 700; color: var(--ink); }
+.key-list dd { margin: 1pt 0 0; line-height: 1.4; }
+.groups-key dt .gchip { white-space: normal; }
+.know { display: inline-block; font-size: var(--t-cap); font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 3pt; padding: 1pt 5pt; }
+.card-parts { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 8mm; font-size: var(--t-sm); }
+.card-parts li { break-inside: avoid; margin: 0 0 var(--sp-2); padding-left: 18pt; text-indent: -18pt; line-height: 1.4; }
+.callout-n { display: inline-block; text-indent: 0; width: 13pt; height: 13pt; margin-right: 5pt; border-radius: 50%; background: var(--ink); color: #fff; font-size: var(--t-cap); font-weight: 700; text-align: center; line-height: 13pt; }
+.note-box { margin-top: var(--sp-4); padding: var(--sp-3) var(--sp-4); background: var(--manual-soft); border-left: 3pt solid var(--manual); font-size: var(--t-sm); color: var(--ink); max-width: var(--prose); }
+
+/* ================================================================== Problems */
+.band { margin-top: var(--sp-6); }
+.band:first-of-type { margin-top: 0; }
+.band-head { break-inside: avoid; break-after: avoid; margin-bottom: var(--sp-5); padding-bottom: var(--sp-2); border-bottom: 1.5pt solid var(--sev); }
+.band-head h3 { margin: 0 0 var(--sp-1); font-size: var(--t-xl); display: flex; align-items: center; }
+.band-head h3 .sev-glyph { width: 20pt; height: 15pt; margin-right: 6pt; }
+.band-lead { color: var(--muted); margin: 0 0 var(--sp-1); }
+.band-index { font-size: var(--t-cap); color: var(--muted); margin: 0; }
+
+/* The 1 px top padding keeps a card's first block from starting at the very edge of the card: without it Chromium
+   paints a sliver of a pushed card top at the foot of the previous page. */
+.issue { margin: 0 0 var(--sp-6); padding-top: 1px; }
+.issue > *, .issue-top > * { margin: 0; padding-left: 14pt; border-left: 3pt solid var(--sev); }
+/* The heading and the facts line of a card stay together and with what follows; the screenshots below them may go to
+   the next page one by one. Keeping the whole top (two screenshots, near a page tall) in one piece pushed it to a new
+   page and left most of the previous one blank. Its rule is drawn by its children: Chromium leaves a sliver of a
+   pushed block's own border at the foot of the previous page. */
+.issue > .issue-top { break-inside: auto; padding-left: 0; border-left: 0; }
+.issue-top > .issue-head, .issue-top > .issue-meta { break-inside: avoid; break-after: avoid; }
+.issue-top > .issue-meta { padding-top: var(--sp-2); padding-bottom: var(--sp-3); }
+.issue-media { padding-bottom: var(--sp-1); }
+.issue-media > :last-child { margin-bottom: var(--sp-2); }
+.issue-foot { padding-top: var(--sp-2); }
+.issue-foot > * { margin: 0; }
+.fix-wrap { padding-top: var(--sp-2); padding-bottom: var(--sp-1); }
+.issue-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12pt; }
+.sev-critical > .issue-top > .issue-head { background: var(--sev-critical-soft); padding: 8pt 10pt 8pt 14pt; }
+.issue-head h4, .review-card .issue-head h3 { font-size: var(--t-lg); font-weight: 700; color: var(--ink); margin: 0; line-height: 1.25; }
+.issue-sev { flex: none; margin: 0; }
+.issue-meta { list-style: none; padding-right: 0; display: flex; flex-wrap: wrap; gap: 4pt 14pt; font-size: var(--t-sm); color: var(--muted); }
+.issue-meta li { margin: 0; }
+.issue-meta .wcag a { color: var(--ink); font-weight: 700; text-decoration: none; }
+.issue-meta .lvl { color: var(--muted); }
+.issue-meta .related { display: block; font-size: var(--t-cap); }
+.issue-meta .reach b { color: var(--ink); }
+.issue-meta .where { flex-basis: 100%; color: var(--text); }
+.know-line { display: flex; align-items: center; gap: 8pt; }
+.group-strip { display: inline-flex; gap: 4pt; }
+.group-strip .gicon { width: 12pt; height: 12pt; }
+.meter { display: inline-block; position: relative; width: 22mm; height: 6pt; background: var(--surface); border: .75pt solid var(--line-strong); border-radius: 3pt; vertical-align: 0; margin-right: 6pt; overflow: hidden; }
+.meter i { position: absolute; left: 0; top: 0; bottom: 0; display: block; background: var(--ink); }
+.meter i.likely { background: repeating-linear-gradient(135deg, var(--line-strong) 0 1.5pt, #fff 1.5pt 3pt); }
+
+.issue-body { margin: 0; }
+.issue-body > div { display: grid; grid-template-columns: 31mm 1fr; gap: 10pt; padding: var(--sp-2) 0; border-top: .75pt solid var(--line); break-inside: auto; }
+/* Short rows stay whole; a long "Who it affects" list may continue on the next page instead of leaving a gap. */
+.issue-body > div:not(.row-who) { break-inside: avoid; }
+.issue-body dd li { break-inside: avoid; }
+.issue-body > div:first-child { border-top: 0; }
+.issue-body dt { font-weight: 700; color: var(--ink); font-size: var(--t-sm); padding-top: 1pt; }
+.issue-body dd { margin: 0; max-width: var(--prose); }
+.who { list-style: none; padding: 0; margin: 0; }
+.who li { margin: 0 0 var(--sp-1); padding-left: 19pt; text-indent: -19pt; line-height: 1.45; }
+.who .gicon { margin-right: 6pt; }
+.impact { display: inline-block; text-indent: 0; font-size: var(--t-cap); font-weight: 700; border: .75pt solid currentColor; border-radius: 3pt; padding: 0 4pt; line-height: 1.4; vertical-align: 1pt; }
+.impact.block { color: var(--sev-critical); }
+.impact.hard { color: var(--muted); }
+.fix { margin: 0; padding: var(--sp-3) var(--sp-4) var(--sp-2); background: var(--accent-soft); border-left: 3pt solid var(--accent); break-inside: avoid; }
+.fix-label { font-weight: 700; color: var(--accent); margin: 0 0 var(--sp-1); }
+.fix ol { margin: 0 0 var(--sp-2); }
+.fix p { font-size: var(--t-sm); }
+/* The footnote lines stay with the card's last row, so a page never starts with a lone "Seen on" line. */
+.issue-foot { break-before: avoid; }
+/* A card does not start in the last lines of a page, and its notes do not open the next page alone. */
+/* Not the whole top kept with the body: the heading already stays with its first screenshot, and a chain of "keep
+   with next" rules made Chromium push whole cards to a new page. */
+.confidence-note, .rec-wrap + .confidence-note { break-before: avoid; }
+/* A section title and its lead travel with the first card instead of being left alone on a page. */
+.issues-sec > h2, .issues-sec > .lead, .review-sec > h2, .review-sec > .lead { break-after: avoid; }
+.seen-on { font-size: var(--t-sm); color: var(--muted); }
+.dev-ref { font-size: var(--t-cap); color: var(--muted); margin: var(--sp-1) 0 0; }
+
+/* ---- Screenshots: vector highlight over a clean JPEG ---- */
+.shot { margin: 0 0 var(--sp-3); break-inside: avoid; }
+.shot-frame { position: relative; width: 100%; max-height: var(--shot-max-h); }
+.shot-frame img { display: block; width: 100%; height: 100%; object-fit: contain; border: .75pt solid var(--line-strong); }
+.shot-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
+.shot-overlay .scrim { fill: var(--scrim); }
+.shot-overlay .hl-halo { fill: none; stroke: var(--hl-halo); stroke-width: 6; vector-effect: non-scaling-stroke; }
+.shot-overlay .hl { fill: none; stroke: var(--hl); stroke-width: 3; vector-effect: non-scaling-stroke; }
+.shot-overlay .marker circle { fill: var(--marker); stroke: #fff; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.shot-overlay .marker text { fill: #fff; font-family: var(--font-text); font-weight: 700; text-anchor: middle; }
+/* The frame keeps the image's aspect ratio; a capped height would distort the overlay, so the width shrinks instead. */
+.shot .shot-frame { max-width: calc(var(--shot-max-h) * var(--ar, 2)); }
+.shot.tall .shot-frame { width: 70mm; }
+.caption { font-size: var(--t-sm); color: var(--muted); margin: var(--sp-1) 0 0; }
+.fig-n { font-weight: 700; color: var(--ink); }
+.pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; align-items: start; }
+/* Both halves get the same height budget, so a wide desktop crop and a tall phone crop look balanced. */
+.pair .shot-frame { max-width: calc(62mm * var(--ar, 1)); }
+.pair-label { font-size: var(--t-cap); font-weight: 700; color: var(--ink); margin: 0 0 var(--sp-1); }
+
+/* ---- Evidence widgets ---- */
+.ev { margin: 0 0 var(--sp-3); padding: var(--sp-2) var(--sp-3); background: var(--surface); border-radius: var(--radius); break-inside: avoid; }
+.ev-title { font-size: var(--t-cap); font-weight: 700; color: var(--ink); margin: 0 0 var(--sp-1); }
+.sr { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2pt 10pt; font-family: var(--font-mono); font-size: var(--t-sm); }
+.sr > div { display: contents; }
+.sr dt { font-family: var(--font-text); color: var(--muted); font-size: var(--t-cap); padding-top: 1pt; }
+.sr dd { margin: 0; color: var(--ink); }
+.swatch-row { display: flex; align-items: center; gap: 12pt; flex-wrap: wrap; }
+.swatch-sample { display: block; width: 36mm; height: auto; font-family: var(--font-text); }
+.swatch-dl { margin: 0; font-size: var(--t-cap); }
+.swatch-dl > div { display: flex; gap: 6pt; align-items: center; }
+.swatch-dl dt { color: var(--muted); min-width: 18mm; }
+.swatch-dl dd { margin: 0; display: inline-flex; gap: 4pt; align-items: center; }
+.chip { display: inline-block; width: 9pt; height: 9pt; border: .75pt solid var(--line-strong); border-radius: 2pt; }
+.ratio { margin: 0; font-size: var(--t-sm); }
+.ratio strong { font-size: var(--t-md); }
+.ev-source pre { margin: 0; font: var(--t-cap)/1.5 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.ev-source .mark { display: block; background: var(--sev-critical-soft); box-shadow: inset 2pt 0 0 var(--sev-critical); padding-left: 4pt; }
+
+/* ================================================================== Items to check */
+.review-card { break-inside: avoid; margin: 0 0 var(--sp-5); padding: var(--sp-3) var(--sp-4) var(--sp-2); border: 1pt dashed var(--manual); border-radius: var(--radius); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.to-check { flex: none; margin: 0; font-size: var(--t-cap); font-weight: 700; color: var(--manual); background: var(--manual-soft); border-radius: 3pt; padding: 1pt 6pt; }
+.if-confirmed { font-size: var(--t-sm); color: var(--ink); margin: var(--sp-1) 0 0; font-weight: 700; }
+.compact-h { margin-top: var(--sp-6); }
+.compact td { font-size: var(--t-sm); }
+
+/* ================================================================== Reference */
+.tpl th[scope=row] { width: 40mm; }
+.crit td, .crit th { padding: var(--sp-1) var(--sp-2); }
+.crit .sc-cell { width: 14mm; }
+.crit td:nth-child(3) { width: 11mm; }
+.crit td:nth-child(4) { width: 31mm; }
+.crit td:nth-child(5) { width: 20mm; }
+.crit .note { width: 36mm; font-size: var(--t-cap); color: var(--muted); }
+.crit .plain { display: block; font-size: var(--t-cap); color: var(--muted); }
+.status { display: inline-flex; align-items: center; gap: 4pt; font-weight: 700; font-size: var(--t-cap); }
+.status.st-fail { color: var(--sev-critical); }
+.status.st-needs_review { color: var(--manual); }
+.status.st-pass { color: var(--pass); }
+.status.st-not_applicable, .status.st-not_tested { color: var(--muted); }
+.h-q { font-weight: 400; color: var(--muted); font-size: var(--t-sm); margin-left: 6pt; }
+.honesty { padding-left: 14pt; max-width: var(--prose); }
+.honesty li { margin-bottom: var(--sp-2); }
+.gaps th[scope=row] { width: 40mm; }
+.steps { max-width: var(--prose); }
+.steps li { margin-bottom: var(--sp-2); }
+.env th[scope=row] { width: 50mm; font-weight: 700; }
+.deep-list { font-size: var(--t-sm); padding-left: 14pt; }
+.tool-notes { font-size: var(--t-sm); padding-left: 14pt; }
+.tool-notes li { break-inside: avoid; margin-bottom: var(--sp-2); }
+.tool-notes p { margin: 0 0 1mm; }
+.tool-notes code { overflow-wrap: anywhere; }
+.glossary { margin: 0; display: grid; grid-template-columns: 1fr; gap: var(--sp-2); }
+.glossary > div { display: grid; grid-template-columns: 42mm 1fr; gap: 10pt; break-inside: avoid; font-size: var(--t-sm); }
+.glossary dt { font-weight: 700; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+/* ================================================================== Pages appendix */
+.pages td { padding: var(--sp-1) var(--sp-2); font-size: var(--t-cap); }
+.pages td:first-child { width: 78mm; }
+.pages .ptitle { display: block; color: var(--muted); }
+.pages tr.failed td { background: var(--surface); }
+.page-status { display: block; font-weight: 700; color: var(--sev-critical); }
+
+.next-step { margin: var(--sp-2) 0 0; font-size: var(--t-sm); color: var(--text); }

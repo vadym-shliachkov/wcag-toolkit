@@ -1,0 +1,6 @@
+{
+  "name": "wcag-build",
+  "version": "0.1.0",
+  "description": "Build UI that meets WCAG 2.2 from the first version: before the agent plans a component, block or restyle, it works out which criteria the change could break and builds the requirements in.",
+  "skills": "./skills/"
+}

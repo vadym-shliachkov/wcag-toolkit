@@ -1,0 +1,231 @@
+{
+ "wcag_version": "2.2",
+ "authority": "original normalized lookup; read normative conditions and exceptions in criteria.json",
+ "use": "A numeric guide for a single branch of a check. One measurement result does not mean that the criterion as a whole is passed or failed.",
+ "thresholds": [
+  {
+   "criterion": "1.4.2",
+   "metric": "autoplay_duration",
+   "operator": ">",
+   "value": 3,
+   "unit": "s",
+   "meaning": "trigger_for_audio_control"
+  },
+  {
+   "criterion": "1.4.3",
+   "metric": "contrast_ratio_normal_text",
+   "operator": ">=",
+   "value": 4.5,
+   "unit": "ratio",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "1.4.3",
+   "metric": "contrast_ratio_large_text",
+   "operator": ">=",
+   "value": 3,
+   "unit": "ratio",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "1.4.4",
+   "metric": "text_resize",
+   "operator": ">=",
+   "value": 200,
+   "unit": "percent",
+   "meaning": "required_resize_without_loss"
+  },
+  {
+   "criterion": "1.4.6",
+   "metric": "contrast_ratio_normal_text",
+   "operator": ">=",
+   "value": 7,
+   "unit": "ratio",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "1.4.6",
+   "metric": "contrast_ratio_large_text",
+   "operator": ">=",
+   "value": 4.5,
+   "unit": "ratio",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "1.4.7",
+   "metric": "speech_over_background",
+   "operator": ">=",
+   "value": 20,
+   "unit": "dB",
+   "meaning": "one_sufficient_branch"
+  },
+  {
+   "criterion": "1.4.8",
+   "metric": "line_length_non_CJK",
+   "operator": "<=",
+   "value": 80,
+   "unit": "characters_or_glyphs",
+   "meaning": "one_of_multiple_visual_presentation_conditions"
+  },
+  {
+   "criterion": "1.4.8",
+   "metric": "line_length_CJK",
+   "operator": "<=",
+   "value": 40,
+   "unit": "characters_or_glyphs",
+   "meaning": "one_of_multiple_visual_presentation_conditions"
+  },
+  {
+   "criterion": "1.4.10",
+   "metric": "vertical_content_test_width",
+   "operator": "=",
+   "value": 320,
+   "unit": "CSS_px",
+   "meaning": "test_viewport"
+  },
+  {
+   "criterion": "1.4.10",
+   "metric": "horizontal_content_test_height",
+   "operator": "=",
+   "value": 256,
+   "unit": "CSS_px",
+   "meaning": "test_viewport"
+  },
+  {
+   "criterion": "1.4.11",
+   "metric": "necessary_non_text_contrast",
+   "operator": ">=",
+   "value": 3,
+   "unit": "ratio",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "1.4.12",
+   "metric": "line_height_override",
+   "operator": "=",
+   "value": 1.5,
+   "unit": "font_size",
+   "meaning": "apply_together_with_all_spacing_overrides"
+  },
+  {
+   "criterion": "1.4.12",
+   "metric": "after_paragraph_override",
+   "operator": "=",
+   "value": 2,
+   "unit": "font_size",
+   "meaning": "apply_together_with_all_spacing_overrides"
+  },
+  {
+   "criterion": "1.4.12",
+   "metric": "letter_spacing_override",
+   "operator": "=",
+   "value": 0.12,
+   "unit": "font_size",
+   "meaning": "apply_together_with_all_spacing_overrides"
+  },
+  {
+   "criterion": "1.4.12",
+   "metric": "word_spacing_override",
+   "operator": "=",
+   "value": 0.16,
+   "unit": "font_size",
+   "meaning": "apply_together_with_all_spacing_overrides"
+  },
+  {
+   "criterion": "2.2.1",
+   "metric": "time_adjustment_multiple",
+   "operator": ">=",
+   "value": 10,
+   "unit": "default_duration_multiple",
+   "meaning": "adjust_branch"
+  },
+  {
+   "criterion": "2.2.1",
+   "metric": "warning_response_window",
+   "operator": ">=",
+   "value": 20,
+   "unit": "s",
+   "meaning": "extend_branch_also_requires_extension_count"
+  },
+  {
+   "criterion": "2.2.1",
+   "metric": "allowed_extensions",
+   "operator": ">=",
+   "value": 10,
+   "unit": "count",
+   "meaning": "extend_branch_also_requires_warning_window"
+  },
+  {
+   "criterion": "2.2.2",
+   "metric": "moving_blinking_scrolling_duration",
+   "operator": ">",
+   "value": 5,
+   "unit": "s",
+   "meaning": "duration_condition_for_motion_branch_not_auto_update"
+  },
+  {
+   "criterion": "2.2.6",
+   "metric": "inactivity_data_retention",
+   "operator": ">",
+   "value": 20,
+   "unit": "h",
+   "meaning": "exception_to_warning_requirement"
+  },
+  {
+   "criterion": "2.3.1",
+   "metric": "flashes_in_any_one_second",
+   "operator": "<=",
+   "value": 3,
+   "unit": "count",
+   "meaning": "one_branch_area_and_luminance_alternative"
+  },
+  {
+   "criterion": "2.3.2",
+   "metric": "flashes_in_any_one_second",
+   "operator": "<=",
+   "value": 3,
+   "unit": "count",
+   "meaning": "limit_without_area_and_luminance_alternative"
+  },
+  {
+   "criterion": "2.4.13",
+   "metric": "perimeter_for_area_comparison",
+   "operator": "=",
+   "value": 2,
+   "unit": "CSS_px",
+   "meaning": "reference_thickness_not_required_outline_style"
+  },
+  {
+   "criterion": "2.4.13",
+   "metric": "same_pixels_focused_unfocused_contrast",
+   "operator": ">=",
+   "value": 3,
+   "unit": "ratio",
+   "meaning": "contrast_in_addition_to_minimum_area"
+  },
+  {
+   "criterion": "2.5.5",
+   "metric": "target_each_dimension",
+   "operator": ">=",
+   "value": 44,
+   "unit": "CSS_px",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "2.5.8",
+   "metric": "target_each_dimension",
+   "operator": ">=",
+   "value": 24,
+   "unit": "CSS_px",
+   "meaning": "minimum_with_exceptions"
+  },
+  {
+   "criterion": "2.5.8",
+   "metric": "undersized_target_spacing_circle_diameter",
+   "operator": "=",
+   "value": 24,
+   "unit": "CSS_px",
+   "meaning": "spacing_exception_circle_centered_on_target_bounding_box"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "wcag-report",
+  "version": "0.1.0",
+  "description": "Check every page of a website or repository against WCAG 2.2 and produce a client-ready PDF report: what is wrong, why it happens and who it affects.",
+  "author": { "name": "Vadym Shliachkov" },
+  "license": "MIT",
+  "keywords": ["accessibility", "wcag", "a11y", "audit", "report"]
+}

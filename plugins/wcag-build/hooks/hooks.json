@@ -1,0 +1,20 @@
+{
+  "description": "Point Claude at the wcag-build skill before it plans or edits UI. Set WCAG_BUILD_HOOKS=off to disable.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-prompt.mjs\"", "timeout": 5 }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^(Skill|Edit|Write|MultiEdit)$",
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-tool.mjs\"", "timeout": 5 }
+        ]
+      }
+    ]
+  }
+}

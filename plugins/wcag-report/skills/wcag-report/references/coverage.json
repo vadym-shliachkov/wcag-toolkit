@@ -1,0 +1,983 @@
+{
+ "1.1.1": {
+  "level": "A",
+  "automated": [
+   "aria-meter-name",
+   "aria-progressbar-name",
+   "image-alt",
+   "input-image-alt",
+   "object-alt",
+   "role-img-alt",
+   "svg-img-alt"
+  ],
+  "deep": [],
+  "judge": "Do text descriptions of meaningful images say what the image shows or does; are decorative images hidden?",
+  "passCapable": "judge",
+  "applicability": "images",
+  "notTestedReason": "Whether image descriptions match the images needs a person who knows the content."
+ },
+ "1.2.1": {
+  "level": "A",
+  "automated": [
+   "audio-caption"
+  ],
+  "deep": [],
+  "judge": "Is there a transcript or equivalent for audio-only and video-only media?",
+  "passCapable": "judge",
+  "applicability": "media",
+  "notTestedReason": "Whether audio and silent videos have an equivalent needs someone to play them."
+ },
+ "1.2.2": {
+  "level": "A",
+  "automated": [
+   "video-caption"
+  ],
+  "deep": [],
+  "judge": "Do recorded videos with sound offer captions (track, player captions or burned-in)?",
+  "passCapable": "judge",
+  "applicability": "media",
+  "notTestedReason": "Caption presence and accuracy need a person to watch the videos."
+ },
+ "1.2.3": {
+  "level": "A",
+  "automated": [],
+  "deep": [],
+  "judge": "Is there audio description or a full text alternative for recorded video?",
+  "passCapable": "judge",
+  "applicability": "media",
+  "notTestedReason": "Whether videos describe what they show needs a person to watch them."
+ },
+ "1.2.4": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": "Do live streams offer live captions?",
+  "passCapable": "none",
+  "applicability": "live-media",
+  "notTestedReason": "Live captions can only be checked during a live broadcast."
+ },
+ "1.2.5": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": "Do recorded videos have audio description of important visual information?",
+  "passCapable": "judge",
+  "applicability": "media",
+  "notTestedReason": "Audio description needs a person to watch the videos."
+ },
+ "1.2.6": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": "Is sign language interpretation provided for recorded video?",
+  "passCapable": "judge",
+  "applicability": "media",
+  "notTestedReason": "Sign language interpretation needs a person to watch the videos."
+ },
+ "1.2.7": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "media",
+  "notTestedReason": "Extended audio description needs a person to watch the videos."
+ },
+ "1.2.8": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": "Is there a full text alternative for recorded video?",
+  "passCapable": "judge",
+  "applicability": "media",
+  "notTestedReason": "A full text alternative needs a person to compare it with the video."
+ },
+ "1.2.9": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "live-media",
+  "notTestedReason": "Live audio alternatives can only be checked during a live broadcast."
+ },
+ "1.3.1": {
+  "level": "A",
+  "automated": [
+   "aria-hidden-body",
+   "aria-required-children",
+   "aria-required-parent",
+   "definition-list",
+   "dlitem",
+   "list",
+   "listitem",
+   "table-fake-caption",
+   "td-has-header",
+   "td-headers-attr",
+   "th-has-data-cells"
+  ],
+  "deep": [
+   "states"
+  ],
+  "judge": "Do visual headings, lists, tables and form groups match the structure software reads?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Structure was not compared with the visual layout on these pages."
+ },
+ "1.3.2": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "keyboard"
+  ],
+  "judge": "Does the reading order keep the meaning when read top to bottom?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Reading order was not compared with the visual order."
+ },
+ "1.3.3": {
+  "level": "A",
+  "automated": [],
+  "deep": [],
+  "judge": "Do instructions rely only on shape, colour, size, position or sound?",
+  "passCapable": "judge",
+  "applicability": "instructions",
+  "notTestedReason": "Instructions were not reviewed for references to shape, size or position."
+ },
+ "1.3.4": {
+  "level": "AA",
+  "automated": [
+   "css-orientation-lock"
+  ],
+  "deep": [
+   "orientation"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Portrait and landscape layouts were not compared."
+ },
+ "1.3.5": {
+  "level": "AA",
+  "automated": [
+   "autocomplete-valid"
+  ],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "forms",
+  "notTestedReason": "Form fields asking for personal details were not checked for their input purpose."
+ },
+ "1.3.6": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Identifying the purpose of every region and icon needs a manual review."
+ },
+ "1.4.1": {
+  "level": "A",
+  "automated": [
+   "link-in-text-block"
+  ],
+  "deep": [
+   "forms",
+   "measure"
+  ],
+  "judge": "Is colour the only signal for links, states, errors or chart data?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Colour-only signals need a person to look at every state."
+ },
+ "1.4.2": {
+  "level": "A",
+  "automated": [
+   "no-autoplay-audio"
+  ],
+  "deep": [
+   "motion"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "media",
+  "notTestedReason": "Pages were not checked for sound that plays automatically."
+ },
+ "1.4.3": {
+  "level": "AA",
+  "automated": [
+   "color-contrast"
+  ],
+  "deep": [
+   "measure",
+   "states"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Contrast of text over images needs a person to check."
+ },
+ "1.4.4": {
+  "level": "AA",
+  "automated": [
+   "meta-viewport"
+  ],
+  "deep": [
+   "resize-text"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Text was not enlarged to 200% on these pages."
+ },
+ "1.4.5": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": "Are there images of text that could be real text?",
+  "passCapable": "judge",
+  "applicability": "images",
+  "notTestedReason": "Pictures of text need a person to spot them."
+ },
+ "1.4.6": {
+  "level": "AAA",
+  "automated": [
+   "color-contrast-enhanced"
+  ],
+  "deep": [
+   "states"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Enhanced contrast was not measured in every state."
+ },
+ "1.4.7": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "media",
+  "notTestedReason": "Background sound levels need a person to listen to the recordings."
+ },
+ "1.4.8": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [
+   "text-spacing"
+  ],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Adjustable reading layout needs a manual review."
+ },
+ "1.4.9": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": "Are there images of text that are not purely decorative or essential?",
+  "passCapable": "judge",
+  "applicability": "images",
+  "notTestedReason": "Pictures of text need a person to spot them."
+ },
+ "1.4.10": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "reflow"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "The page was not checked at 320 pixels wide."
+ },
+ "1.4.11": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "focus-visible",
+   "states"
+  ],
+  "judge": "Are control borders, icons and chart parts visible against neighbours (3:1)?",
+  "passCapable": "deep+judge",
+  "applicability": "always",
+  "notTestedReason": "Contrast of controls and graphics needs a person to check every state."
+ },
+ "1.4.12": {
+  "level": "AA",
+  "automated": [
+   "avoid-inline-spacing"
+  ],
+  "deep": [
+   "text-spacing"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Wider text spacing was not applied on these pages."
+ },
+ "1.4.13": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "hover-content"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "hover-content",
+  "notTestedReason": "Content that appears on hover or focus was not checked on these pages."
+ },
+ "2.1.1": {
+  "level": "A",
+  "automated": [
+   "frame-focusable-content",
+   "scrollable-region-focusable",
+   "server-side-image-map"
+  ],
+  "deep": [
+   "keyboard",
+   "states",
+   "hover-content",
+   "interaction"
+  ],
+  "judge": "Can every mouse action shown on screen also be done by keyboard?",
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Not every control was operated with the keyboard."
+ },
+ "2.1.2": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "keyboard"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Keyboard movement was not traced through these pages."
+ },
+ "2.1.3": {
+  "level": "AAA",
+  "automated": [
+   "scrollable-region-focusable"
+  ],
+  "deep": [
+   "keyboard"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Not every feature was operated with the keyboard."
+ },
+ "2.1.4": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "interaction"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "shortcuts",
+  "notTestedReason": "Single-key shortcuts need a manual check of every page."
+ },
+ "2.2.1": {
+  "level": "A",
+  "automated": [
+   "meta-refresh"
+  ],
+  "deep": [
+   "motion"
+  ],
+  "judge": "Are there time limits (session expiry, timed offers, auto-advance) without a way to extend them?",
+  "passCapable": "judge",
+  "applicability": "time-limits",
+  "notTestedReason": "Time limits such as session expiry need a person to wait them out."
+ },
+ "2.2.2": {
+  "level": "A",
+  "automated": [
+   "blink",
+   "marquee"
+  ],
+  "deep": [
+   "motion"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "moving-content",
+  "notTestedReason": "Pages were not checked for moving or auto-updating content."
+ },
+ "2.2.3": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "time-limits",
+  "notTestedReason": "Timing in every task needs a manual review."
+ },
+ "2.2.4": {
+  "level": "AAA",
+  "automated": [
+   "meta-refresh-no-exceptions"
+  ],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "interruptions",
+  "notTestedReason": "Interruptions need a person to use the site over time."
+ },
+ "2.2.5": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "authentication",
+  "notTestedReason": "Re-authentication needs a signed-in session to test."
+ },
+ "2.2.6": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "time-limits",
+  "notTestedReason": "Data-loss warnings need a person to wait out inactivity."
+ },
+ "2.3.1": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "motion"
+  ],
+  "judge": "Does any video or animation flash rapidly?",
+  "passCapable": "judge",
+  "applicability": "moving-content",
+  "notTestedReason": "Flashing in videos needs frame-by-frame analysis of each video."
+ },
+ "2.3.2": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [
+   "motion"
+  ],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "moving-content",
+  "notTestedReason": "Flashing in videos needs frame-by-frame analysis of each video."
+ },
+ "2.3.3": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [
+   "motion"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "moving-content",
+  "notTestedReason": "Animation on scroll or click was not tested with reduced motion."
+ },
+ "2.4.1": {
+  "level": "A",
+  "automated": [
+   "bypass"
+  ],
+  "deep": [
+   "interaction",
+   "keyboard"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Ways to skip repeated blocks were not tested."
+ },
+ "2.4.2": {
+  "level": "A",
+  "automated": [
+   "document-title"
+  ],
+  "deep": [],
+  "judge": "Does each page title describe the topic or purpose of the page?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Page titles were not reviewed for meaning."
+ },
+ "2.4.3": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "keyboard",
+   "states",
+   "interaction"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Keyboard order was not traced through these pages."
+ },
+ "2.4.4": {
+  "level": "A",
+  "automated": [
+   "area-alt",
+   "link-name"
+  ],
+  "deep": [],
+  "judge": "Is the purpose of each link clear from its text or its sentence?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Link wording was not reviewed for meaning."
+ },
+ "2.4.5": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "site",
+  "applicability": "always",
+  "notTestedReason": "Ways to find pages were not reviewed."
+ },
+ "2.4.6": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": "Do headings and labels describe their topic or purpose?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Headings and labels were not reviewed for meaning."
+ },
+ "2.4.7": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "focus-visible",
+   "keyboard"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "The keyboard highlight was not checked on every control."
+ },
+ "2.4.8": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": "Can people tell where they are within the site?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Location cues were not reviewed."
+ },
+ "2.4.9": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": "Is each link purpose clear from its text alone?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Link wording was not reviewed for meaning."
+ },
+ "2.4.10": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": "Are sections organised with headings?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Section headings were not reviewed."
+ },
+ "2.4.11": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "focus-obscured"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Sticky headers and banners were not checked against the keyboard position."
+ },
+ "2.4.12": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [
+   "focus-obscured"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Partial hiding of the keyboard position was not checked."
+ },
+ "2.4.13": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [
+   "focus-visible"
+  ],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "The size and contrast of the keyboard highlight need a measurement on every control."
+ },
+ "2.5.1": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "interaction"
+  ],
+  "judge": "Do any features need swipes, pinches or path gestures without a single-tap alternative?",
+  "passCapable": "judge",
+  "applicability": "gestures",
+  "notTestedReason": "Gesture-based features need a person with a touch device."
+ },
+ "2.5.2": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "interaction"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "What happens on press versus release needs a manual check."
+ },
+ "2.5.3": {
+  "level": "A",
+  "automated": [
+   "label-content-name-mismatch"
+  ],
+  "deep": [
+   "measure"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Control names were not compared with their visible text."
+ },
+ "2.5.4": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "interaction"
+  ],
+  "judge": "Are there features triggered by shaking or tilting the device?",
+  "passCapable": "judge",
+  "applicability": "device-motion",
+  "notTestedReason": "Motion-triggered features need a person with a phone."
+ },
+ "2.5.5": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [
+   "target-size"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Tap areas were not measured against 44 pixels."
+ },
+ "2.5.6": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Switching between input methods needs a manual check."
+ },
+ "2.5.7": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "interaction"
+  ],
+  "judge": "Are there drag-and-drop features (sliders, reordering, maps) without a click alternative?",
+  "passCapable": "judge",
+  "applicability": "dragging",
+  "notTestedReason": "Dragging features need a manual check."
+ },
+ "2.5.8": {
+  "level": "AA",
+  "automated": [
+   "target-size"
+  ],
+  "deep": [
+   "target-size"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Tap areas were not measured on these pages."
+ },
+ "3.1.1": {
+  "level": "A",
+  "automated": [
+   "html-has-lang",
+   "html-lang-valid",
+   "html-xml-lang-mismatch"
+  ],
+  "deep": [],
+  "judge": "Does the declared page language match the language of the content?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "The declared language was not compared with the content."
+ },
+ "3.1.2": {
+  "level": "AA",
+  "automated": [
+   "valid-lang"
+  ],
+  "deep": [],
+  "judge": "Are passages in another language marked as such?",
+  "passCapable": "judge",
+  "applicability": "always",
+  "notTestedReason": "Passages in other languages were not reviewed."
+ },
+ "3.1.3": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Unusual words need a person who knows the audience."
+ },
+ "3.1.4": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Abbreviations need a manual review."
+ },
+ "3.1.5": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Reading level needs a manual review."
+ },
+ "3.1.6": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Pronunciation needs a manual review."
+ },
+ "3.2.1": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "interaction"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Focus changes were not watched for unexpected changes."
+ },
+ "3.2.2": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "forms",
+  "notTestedReason": "Changing fields was not tested for unexpected changes."
+ },
+ "3.2.3": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "site",
+  "applicability": "always",
+  "notTestedReason": "Navigation order was not compared across page types."
+ },
+ "3.2.4": {
+  "level": "AA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "site",
+  "applicability": "always",
+  "notTestedReason": "Naming was not compared across page types."
+ },
+ "3.2.5": {
+  "level": "AAA",
+  "automated": [
+   "meta-refresh-no-exceptions"
+  ],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "always",
+  "notTestedReason": "Every change of context needs a manual review."
+ },
+ "3.2.6": {
+  "level": "A",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "site",
+  "applicability": "help",
+  "notTestedReason": "No check confirmed that help and contact links sit in one place on every page."
+ },
+ "3.3.1": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "forms",
+  "notTestedReason": "Form errors could not be triggered safely on these pages."
+ },
+ "3.3.2": {
+  "level": "A",
+  "automated": [
+   "form-field-multiple-labels"
+  ],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "forms",
+  "notTestedReason": "Form labels and instructions were not reviewed on these pages."
+ },
+ "3.3.3": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "forms",
+  "notTestedReason": "Form errors could not be triggered safely on these pages."
+ },
+ "3.3.4": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "transactions",
+  "notTestedReason": "Submissions with legal or financial effect were not completed."
+ },
+ "3.3.5": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "forms",
+  "notTestedReason": "Context help needs a manual review."
+ },
+ "3.3.6": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "forms",
+  "notTestedReason": "Submissions were not completed."
+ },
+ "3.3.7": {
+  "level": "A",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "multi-step",
+  "notTestedReason": "No multi-step process was completed."
+ },
+ "3.3.8": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": "Does sign-in need a memory test or puzzle without an easier option (paste, password manager, alternative)?",
+  "passCapable": "judge",
+  "applicability": "authentication",
+  "notTestedReason": "Sign-in was not tested."
+ },
+ "3.3.9": {
+  "level": "AAA",
+  "automated": [],
+  "deep": [],
+  "judge": null,
+  "passCapable": "none",
+  "applicability": "authentication",
+  "notTestedReason": "Sign-in was not tested."
+ },
+ "4.1.2": {
+  "level": "A",
+  "automated": [
+   "area-alt",
+   "aria-allowed-attr",
+   "aria-braille-equivalent",
+   "aria-command-name",
+   "aria-conditional-attr",
+   "aria-deprecated-role",
+   "aria-hidden-body",
+   "aria-hidden-focus",
+   "aria-input-field-name",
+   "aria-prohibited-attr",
+   "aria-required-attr",
+   "aria-roledescription",
+   "aria-roles",
+   "aria-tab-name",
+   "aria-toggle-field-name",
+   "aria-tooltip-name",
+   "aria-valid-attr",
+   "aria-valid-attr-value",
+   "button-name",
+   "duplicate-id-aria",
+   "frame-title",
+   "input-button-name",
+   "input-image-alt",
+   "label",
+   "link-name",
+   "nested-interactive",
+   "select-name",
+   "summary-name"
+  ],
+  "deep": [
+   "states",
+   "keyboard",
+   "interaction"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "always",
+  "notTestedReason": "Names and states of custom controls were not checked in every state."
+ },
+ "4.1.3": {
+  "level": "AA",
+  "automated": [],
+  "deep": [
+   "forms"
+  ],
+  "judge": null,
+  "passCapable": "deep",
+  "applicability": "status-messages",
+  "notTestedReason": "Status messages were not triggered on these pages."
+ }
+}
