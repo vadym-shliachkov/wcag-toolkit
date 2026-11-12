@@ -201,7 +201,7 @@ test('a judge’s wording failures on the same kind of element are one problem, 
     { pageId: 'p1', images: [{ selector: '#a-work > figure.x > img', alt: 'Alpha project context' }] },
     { pageId: 'p2', images: [{ selector: '#b-work > figure > img', alt: 'Beta project context' }] },
     { pageId: 'p3', images: [{ selector: 'div.brand > img', alt: 'Acme logo' }] },
-    { pageId: 'p4', images: [{ selector: '#c-work > figure > img', alt: 'Goop project context' }] },
+    { pageId: 'p4', images: [{ selector: '#c-work > figure > img', alt: 'Gamma project context' }] },
     { pageId: 'p5', images: [{ selector: '#d > figure > img', alt: 'Research notes and glasses beside a laptop' }] },
   ];
   const out = foldJudgeFails([

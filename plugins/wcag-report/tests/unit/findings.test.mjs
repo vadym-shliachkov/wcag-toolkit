@@ -41,8 +41,8 @@ test('hiding and describing are two problems; an unseen place takes the kind of 
 });
 
 test('one picture file appears in one problem', () => {
-  const a = { key: 'A', observations: [obs('p1', 'x', '', { src: 'neo.webp' }), obs('p2', 'x', '', { src: 'neo.webp' }), obs('p3', 'y', '', { src: 'other.webp' })] };
-  const b = { key: 'B', observations: [obs('p4', 'x', '', { src: 'neo.webp' })] };
+  const a = { key: 'A', observations: [obs('p1', 'x', '', { src: 'app.webp' }), obs('p2', 'x', '', { src: 'app.webp' }), obs('p3', 'y', '', { src: 'other.webp' })] };
+  const b = { key: 'B', observations: [obs('p4', 'x', '', { src: 'app.webp' })] };
   const out = oneCardPerImage([a, b]);
   assert.deepEqual(out.map((g) => g.key), ['A']);
   assert.equal(a.observations.length, 4);
@@ -50,11 +50,11 @@ test('one picture file appears in one problem', () => {
 
 test('an image is found by page, alt and selector even when selectors repeat', () => {
   const index = imageIndex([{ pageId: 'p1', images: [
-    { selector: 'section > a.card > div > img', alt: 'NEOGOV app screens', src: 'neo.webp' },
-    { selector: 'section > a.card > div > img', alt: '', src: 'hirevue.webp' },
+    { selector: 'section > a.card > div > img', alt: 'Scheduling app screens', src: 'app.webp' },
+    { selector: 'section > a.card > div > img', alt: '', src: 'second.webp' },
   ] }]);
-  assert.equal(findImage(index, 'p1', 'a.card > div > img', 'NEOGOV app screens').src, 'neo.webp');
-  assert.equal(findImage(index, 'p1', 'a.card:nth-of-type(2) > div > img', '').src, 'hirevue.webp');
+  assert.equal(findImage(index, 'p1', 'a.card > div > img', 'Scheduling app screens').src, 'app.webp');
+  assert.equal(findImage(index, 'p1', 'a.card:nth-of-type(2) > div > img', '').src, 'second.webp');
 });
 
 test('where a problem is reads without an appendix', () => {
@@ -88,7 +88,7 @@ test('the same picture on three pages is one row with every text it has now', ()
 
 test('readable slugs are not redacted as secrets; random tokens are', () => {
   assert.equal(redactString('/industries/telecommunications-communications/'), '/industries/telecommunications-communications/');
-  assert.equal(redactString('california-closets-design-consultation-2024.webp'), 'california-closets-design-consultation-2024.webp');
+  assert.equal(redactString('harbour-kitchens-design-consultation-2024.webp'), 'harbour-kitchens-design-consultation-2024.webp');
   assert.equal(redactString('x a8f3b9c2d4e5f60718293a4b5c6d7e8f9a0b1c2d'), 'x [redacted]');
 });
 
@@ -208,15 +208,15 @@ test('a form counts as sent only when a request carries its own fields', async (
 
 test('a picture in a link that has its own name gets alt="", whatever words a judge proposed', () => {
   const collects = [{ pageId: 'p1', images: [{ src: 'https://s.test/logo.svg', alt: 'footer logo', inLink: true, selector: 'footer > a.footer-logo > img' }], links: [{ selector: 'footer > a.footer-logo', name: 'Go to homepage', text: 'footer logo' }] }];
-  const o = { id: 1, criterion_id: '1.1.1', status: 'fail', x: { source: 'judge', pageId: 'p1', selector: 'footer > a.footer-logo > img', current: 'footer logo', suggestion: 'youthink home' } };
+  const o = { id: 1, criterion_id: '1.1.1', status: 'fail', x: { source: 'judge', pageId: 'p1', selector: 'footer > a.footer-logo > img', current: 'footer logo', suggestion: 'northwind home' } };
   harmonizeBySource([{ observations: [o] }], collects);
   assert.equal(o.x.suggestion, '');
-  assert.equal(o.x.suggestionReplaced, 'youthink home');
+  assert.equal(o.x.suggestionReplaced, 'northwind home');
   // A link named by the picture itself keeps the judge's words.
-  const c2 = [{ pageId: 'p1', images: [{ src: 'https://s.test/logo.svg', alt: 'youthink', inLink: true, selector: 'a.brand > img' }], links: [{ selector: 'a.brand', name: 'youthink' }] }];
-  const o2 = { id: 2, criterion_id: '1.1.1', status: 'fail', x: { source: 'judge', pageId: 'p1', selector: 'a.brand > img', current: 'youthink', suggestion: 'youthink home' } };
+  const c2 = [{ pageId: 'p1', images: [{ src: 'https://s.test/logo.svg', alt: 'northwind', inLink: true, selector: 'a.brand > img' }], links: [{ selector: 'a.brand', name: 'northwind' }] }];
+  const o2 = { id: 2, criterion_id: '1.1.1', status: 'fail', x: { source: 'judge', pageId: 'p1', selector: 'a.brand > img', current: 'northwind', suggestion: 'northwind home' } };
   harmonizeBySource([{ observations: [o2] }], c2);
-  assert.equal(o2.x.suggestion, 'youthink home');
+  assert.equal(o2.x.suggestion, 'northwind home');
 });
 
 test('a quote copied from the collected data shows its words, and fix steps never stand in for a replacement', async () => {

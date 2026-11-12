@@ -22,7 +22,7 @@ const TOKEN = /\b(?:eyJ[\w-]{10,}\.[\w-]{10,}\.[\w-]{5,}|[A-Za-z0-9_-]{32,}|(?:s
 const SECRET_PARAMS = /([?&](?:token|access_token|auth|key|api_key|apikey|sig|signature|session|sessionid|sid|code|password|pwd)=)[^&#]*/gi;
 
 // A long run of word characters is a secret only when it looks random. A readable slug made of words and short
-// numbers ("telecommunications-communications", "california-closets-design-consultation-2024") is a page address or a
+// numbers ("telecommunications-communications", "harbour-kitchens-design-consultation-2024") is a page address or a
 // file name the owner needs to see, and has no digits mixed into its words.
 export function isSlug(m) {
   if (m.startsWith('eyJ') || /^(?:sk|pk|ghp|gho|xox[abp])_/.test(m)) return false;
