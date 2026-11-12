@@ -119,7 +119,7 @@ Run the client-readiness review on the latest render of the run, then publish or
 
 | | Claude Code | Codex |
 |---|---|---|
-| Subagent | Agent tool, `subagent_type: "wcag-report:wcag-auditor"` (if not available: `general-purpose`); start a wave in one message | `spawn_agent`: judges, writers, editor and fixer as `explorer`; the red team as `default` (it must view images and run `recheck`); then wait for all |
+| Subagent | Agent tool, `subagent_type: "wcag-report:wcag-auditor"` (`"wcag-toolkit:wcag-auditor"` when installed as part of the toolkit; if neither is available: `general-purpose`); start a wave in one message | `spawn_agent`: judges, writers, editor and fixer as `explorer`; the red team as `default` (it must view images and run `recheck`); then wait for all |
 | Saving | the subagent runs the context with `--save` and saves its own result | run the context command **without** `--save`; the agent replies with the JSON; pipe it to the matching `WR save-judge` / `save-text` / `save-redteam` command on standard input |
 | Images | Read tool on `.png` / `.jpg` | `view_image` |
 | Concurrency | at most 6 at a time | at most 6 at a time |

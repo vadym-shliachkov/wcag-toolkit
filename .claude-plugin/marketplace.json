@@ -1,7 +1,36 @@
 {
   "name": "wcag-toolkit",
+  "description": "WCAG 2.2 tools for Claude Code: audit a finished site into a client-ready PDF report, and build new UI that meets WCAG from the first version.",
   "owner": { "name": "Vadym Shliachkov" },
   "plugins": [
+    {
+      "name": "wcag-toolkit",
+      "source": "./plugins",
+      "version": "0.1.0",
+      "description": "Both tools in one plugin: /wcag-toolkit:wcag-report audits a site or repository into a client-ready PDF report, /wcag-toolkit:wcag-build builds WCAG 2.2 requirements into UI work before it is planned. Install this or the individual plugins, not both.",
+      "author": { "name": "Vadym Shliachkov" },
+      "license": "MIT",
+      "keywords": ["accessibility", "wcag", "a11y", "audit", "report", "frontend", "components"],
+      "skills": ["./wcag-report/skills/wcag-report", "./wcag-build/skills/wcag-build"],
+      "agents": ["./wcag-report/agents/wcag-auditor.md", "./wcag-build/agents/wcag-advisor.md"],
+      "hooks": {
+        "UserPromptSubmit": [
+          {
+            "hooks": [
+              { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/wcag-build/hooks/on-prompt.mjs\"", "timeout": 5 }
+            ]
+          }
+        ],
+        "PreToolUse": [
+          {
+            "matcher": "^(Skill|Edit|Write|MultiEdit)$",
+            "hooks": [
+              { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/wcag-build/hooks/on-tool.mjs\"", "timeout": 5 }
+            ]
+          }
+        ]
+      }
+    },
     {
       "name": "wcag-report",
       "source": "./plugins/wcag-report",

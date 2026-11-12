@@ -36,7 +36,7 @@ For each risk line decide: does it apply to this design and this code, and what 
 - **States the design does not draw**: focus, hover, error, disabled, open/closed, current.
 - **When changing existing code**: list the accessibility behaviour it has now (focus styles, ARIA state, hidden labels, heading levels, id references). The change must keep each one or replace it with an equivalent.
 
-For a new page or template, or three or more interactive components, give this step to the `wcag-build:wcag-advisor` subagent (on Codex, a default subagent told to follow `<SKILL_DIR>/../../agents/wcag-advisor.md`). Pass it the task, the design context, the file list and SKILL_DIR; it returns the list of requirements.
+For a new page or template, or three or more interactive components, give this step to the `wcag-build:wcag-advisor` subagent (`wcag-toolkit:wcag-advisor` when installed as part of the toolkit; on Codex, a default subagent told to follow `<SKILL_DIR>/../../agents/wcag-advisor.md`). Pass it the task, the design context, the file list and SKILL_DIR; it returns the list of requirements.
 
 ## 4. Fold it into the plan
 

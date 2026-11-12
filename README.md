@@ -48,12 +48,22 @@ in `skills/wcag-report/kb/`.
 
 ## Install
 
-Claude Code:
+Claude Code: add the marketplace, then install either the whole toolkit or one plugin.
 
 ```bash
-claude plugin marketplace add <path-or-git-url-of-this-repo>
+claude plugin marketplace add vadym-shliachkov/wcag-toolkit
+
+# both tools in one plugin: /wcag-toolkit:wcag-report and /wcag-toolkit:wcag-build
+claude plugin install wcag-toolkit@wcag-toolkit
+
+# or only the one you need: /wcag-report:wcag-report, /wcag-build:wcag-build
 claude plugin install wcag-report@wcag-toolkit
+claude plugin install wcag-build@wcag-toolkit
 ```
+
+Install the toolkit or the individual plugins, not both, or every skill and hook loads twice. To switch, uninstall
+the other one first (`claude plugin uninstall wcag-report@wcag-toolkit`). The command prefix is the name of the
+plugin you installed; the examples below use the individual plugin names.
 
 Codex:
 
@@ -77,6 +87,8 @@ enabled = true
 /wcag-report:wcag-report report --fix             # re-render the last run with fix instructions
 /wcag-report:wcag-report review                    # run the client-readiness review again
 ```
+
+With the toolkit installed, the same commands start with `/wcag-toolkit:wcag-report`.
 
 In Codex, mention the skill (`$wcag-report`) with the same arguments.
 
@@ -161,10 +173,11 @@ The hooks run locally and never block. A prompt that does not match adds nothing
 ## Install and use
 
 ```bash
-claude plugin install wcag-build@wcag-toolkit
+claude plugin install wcag-build@wcag-toolkit     # or wcag-toolkit@wcag-toolkit for both tools
 ```
 
-Nothing to call: give Claude a UI task. To run it by hand, `/wcag-build:wcag-build`, or the script directly:
+Nothing to call: give Claude a UI task. To run it by hand, `/wcag-build:wcag-build` (`/wcag-toolkit:wcag-build`
+with the toolkit), or the script directly:
 
 ```bash
 cd plugins/wcag-build/skills/wcag-build
