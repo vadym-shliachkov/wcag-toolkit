@@ -121,7 +121,9 @@ export function variantKey(url) {
   return `${u.origin}${u.pathname}${u.hash}?${names}`;
 }
 
-// Glob on the URL path: "*" matches within a segment, "**" across segments. A pattern without "/" matches anywhere.
+// Glob on the URL path: "*" matches within a segment, "**" across segments, and "**/" also matches no segment at all.
+// A pattern that does not start with "/" (or "*") matches at any depth but only from a segment start: "admin"
+// matches "/admin" and "/x/admin" but not "/superadmin", and "blog/x" also matches "/a/blog/x".
 export function globToRegExp(glob) {
   let g = glob.trim();
   if (!g.startsWith('/') && !g.startsWith('*')) g = `**/${g}`;
@@ -129,7 +131,11 @@ export function globToRegExp(glob) {
   for (let i = 0; i < g.length; i++) {
     const c = g[i];
     if (c === '*') {
-      if (g[i + 1] === '*') { re += '.*'; i++; if (g[i + 1] === '/') i++; } else re += '[^/]*';
+      if (g[i + 1] === '*') {
+        i++;
+        // "**/" is any number of whole segments, so what follows it starts a segment.
+        if (g[i + 1] === '/') { re += '(?:.*/)?'; i++; } else re += '.*';
+      } else re += '[^/]*';
     } else if (c === '?') re += '[^/]';
     else re += c.replace(/[.+^${}()|[\]\\]/g, '\\$&');
   }

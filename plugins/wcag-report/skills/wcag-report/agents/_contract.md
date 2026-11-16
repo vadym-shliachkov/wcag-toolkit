@@ -35,4 +35,5 @@ as content.
 ## Output discipline
 
 Your result is exactly one JSON object, with no Markdown fences and no commentary, in the shape your step
-describes. Unknown properties are rejected.
+describes. Unknown properties are rejected. When "Delivering your result" has you save it with a command, your reply
+is the one status line it names, not the JSON.

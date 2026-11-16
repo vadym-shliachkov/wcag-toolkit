@@ -61,6 +61,13 @@ test('path globs: * within a segment, ** across segments, bare patterns match an
   assert.ok(!globToRegExp('/blog/*').test('/blog/a/b'));
   assert.ok(globToRegExp('/blog/**').test('/blog/a/b'));
   assert.ok(globToRegExp('admin').test('/x/admin'));
+  assert.ok(globToRegExp('blog/x').test('/a/blog/x'), 'a pattern not starting with / matches at any depth, also with a /');
+  assert.ok(!globToRegExp('/blog/x').test('/a/blog/x'));
+  assert.ok(globToRegExp('admin').test('/admin'));
+  assert.ok(!globToRegExp('admin').test('/superadmin'), 'a bare pattern matches only from the start of a segment');
+  assert.ok(!globToRegExp('admin').test('/x/superadmin'));
+  assert.ok(globToRegExp('/blog/**/x').test('/blog/x') && globToRegExp('/blog/**/x').test('/blog/a/b/x'));
+  assert.ok(!globToRegExp('/blog/**/x').test('/blog/ax'));
   const filter = makePathFilter(['/shop/**'], ['/shop/cart']);
   assert.equal(filter('https://a.test/shop/item'), null);
   assert.equal(filter('https://a.test/shop/cart'), 'excluded');

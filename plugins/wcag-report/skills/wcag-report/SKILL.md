@@ -14,8 +14,9 @@ allowed-tools: Read, Write, Glob, Grep, Bash(node:*)
 - **WR** means `node "<SKILL_DIR>/scripts/wr.mjs"`. Each call prints JSON (Markdown for `*-context` commands) on
   stdout, progress on stderr, and exits non-zero on error. `save-*` and `validate-*` print `"ok": false` with
   `errors` for invalid subagent output: that means retry as described below, not a fatal error.
-- **ROOT** is where the run folder `.wcag-report/` goes: the `--repo` path when one is given, otherwise the current
-  working directory. Pass `--root "<ROOT>"` on every call.
+- **ROOT** is where the work folder `.wcag-report/` goes: the `--repo` path when one is given, otherwise the current
+  working directory. Pass `--root "<ROOT>"` on every call. Each run gets its own **run folder**,
+  `.wcag-report/runs/<run>/`; paths below that are "in the run folder" are relative to it.
 - **Arguments** on Claude Code: $ARGUMENTS. On other hosts, read them from the user's message. The first word may be
   `audit` (the default), `report` (render again, e.g. with `--fix`) or `review` (red team only).
 - **Long commands** (`crawl`, `deep`, `shots`, `serve`, `render`, `redteam-prep`) can take minutes: run them with the
@@ -35,7 +36,11 @@ If the user gave neither a URL nor a repository, ask for one before starting. Pa
 2. `WR init --root "<ROOT>" [--url …] [--repo …] [other flags]`. Note `run` and `next`.
 3. Repository: `WR serve --root "<ROOT>" --run <run>`. If it returns `"fallback": "static"`, the site could not be
    started (the reason is in the reply). Tell the user and ask for the URL of a running copy (staging is fine); do not
-   produce a report from source code alone, because nothing could be confirmed on the real pages.
+   produce a report from source code alone, because nothing could be confirmed on the real pages. With the URL, start
+   again from step 2: a new `init` with the same flags plus `--url <that URL>` (the repository then only helps locate
+   source files). `serve` has already tried a plain or built folder of HTML, so if the user has no running copy,
+   stop and tell them the report needs either a URL of a running copy or a repository that installs, builds and
+   starts.
 4. `WR crawl --root "<ROOT>" --run <run>`, repeated until `done`. If it reports most pages `blocked` (bot
    protection, an expired `--auth`), stop and tell the user. A site behind a browser password prompt (HTTP Basic,
    e.g. staging protected by .htaccess) needs `init --http-auth <file>`: a JSON file `{"username": "…", "password": "…"}`
@@ -44,9 +49,10 @@ If the user gave neither a URL nor a repository, ask for one before starting. Pa
 5. `WR templates`, then `WR deep` (repeated until `done`), then `WR measure` (repeated until `done`: contrast over
    images and in hover and keyboard-focus states, links marked only by colour and control names, on every page), then `WR shots`, then `WR candidates`,
    each with `--root "<ROOT>" --run <run>`.
-6. **Judges, as subagents in parallel.** One per page type in `templates.json`, plus one consistency judge only if
-   `judge-context --consistency` does not print "Nothing to judge" (navigation order, names, help and ways to a page are compared
-   from the collected links), at most 6 at a time (start the next wave when one finishes). Task for each, exactly:
+6. **Judges, as subagents in parallel.** One per page type (the `id`s that `WR templates` printed; also
+   `templates.json` in the run folder), plus one consistency judge only if `judge-context --consistency` does not
+   print "Nothing to judge" (navigation order, names, help and ways to a page are compared from the collected
+   links), at most 6 at a time (start the next wave when one finishes). Task for each, exactly:
    `Run node "<SKILL_DIR>/scripts/wr.mjs" judge-context --root "<ROOT>" --run <run> --template <tid> --save and follow the instructions it prints.`
    For the consistency judge use `--consistency` instead of `--template <tid>`.
    Then `WR validate-judge` for each (`--template <tid>` or `--consistency`). Retry an invalid or missing one once
@@ -54,12 +60,15 @@ If the user gave neither a URL nor a repository, ask for one before starting. Pa
 7. `WR merge`, then `WR shots --issues` (screenshots of each problem).
 8. **Writers, as subagents in parallel**, one per batch (`writerBatches` from `merge`), at most 6 at a time:
    `Run node "<SKILL_DIR>/scripts/wr.mjs" text-context --root "<ROOT>" --run <run> --stage write --batch <n> --save and follow the instructions it prints.`
-   `WR validate-text --stage write --batch <n>` for each; retry once.
-9. **Editor, one subagent**: the same task with `--stage edit` (no batch). Validate; retry once.
+   `WR validate-text --stage write --batch <n>` for each; retry once. If one still fails, carry on: its findings
+   have no text yet, and the fixer writes them before the first review (review step 1).
+9. **Editor, one subagent**: the same task with `--stage edit` (no batch). Validate; retry once. If it still fails,
+   carry on: the reviewer reports the missing summary, and the fixer writes it.
 10. `WR render`. It writes `report.json`, `report.html`, `report.pdf`, `findings.csv` (every place, for developers or a
     model making the changes, always with fix steps, the technical change and how to verify it, whatever `--fix` says)
-    and `findings.xlsx` (every problem grouped by page, for the owner; fixes only with `--fix`, like the PDF). `WR publish` copies
-    both next to the PDF.
+    and `findings.xlsx` (every problem grouped by page, for the owner; fixes only with `--fix`, like the PDF). Do not publish yet:
+    `WR publish` runs only in step 11, after a READY verdict (or `WR publish --draft` when the review stops), and
+    copies both next to the PDF.
 11. **Client-readiness review** (below). Never skip it.
 12. `WR stop` (repository mode only), then `WR summary`, and tell the user (see "Telling the user").
 
@@ -72,15 +81,20 @@ For round r = 1, 2, 3:
 
 1. `WR redteam-prep --root "<ROOT>" --run <run> --round <r>` (page images, text, automated checks, a sample of
    findings re-checked on the live pages). If it reports `lint` defects or any entry needs rewriting (amended
-   findings, new screenshots), first run the fixer step below for this round, `WR render`, and prepare the round
-   again: the reviewer's time goes to what automation cannot see.
+   findings, new screenshots, findings with no text yet), first run the fixer step below for this round, `WR render`,
+   and prepare the round again: the reviewer's time goes to what automation cannot see. Do this once per round;
+   whatever is left goes to the reviewer.
 2. Start a **new** subagent (never one that wrote or reviewed before) with exactly:
    `Run node "<SKILL_DIR>/scripts/wr.mjs" redteam-context --root "<ROOT>" --run <run> --round <r> --save and follow the instructions it prints.`
-   It saves its verdict and replies with one status line. If the save failed, retry once with a new subagent.
+   It saves its verdict and replies with one status line. If the save failed, retry once with a new subagent. If
+   that fails too, the review cannot finish: `WR publish --draft` and tell the user the report has not passed an
+   independent review, with the save errors.
 3. If the status says READY: `WR publish`, and stop.
 4. Otherwise read `review/r<r>/verdict.json` in the run folder and route each defect by `cause`:
    - `content` (wording, length, tone, a wrong group line): start a fixer subagent with
-     `… text-context --stage fix --round <r> --save …` (same task form as the writers), validate it.
+     `… text-context --stage fix --round <r> --save …` (same task form as the writers), validate it; retry once with
+     a new subagent. If it still fails, carry on: nothing of it is saved, and the next round's reviewer sees the same
+     defects again.
    - `evidence` (false positive, wrong criterion, duplicate, screenshot shows the wrong thing, personal data in a
      screenshot): `WR recheck --round <r> --issue <I-NN>`, then, as the evidence shows, one of:
      `WR shots --issues` to recapture;
@@ -91,10 +105,11 @@ For round r = 1, 2, 3:
      the entries that changed) even if there were no content defects. An evidence defect you did not settle this way
      (a statement the reviewer's cited file shows to be wrong) goes to the fixer as a wording correction.
    - `template` (a defect in the skill's own layout or code): it cannot be fixed in this run. Note it for the user.
-5. `WR render`, then the next round.
+5. `WR render`. Then check the stop rule below; if it does not apply, go to the next round.
 
-Stop early, not ready, when a blocker has cause `template`, or when the number of blockers did not go down since the
-previous round. After the last round without READY: `WR publish --draft`, which writes the copy as
+The stop rule is checked at the end of each round, after its fixes and `WR render`, so the draft always carries the
+last round's fixes. Stop, not ready, when a blocker has cause `template`, when the number of blockers did not go down
+since the previous round, or after round 3. Then run `WR publish --draft`, which writes the copy as
 `<site>-wcag-report-<date>-DRAFT.pdf` (the file name marks it; nothing is stamped inside the document).
 
 If subagents are not available at all, the review cannot be independent: render, run `WR publish --draft`, and tell
@@ -106,9 +121,10 @@ Re-render an earlier run (`--run`, default the latest) without crawling again:
 
 1. If the user asked for fix instructions in the report, a different language or a different site name:
    `WR configure --root "<ROOT>" --run <run> [--fix | --no-fix] [--lang …] [--name "<name>"]`. Switching `--fix`
-   needs only a render: the texts already hold their fixes. When it replies `"rewrite": true` (a new language), the
-   texts no longer fit: run the writers (audit step 8) and the editor (step 9) again. A run written before fixes were
-   always kept has entries without a fix block: run the writers and the editor again for it too.
+   needs only a render: the texts already hold their fixes. When it replies `"rewrite": true`, the texts no longer
+   fit (its `reason` says why: a new language, or texts from an older version without fix blocks): run the writers
+   (audit step 8) and the editor (step 9) again. If `WR render` warns that texts have no fix block, run
+   `WR configure --root "<ROOT>" --run <run>` with no other flags and do the same.
 2. `WR render`, then the client-readiness review, publish and tell the user, as in **audit**.
 
 ## review

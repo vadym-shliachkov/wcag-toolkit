@@ -19,6 +19,20 @@ test('a recommended alt is short, starts with what it shows and does not repeat 
   assert.match(altSuggestionProblems({ ...base, suggestion: 'Recording studio shown as industry context, with a desk' }, shots)[0], /repeats the visible caption/);
 });
 
+test('the recommended alt of a portrait may be the name in its caption', () => {
+  const shots = { images: { p001: [{ selector: 'figure > img', caption: 'Dr. Maria Example' }] } };
+  const base = { sc: '1.1.1', status: 'fail', pageId: 'p001', selector: 'figure > img' };
+  assert.deepEqual(altSuggestionProblems({ ...base, suggestion: 'Dr. Maria Example' }, shots), []);
+  assert.match(altSuggestionProblems({ ...base, suggestion: 'Dr. Maria Example smiling at her desk' }, shots)[0], /repeats the visible caption/);
+});
+
+test('a tie between two recommendations goes to the page crawled first, also past p999', () => {
+  const collects = ['p999', 'p1000'].map((pageId) => ({ pageId, images: [{ selector: 'main figure > img', src: 'https://x.test/a/team.webp' }] }));
+  const g = { observations: [judgeObs('p1000', 'figure > img', 'Team at the spring fair'), judgeObs('p999', 'figure > img', 'Team at the fair')] };
+  harmonizeBySource([g], collects);
+  assert.deepEqual(g.observations.map((o) => o.x.suggestion), ['Team at the fair', 'Team at the fair']);
+});
+
 const judgeObs = (pageId, selector, suggestion, confidence = 'high', extra = {}) => ({
   criterion_id: '1.1.1', x: { source: 'judge', pageId, selector, suggestion, confidence, ...extra },
 });

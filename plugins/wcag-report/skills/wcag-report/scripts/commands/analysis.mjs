@@ -135,11 +135,10 @@ export function merge(o) {
     observations.push(...saved.observations);
     if (name !== 'consistency') judgedTemplates.push(name);
   }
-  const deepRan = readJson(p.signals, { deepRan: [] }).deepRan;
   // Page types the website refused to show during the in-depth checks were not tested; the report says so (gap
   // "refused"), and the criteria are decided on the page types that could be tested.
   const refusedTemplates = [...new Set(readJson(path.join(ctx.dir, 'refused.json'), []).filter((r) => r.step === 'deep').map((r) => r.templateId))];
-  const merged = mergeObservations({ observations, pages, templates, collects, level: run.options.level, deepRan, judgedTemplates, refusedTemplates });
+  const merged = mergeObservations({ observations, pages, templates, collects, level: run.options.level, judgedTemplates, refusedTemplates });
   const { criteriaStatus, journeys } = merged;
   // Amendments made after a re-check survive a re-merge: a removed finding stays removed, a downgraded one stays an
   // item to check. They are matched by the stable key, never by the display ID.
@@ -216,19 +215,22 @@ export function merge(o) {
   };
 }
 
-function requireStage(stage) {
+function requireStage(stage, o = {}) {
   if (!['write', 'edit', 'fix'].includes(stage)) throw new Error('--stage must be write, edit or fix');
+  // Without them the result would be checked against no batch, or saved under a name no later step reads.
+  if (stage === 'write' && !/^\d+$/.test(o.batch ?? '')) throw new Error('--stage write needs --batch <n>');
+  if (stage === 'fix' && !/^\d+$/.test(o.round ?? '')) throw new Error('--stage fix needs --round <r>');
 }
 
 export function textContextCmd(o) {
-  requireStage(o.stage);
+  requireStage(o.stage, o);
   const ctx = loadRun(o);
   requireFile(ctx.p.issues, 'Run "merge" first.');
   return textContext(ctx, { stage: o.stage, batch: o.batch, round: o.round, save: Boolean(o.save) });
 }
 
 export async function saveText(o, { stdin = readStdin } = {}) {
-  requireStage(o.stage);
+  requireStage(o.stage, o);
   const ctx = loadRun(o);
   let data;
   try { data = parseLooseJson(stdin()); } catch (e) { return { ok: false, stage: o.stage, errors: [`invalid JSON: ${e.message}`] }; }
@@ -242,7 +244,7 @@ export async function saveText(o, { stdin = readStdin } = {}) {
 }
 
 export async function validateText(o) {
-  requireStage(o.stage);
+  requireStage(o.stage, o);
   const ctx = loadRun(o);
   const file = o.stage === 'write' ? ctx.p.text(`write-${o.batch}`) : o.stage === 'edit' ? ctx.p.text('edit') : ctx.p.text(`fix-${o.round}`);
   if (!fs.existsSync(file)) return { ok: false, stage: o.stage, errors: ['No result saved yet.'] };

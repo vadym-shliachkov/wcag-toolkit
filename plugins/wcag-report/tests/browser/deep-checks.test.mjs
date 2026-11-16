@@ -112,6 +112,26 @@ test('motion: a moving canvas under text is one finding on the canvas, not one p
   assert.equal(typeof hits[0].measured.changedShare, 'number');
 });
 
+test('interaction: a skip link to a target named only by name works like one to an id', { skip }, async () => {
+  const r = await runCheck('interaction', 'skipname-ok');
+  const bypass = r.signals.filter((s) => s.check === 'bypass');
+  assert.deepEqual(bypass.map((s) => s.status), ['pass'], JSON.stringify(bypass.map((s) => s.description)));
+  assert.match(bypass[0].description, /skips to the main content/);
+});
+
+test('reflow: a page that scrolls sideways with nothing to read past the edge is a question, not a pass', { skip }, async () => {
+  const r = await runCheck('reflow', 'reflowempty-bad');
+  const own = r.signals.filter((s) => s.check === 'reflow');
+  assert.deepEqual(own.map((s) => s.status), ['needs_review'], JSON.stringify(own.map((s) => s.description)));
+  assert.match(own[0].description, /scrolls sideways/);
+});
+
+test('forms: an order form gets a 3.3.4 result, and a bad e-mail with no message gets a 3.3.3 result', { skip }, async () => {
+  const r = await runCheck('forms', 'formsorder-bad');
+  assert.deepEqual(bySc(r, '3.3.4', 'needs_review').map((s) => s.check), ['error-prevention']);
+  assert.deepEqual(r.signals.filter((s) => s.sc.includes('3.3.3')).map((s) => s.status), ['needs_review'], JSON.stringify(r.signals.map((s) => [s.sc, s.status, s.description])));
+});
+
 test('axe: text inside a frame from another origin is tested', { skip }, async () => {
   const { runAxe } = await import('../../skills/wcag-report/scripts/lib/axe-run.mjs');
   const context = await browser.newContext();

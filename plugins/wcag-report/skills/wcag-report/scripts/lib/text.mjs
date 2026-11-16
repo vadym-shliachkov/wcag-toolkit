@@ -204,6 +204,17 @@ function editorInput(ctx, issues, texts) {
   };
 }
 
+// Fix layers in the order they were saved: by round as a number (fix-10 after fix-2), and within a round the earlier
+// saves fix-<round>-<k> by k before the round's latest fix-<round>.
+function byFixRound(a, b) {
+  const order = (f) => {
+    const m = path.basename(f).match(/^fix-(\d+)(?:-(\d+))?\.json$/);
+    return [Number(m[1]), m[2] == null ? Number.MAX_SAFE_INTEGER : Number(m[2])];
+  };
+  const [x, y] = [order(a), order(b)];
+  return x[0] - y[0] || x[1] - y[1];
+}
+
 // Texts as the report will use them: writer entries, then editor and fixer overrides in order.
 // skipFix: leave out one fix round's own layer, to judge that round's edits against the texts it started from.
 export function layeredTexts(p, { upTo, skipFix } = {}) {
@@ -213,15 +224,22 @@ export function layeredTexts(p, { upTo, skipFix } = {}) {
   }
   const report = {};
   if (upTo === 'write') return { entries, report };
-  const layers = [p.text('edit'), ...listFiles(p.textDir, /^fix-\d+(-\d+)?\.json$/).filter((f) => skipFix == null || path.resolve(f) !== path.resolve(p.text(`fix-${skipFix}`)))];
-  for (const file of layers) {
+  // upTo 'edit' stops before the fixer layers, also when the editor saved nothing.
+  const fixes = upTo === 'edit' ? [] : listFiles(p.textDir, /^fix-\d+(-\d+)?\.json$/).filter((f) => skipFix == null || path.resolve(f) !== path.resolve(p.text(`fix-${skipFix}`))).sort(byFixRound);
+  for (const file of [p.text('edit'), ...fixes]) {
     const layer = readJson(file, null);
     if (!layer) continue;
     for (const k of [...EDITOR_FIELDS, 'groups_summary', 'glossary']) if (layer[k] != null) report[k] = layer[k];
     for (const e of layer.edits ?? []) applyEdit(entries, report, e);
-    if (upTo === 'edit') break;
   }
   return { entries, report };
+}
+
+// Confirmed problems whose text has no fix block. Saving now requires one, so only texts written by an older version
+// of the skill lack it; findings.csv would have no fix for them, so their writers must run again.
+export function entriesWithoutFix(p, issues) {
+  const { entries } = layeredTexts(p);
+  return issues.filter((i) => i.status === 'fail' && entries[i.key] && !entries[i.key].fix?.steps?.length).map((i) => i.id);
 }
 
 function setPath(obj, field, value) {
@@ -272,6 +290,8 @@ function validateEntry(e, issue, { fix }) {
 }
 
 export async function validateTexts(ctx, stage, data, { batch, round } = {}) {
+  // Like textContext: a stage with no rules is refused, not passed unchecked.
+  if (!['write', 'edit', 'fix'].includes(stage)) throw new Error('--stage must be write, edit or fix');
   const { p, run } = ctx;
   const issues = readJson(p.issues);
   const byKey = new Map(issues.map((i) => [i.key, i]));
@@ -373,8 +393,7 @@ export function saveTexts(ctx, stage, data, { batch, round }) {
     }
   }
   else if (stage === 'edit') {
-    const { i18n, ...rest } = data;
-    writeJson(p.text('edit'), rest);
+    writeJson(p.text('edit'), data);
     writeJson(p.text('findings-sig'), { sig: findingsSig(readJson(p.issues)) });
   } else {
     writeJson(p.text('findings-sig'), { sig: findingsSig(readJson(p.issues)) });

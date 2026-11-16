@@ -167,6 +167,17 @@ a.cta:hover{background:#4963a9}`,
     `<div id="anim">Moving logos</div><button id="tg" type="button" aria-pressed="false"><span class="sr-only">Pause the logo animation</span><span aria-hidden="true">⏸</span></button>
 <form><button type="submit" id="sub" onclick="this.textContent='Sent';return false">Stop my subscription</button></form>
 <script>const b=document.getElementById('tg');b.onclick=()=>b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'));</script>`),
+  // Not a check on its own: a skip link whose target is named only by name (<a name>), on a page with no main landmark
+  // and no heading after the header. The browser jumps to it, so it works.
+  'skipname-ok': page('Skip link by name', '',
+    `<a href="#content">Skip to content</a><header><nav><a href="#h">Home</a> <a href="#ab">About</a> <a href="#co">Contact</a></nav></header>
+<div><a name="content"></a><p>Welcome to the shop.</p><a href="#more">Read more</a></div>`),
+  // The page scrolls sideways at 320 px, but only an empty box sticks out: nothing is shown to be lost.
+  'reflowempty-bad': page('Reflow empty box', 'body{margin:8px}.bar{width:900px;height:4px;background:#ccd}', '<p>Short text that fits.</p><div class="bar"></div>'),
+  // An order form (a financial commitment) whose script takes the submission and says nothing about a bad e-mail.
+  'formsorder-bad': page('Order form', 'input{display:block;margin:4px 0 12px}',
+    `<form action="/checkout" method="post" novalidate aria-label="Order"><label for="n">Name</label><input id="n" name="n" autocomplete="name"><label for="e">E-mail</label><input id="e" name="email" type="text" autocomplete="email"><button>Place order</button></form>
+<script>document.querySelector('form').addEventListener('submit', (e) => e.preventDefault());</script>`),
   // Not a check: a long page that scrolls smoothly, for the issue crops (an element far down must be cropped where it is).
   'smooth-scroll': page('Smooth scroll', 'html{scroll-behavior:smooth} .spacer{height:4000px} #far{display:inline-block;padding:8px;background:#fc0}',
     '<div class="spacer">Top of the page</div><a id="far" href="#x">Far down link</a><div class="spacer"></div>'),

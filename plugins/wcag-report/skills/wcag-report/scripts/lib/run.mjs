@@ -35,6 +35,15 @@ export function stepDone(ctx, step) {
   return Boolean(ctx.run.steps?.[step]?.done);
 }
 
+// --budget: seconds before a resumable step stops and returns "done": false. Not a positive number is an error:
+// NaN would never stop, and 0 or less would stop before doing anything, every time. Below `min`, `min` is used.
+export function budgetSec(o, d = 480, min = 1) {
+  if (o.budget == null || o.budget === '') return d;
+  const n = Number(o.budget);
+  if (!Number.isFinite(n) || n <= 0) throw new Error(`--budget must be a number of seconds above 0 (got "${o.budget}").`);
+  return Math.max(n, min);
+}
+
 export function requireFile(file, hint) {
   if (!fs.existsSync(file)) throw new Error(`${path.basename(file)} is missing. ${hint}`);
 }

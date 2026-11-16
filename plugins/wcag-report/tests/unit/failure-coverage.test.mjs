@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const SKILL = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../skills/wcag-report');
 const imp = (m) => import(new URL(`file:///${path.join(SKILL, 'scripts/lib', m).replace(/\\/g, '/')}`).href);
-const { allFailureIds, allCriteria, criterionFailures, failureTitle } = await imp('criteria.mjs');
+const { allFailureIds, allCriteria, criterionFailures, failureTitle, profileCriteria, inProfile } = await imp('criteria.mjs');
 const read = (f) => JSON.parse(fs.readFileSync(path.join(SKILL, f), 'utf8'));
 const coverage = read('references/failure-coverage.json');
 const scCoverage = read('references/coverage.json');
@@ -64,4 +64,17 @@ test('failure titles read without the criterion prefix', () => {
   assert.equal(failureTitle('Failure of Success Criterion 1.4.4 due to incorrect use of viewport units to resize text'), 'incorrect use of viewport units to resize text');
   assert.equal(failureTitle('Failure of Success Criteria 1.3.1, 2.5.3, and 4.1.2 due to a control with visible label text but no accessible name'), 'a control with visible label text but no accessible name');
   assert.equal(failureTitle('Failure of Success Criterion 2.4.11 Focus Not Obscured (Minimum) due to a sticky footer or header completely hiding focused elements'), 'a sticky footer or header completely hiding focused elements');
+});
+
+test('a WCAG level is read without regard to case, and an unknown one is an error, not an empty profile', () => {
+  const aa = profileCriteria('AA');
+  assert.ok(aa.length > 40 && aa.every((c) => c.level === 'A' || c.level === 'AA'));
+  assert.deepEqual(profileCriteria('aa').map((c) => c.id), aa.map((c) => c.id));
+  assert.ok(profileCriteria('AAA').length > aa.length);
+  assert.equal(inProfile('1.4.6', 'AA'), false);
+  assert.equal(inProfile('1.4.6', 'aaa'), true);
+  for (const bad of ['AAA+', 'B', '', undefined, null]) {
+    assert.throws(() => profileCriteria(bad), /Unknown WCAG level .*A, AA or AAA/);
+    assert.throws(() => inProfile('1.1.1', bad), /Unknown WCAG level/);
+  }
 });

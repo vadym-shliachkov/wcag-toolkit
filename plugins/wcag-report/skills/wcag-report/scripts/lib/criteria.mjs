@@ -89,13 +89,23 @@ export function criterion(id) {
   return allCriteria().find((c) => c.id === id) ?? null;
 }
 
+// The rank of a conformance level. Case does not matter ("aa" is AA). Anything else is an error: an unknown level
+// would otherwise match no criterion and the audit would silently test nothing.
+function levelRank(level) {
+  const rank = LEVEL_RANK[String(level ?? '').trim().toUpperCase()];
+  if (!rank) throw new Error(`Unknown WCAG level "${level}": use A, AA or AAA.`);
+  return rank;
+}
+
 export function inProfile(id, level) {
+  const max = levelRank(level);
   const c = criterion(id);
-  return Boolean(c) && LEVEL_RANK[c.level] <= LEVEL_RANK[level];
+  return Boolean(c) && LEVEL_RANK[c.level] <= max;
 }
 
 export function profileCriteria(level) {
-  return allCriteria().filter((c) => LEVEL_RANK[c.level] <= LEVEL_RANK[level]);
+  const max = levelRank(level);
+  return allCriteria().filter((c) => LEVEL_RANK[c.level] <= max);
 }
 
 export function cardPath(id) {

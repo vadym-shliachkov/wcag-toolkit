@@ -159,7 +159,9 @@ export async function run(env) {
     };
     const signals = [];
     const meaningful = m.offenders.filter((o) => !o.exempt && (o.hasText || o.interactive));
-    const exemptOnly = m.offenders.length && !meaningful.length;
+    // Only exempt content (a table, map, code or video) sticks out; empty boxes beside it have nothing to read.
+    const exempt = m.offenders.filter((o) => o.exempt);
+    const exemptOnly = exempt.length > 0 && !meaningful.length;
     const measured = { viewportWidth: m.vw, contentWidth: m.sw, overflowHidden: m.hiddenX };
     if (m.hscroll && meaningful.length) {
       for (const o of meaningful.slice(0, 3)) {
@@ -188,15 +190,25 @@ export async function run(env) {
         }));
       }
     } else if (exemptOnly) {
-      const o = m.offenders[0];
+      const o = exempt[0];
       signals.push(signal(base, {
         check, sc: ['1.4.10'], status: 'needs_review', state: 'w320', viewport, selector: o.selector, html: o.html, bbox: o.bbox,
         description: `At 320 pixels wide only content such as a table, map, code or video is wider than the screen (${o.tag}).`,
         question: 'Does this content need a two-dimensional layout to make sense (a data table, map or diagram)? If not, it has to fit the narrow screen.',
         measured, barrier: 'minor', trust: 'review', evidence: [shot], expected, steps,
       }));
+    } else if (m.hscroll) {
+      // The page scrolls sideways, but nothing with text or a control was found past the edge (a box with no text, a
+      // margin, a picture): the sideways scroll is measured, the loss of content is not.
+      const o = m.offenders[0];
+      signals.push(signal(base, {
+        check, sc: ['1.4.10'], status: 'needs_review', state: 'w320', viewport, selector: o?.selector ?? null, html: o?.html ?? null, bbox: o?.bbox ?? null,
+        description: `At 320 pixels wide the page is ${m.sw} pixels wide and scrolls sideways, but no text or control was found past the right edge${o ? ` (only the ${o.tag} element, with no text or control in it, sticks out)` : ''}.`,
+        question: 'Scroll the narrow page sideways: is there any text, picture or control past the right edge, or only empty space?',
+        measured, barrier: 'minor', trust: 'review', evidence: [o ? await offenderShot(o) : shot], expected, steps,
+      }));
     } else {
-      signals.push(passSignal(base, { check, sc: '1.4.10', state: 'w320', viewport, description: 'At 320 pixels wide the page fits the screen and nothing sticks out past the right edge.', expected, steps, evidence: [shot] }));
+      signals.push(passSignal(base, { check, sc: '1.4.10', state: 'w320', viewport, description: 'At 320 pixels wide the page fits the screen and no text or control sticks out past the right edge.', expected, steps, evidence: [shot] }));
     }
     // F102 — content that the narrow layout drops.
     const { lost } = loss;

@@ -56,7 +56,8 @@ export function startStaticServer({ dir, port = 0, host = '127.0.0.1', spa = fal
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;
 if (isMain) {
   const arg = (name, d) => { const i = process.argv.indexOf(`--${name}`); return i > 0 ? process.argv[i + 1] : d; };
-  const server = await startStaticServer({ dir: arg('dir', '.'), port: Number(arg('port', 0)), host: arg('host', '127.0.0.1'), spa: process.argv.includes('--spa') });
+  const host = arg('host', '127.0.0.1');
+  const server = await startStaticServer({ dir: arg('dir', '.'), port: Number(arg('port', 0)), host, spa: process.argv.includes('--spa') });
   const { port } = server.address();
-  console.log(`static server listening on http://127.0.0.1:${port}/`);
+  console.log(`static server listening on http://${host.includes(':') ? `[${host}]` : host}:${port}/`);
 }

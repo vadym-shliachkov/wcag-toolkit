@@ -522,8 +522,8 @@ export function oneCardPerImage(groups) {
 
 // One picture file, one recommendation. Judges of different page types see the same photo separately and can word it
 // differently, or one may call it decorative and another not; the owner gets one answer per image. The most frequent
-// recommendation wins, a high-confidence one breaks a tie, then the first page. An image found on a page no judge
-// looked at gets the recommendation made for the same file elsewhere.
+// recommendation wins, a high-confidence one breaks a tie, then the page crawled first (page ids are numbered in
+// crawl order). An image found on a page no judge looked at gets the recommendation made for the same file elsewhere.
 export function harmonizeBySource(groups, collects = []) {
   const images = imageIndex(collects);
   // A lazy-loaded picture not yet loaded shows a data: placeholder, which names no file. The same element (same alt,
@@ -573,13 +573,17 @@ export function harmonizeBySource(groups, collects = []) {
   for (const o of groups.flatMap((g) => g.observations)) {
     if (o.x?.source === 'judge' && o.x.suggestion != null && !o.x.propagated) o.x.suggestionBasis = 'judge';
   }
-  const rank = (a, b) => b[1].n - a[1].n || b[1].high - a[1].high || String(a[1].first.x.pageId).localeCompare(String(b[1].first.x.pageId));
+  // Page ids compare as numbers: "p1000" was crawled after "p999".
+  const byPage = (a, b) => String(a.x.pageId).localeCompare(String(b.x.pageId), 'en', { numeric: true });
+  const rank = (a, b) => b[1].n - a[1].n || b[1].high - a[1].high || byPage(a[1].first, b[1].first);
   const tallyBy = (list, keyOf) => {
     const tally = new Map();
     for (const o of list) {
       const s = keyOf(o);
       const v = tally.get(s) ?? { n: 0, high: 0, first: o };
       v.n += 1;
+      if (byPage(o, v.first) < 0) v.first = o;
+      // A judge's confidence is "high" or "medium" (judge.mjs refuses anything else), and "high" when left out.
       if (o.x.confidence !== 'medium') v.high += 1;
       tally.set(s, v);
     }
@@ -719,7 +723,7 @@ export function dropSettled(observations) {
   });
 }
 
-export function mergeObservations({ observations: raw, pages, templates, collects, level, deepRan = [], judgedTemplates = [], refusedTemplates = [] }) {
+export function mergeObservations({ observations: raw, pages, templates, collects, level, judgedTemplates = [], refusedTemplates = [] }) {
   const observations = dropSettled(foldSameAs(raw)).filter((o) => !idrefOnly(o));
   const reviewed = pages.filter(isReviewed);
   const pageById = new Map(pages.map((p) => [p.id, p]));
@@ -734,11 +738,11 @@ export function mergeObservations({ observations: raw, pages, templates, collect
     .map((g) => toIssue(g, { ...ctx, status: 'needs_review' }))
     .filter((r) => !failComponents.has(`${r.criteria.primary}|${r.component.fingerprint}`)));
 
-  const criteriaStatus = criteriaStatuses({ observations, fails, reviews, level, templates, deepRan, judgedTemplates, refusedTemplates });
+  const criteriaStatus = criteriaStatuses({ observations, fails, reviews, level, templates, judgedTemplates, refusedTemplates });
   return { issues: [...fails, ...reviews], criteriaStatus, journeys, toolNotes: toolNotes(raw) };
 }
 
-function criteriaStatuses({ observations, fails, reviews, level, templates, deepRan, judgedTemplates, refusedTemplates = [] }) {
+function criteriaStatuses({ observations, fails, reviews, level, templates, judgedTemplates, refusedTemplates = [] }) {
   const coverage = readJson(path.join(REFS_DIR, 'coverage.json'), {});
   const deepTemplates = templates.filter((t) => t.deep && !refusedTemplates.includes(t.id)).map((t) => t.id);
   const out = [];
@@ -752,7 +756,7 @@ function criteriaStatuses({ observations, fails, reviews, level, templates, deep
     row.methods = [...new Set(obs.map((o) => issueMethod(o)))];
     if (row.issueKeys.length) row.status = 'fail';
     else if (row.reviewKeys.length) row.status = 'needs_review';
-    else if (passEstablished(c.id, cov, obs, deepTemplates, judgedTemplates, deepRan)) row.status = 'pass';
+    else if (passEstablished(c.id, cov, obs, deepTemplates, judgedTemplates)) row.status = 'pass';
     else if (notApplicable(obs, judgedTemplates, deepTemplates)) {
       row.status = 'not_applicable';
       const site = obs.find((o) => o.status === 'not_applicable' && o.x?.source === 'collect');

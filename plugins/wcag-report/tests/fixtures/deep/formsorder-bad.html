@@ -1,0 +1,4 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Order form</title><style>body{font:16px sans-serif;margin:20px}input{display:block;margin:4px 0 12px}</style></head><body>
+<form action="/checkout" method="post" novalidate aria-label="Order"><label for="n">Name</label><input id="n" name="n" autocomplete="name"><label for="e">E-mail</label><input id="e" name="email" type="text" autocomplete="email"><button>Place order</button></form>
+<script>document.querySelector('form').addEventListener('submit', (e) => e.preventDefault());</script>
+</body></html>

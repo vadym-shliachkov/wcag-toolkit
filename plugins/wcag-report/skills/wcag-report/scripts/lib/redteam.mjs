@@ -12,6 +12,7 @@ import { readAgent, saveLines, wrCommand } from './context.mjs';
 import { layeredTexts } from './text.mjs';
 import { recheckIssue } from './recheck.mjs';
 import { numberMismatches } from './report-data.mjs';
+import { usesLatinScript, loadStrings } from './i18n.mjs';
 
 export const DIMENSIONS = ['accuracy', 'credibility', 'coverage', 'purpose', 'clarity', 'tone', 'layout', 'pdf_accessibility', 'consistency', 'confidentiality', 'fix_mode', 'language'];
 const STRICT = ['accuracy', 'credibility', 'confidentiality', 'pdf_accessibility'];
@@ -88,9 +89,10 @@ export function lintReport(ctx, texts, report) {
       const m = l.re.exec(raw);
       if (m) add(l.id, 'confidentiality', 'blocker', 'content', page, `${l.what}: "${m[0]}"`);
     }
-    if (/[\u0400-\u04FF]{4,}/.test(generated)) {
+    // Only for a report in a Latin-script language: in a report in Ukrainian, Cyrillic is the report's own text.
+    if (usesLatinScript(lang) && /[\u0400-\u04FF]{4,}/.test(generated)) {
       const m = /[\u0400-\u04FF][\u0400-\u04FF\s]{3,}/.exec(generated);
-      add('LNG-01', 'language', 'major', 'content', page, `Cyrillic text in an English report: "${m?.[0]}" (fine only if it quotes the site)`);
+      add('LNG-01', 'language', 'major', 'content', page, `Cyrillic text in a report written in "${lang}": "${m?.[0]}" (fine only if it quotes the site)`);
     }
   });
   // Every finding ID the text cites must still exist: after a merge or removal, prose written earlier (a group
@@ -108,8 +110,8 @@ export function lintReport(ctx, texts, report) {
   for (const it of [...(report.issues ?? []), ...(report.review_items ?? [])]) {
     if (!all.includes(it.id)) add('COV-01', 'coverage', 'blocker', 'template', null, `${it.id} does not appear in the PDF text`);
   }
-  // Fix blocks appear exactly when --fix was asked for.
-  const fixLabel = strings.find((s) => /^How to fix$/i.test(s));
+  // Fix blocks appear exactly when --fix was asked for. They are counted by their label in the report's language.
+  const fixLabel = loadStrings(run.options.lang, ctx.p.dir).t('issues.fix');
   const fixCount = fixLabel ? all.split(fixLabel).length - 1 : 0;
   if (!run.options.fix && fixCount > 0) add('FIX-01', 'fix_mode', 'blocker', 'template', null, `"${fixLabel}" appears ${fixCount} time(s) but --fix was not requested`);
   if (run.options.fix && fixCount < (report.issues ?? []).length) add('FIX-02', 'fix_mode', 'major', 'content', null, `${fixCount} fix blocks for ${(report.issues ?? []).length} issues`);
@@ -148,18 +150,20 @@ export async function prepRound(ctx, round, { recheck = true } = {}) {
   const a11y = await pdfAccessibility(p.pdf, { lang: run.options.lang, title: report.report?.title ?? null });
   writeJson(path.join(dir, 'pdf-a11y.json'), a11y);
   const lint = lintReport(ctx, texts, report);
-  // Text lint (word limits, banned phrases) on the layered texts, when the content area's lint is available.
-  try {
-    const { lintEntry } = await import('./lint-text.mjs');
+  // Text lint (word limits, banned phrases) on the layered texts, when the content area's lint is available. Only a
+  // missing module is skipped: an error inside the lint would otherwise hide every text defect from this round.
+  let lintEntry = null;
+  try { ({ lintEntry } = await import('./lint-text.mjs')); } catch (e) { if (e?.code !== 'ERR_MODULE_NOT_FOUND') throw e; }
+  if (lintEntry) {
     const { entries } = layeredTexts(p);
     for (const it of [...(report.issues ?? []), ...(report.review_items ?? [])]) {
       const e = entries[it.key];
       if (!e) continue;
-      for (const l of lintEntry(e, { kind: it.status === 'fail' || report.issues.includes(it) ? 'issue' : 'review', fix: run.options.fix, lang: run.options.lang })) {
+      for (const l of lintEntry(e, { kind: it.status === 'fail' || (report.issues ?? []).includes(it) ? 'issue' : 'review', fix: run.options.fix, lang: run.options.lang })) {
         if (l.severity === 'error') lint.push({ check: 'CLR-02', dimension: 'clarity', severity: 'minor', cause: 'content', page: null, evidence: `${it.id} ${l.field}: ${l.message}` });
       }
     }
-  } catch { /* lint-text not installed */ }
+  }
   writeJson(path.join(dir, 'lint.json'), { defects: lint });
   const sample = drawSample(ctx, report, round);
   if (recheck) {
@@ -200,6 +204,7 @@ export function redteamContext(ctx, round, save) {
     `- Evidence: ${p.issues}; ${p.observationsDir}; ${p.axeDir}; ${path.join(p.dir, 'deep')}; ${p.collectDir}; ${p.shotsDir}`,
     ...(round > 1 ? [`- Earlier defects: ${path.join(dir, 'prior.json')}; amendments since: ${p.amendments}`] : []),
     `- Knowledge base: ${path.join(KB_DIR, 'criteria')} (<id>.md), ${path.join(KB_DIR, 'guides', 'disputed-advice.md')}, ${path.join(KB_DIR, 'guides', 'thresholds.md')}`,
+    `- Severity rules: ${path.join(REFS_DIR, 'severity.md')}`,
     `- Re-check command for up to 3 issues of your own choice: ${wrCommand('recheck', root, id, `--round ${round} --issue <I-NN>`)}`,
     '',
     '## Delivering your result',
@@ -225,6 +230,8 @@ export function checkVerdict(ctx, round, v) {
   if (!v || typeof v !== 'object') return { errors: ['expected a JSON object'] };
   if (v.pdf_sha256 !== prep.pdf_sha256) errors.push(`pdf_sha256 must be ${prep.pdf_sha256} (the PDF you were given)`);
   if (v.round !== round) errors.push(`round must be ${round}`);
+  // pages_seen 0 is the reviewer saying it could not view the page images (red-team.md): the verdict is saved and
+  // finalizeVerdict makes the round not ready.
   if (v.pages_seen !== prep.page_count && v.pages_seen !== 0) errors.push(`pages_seen is ${v.pages_seen} but the PDF has ${prep.page_count} pages: look at every page`);
   if (!Array.isArray(v.defects)) errors.push('"defects" must be a list');
   for (const [i, d] of (v.defects ?? []).entries()) {

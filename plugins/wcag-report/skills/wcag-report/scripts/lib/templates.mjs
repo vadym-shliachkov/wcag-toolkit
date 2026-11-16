@@ -21,7 +21,8 @@ export function jaccard(a, b) {
   return inter / (a.size + b.size - inter);
 }
 
-// Greedy single pass, then each page moves to the cluster whose members it resembles most on average.
+// Greedy single pass: each page joins the group whose first page it resembles most (or that already has its path
+// shape) when that is close enough, otherwise it starts a new group. Pages are not moved between groups afterwards.
 // items: [{ id, fingerprint, shape }] → [[id, …], …]
 export function cluster(items, threshold = THRESHOLD) {
   const sets = new Map(items.map((it) => [it.id, shingles(it.fingerprint)]));
@@ -170,7 +171,7 @@ export function buildTemplates(pages, collects, { maxTemplates = 60, journeys = 
     representative: t.representative,
     keyFlow: t.keyFlow,
     deep: deepSet.has(t),
-    skippedReason: deepSet.has(t) ? null : `Only ${maxTemplates} page types get the in-depth checks; this one had fewer pages.`,
+    skippedReason: deepSet.has(t) ? null : `Only ${maxTemplates} page types get the in-depth checks: key-task page types go first, then those with the most pages, and this one came after them.`,
   }));
   const assignment = new Map();
   for (const t of templates) for (const id of t.pageIds) assignment.set(id, t.id);

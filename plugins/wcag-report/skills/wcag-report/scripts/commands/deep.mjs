@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { readJson } from '../lib/io.mjs';
-import { loadRun, markStep, pageList, templateList, requireFile } from '../lib/run.mjs';
+import { loadRun, markStep, pageList, templateList, requireFile, budgetSec } from '../lib/run.mjs';
 import { getBrowser } from '../lib/browser.mjs';
 import { imageTools } from '../lib/image.mjs';
 import { runChecks, pendingChecks, CHECK_NAMES } from '../lib/deep/index.mjs';
@@ -33,8 +33,7 @@ export async function deep(o) {
   requireFile(ctx.p.templates, 'Run "templates" first.');
   const only = o.check ? o.check.split(',').map((s) => s.trim()) : null;
   if (only) for (const c of only) if (!CHECK_NAMES.includes(c)) throw new Error(`Unknown check "${c}". Checks: ${CHECK_NAMES.join(', ')}`);
-  const budgetMs = Number(o.budget ?? 480) * 1000;
-  const deadline = Date.now() + budgetMs;
+  const deadline = Date.now() + budgetSec(o) * 1000;
   const pages = pageList(ctx).pages;
   const templates = deepTemplates(ctx, o.template);
   const { browser } = await getBrowser({ explicit: ctx.run.options.browser });
@@ -99,7 +98,7 @@ export async function shots(o) {
 export async function measure(o) {
   const ctx = loadRun(o);
   requireFile(ctx.p.templates, 'Run "templates" first.');
-  const deadline = Date.now() + Number(o.budget ?? 480) * 1000;
+  const deadline = Date.now() + budgetSec(o) * 1000;
   const { browser } = await getBrowser({ explicit: ctx.run.options.browser });
   const img = await imageTools(browser);
   try {

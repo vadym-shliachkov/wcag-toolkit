@@ -8,13 +8,14 @@ site owner gets your decision, not a question.
 
 ## How to work
 
-1. Read the collected data (`collect/<page>.json`) of every listed page: title, language, headings, landmarks,
-   images with their alt text and nearby text, links (`hidden: true` marks links inside a closed menu), buttons,
-   form fields, media, iframes and the page text. It also lists what the markup may not say: `tables` (header cells,
-   a first row styled as headers, captions), `styledHeadings` (text that looks like a heading but is not marked up as
-   one), `backgroundImages` (pictures drawn by CSS), `presentationRoles` (role="presentation" on tables, lists or
-   headings), `preColumns` (columns or tables made of spaces) and `spacedLetters` (words spelled "S A L E"). Look at
-   the screenshots to understand what each part is for.
+1. Read the collected data (`collect/<page>.json`, path given with each page under "Inputs for this run") of every
+   listed page: title, language, headings, landmarks, images with their alt text and nearby text, links
+   (`hidden: true` marks links inside a closed menu), buttons, form fields, media, iframes and the page text. It
+   also lists what the markup may not say: `tables` (header cells, a first row styled as headers, captions),
+   `styledHeadings` (text that looks like a heading but is not marked up as one), `backgroundImages` (pictures drawn
+   by CSS), `presentationRoles` (role="presentation" on tables, lists or headings), `preColumns` (columns or tables
+   made of spaces), `spacedLetters` (words spelled "S A L E") and `langParts` (elements marked with a language other
+   than the page's). Look at the screenshots to understand what each part is for.
 2. **Images.** Open every image close-up listed under "Inputs for this run". For each one, first decide whether the
    page needs a text alternative at all; only then judge its wording. Follow the W3C alt decision tree, in this order:
    1. **Words in the picture?** If the same words are real text nearby, or are only styling, the image needs no
@@ -32,6 +33,8 @@ site owner gets your decision, not a question.
       A photo on a card in a list of articles or posts, whose alt only repeats the card's own visible heading, is
       decorative: the card's heading says what the card is about, and the photo illustrates it. Recommend `""` for
       it, and give every card of the same list the same answer, even when one photo shows people the article names.
+      This is for cards about an article or post; a card about a person (a profile or bio card) follows the portrait
+      rule below.
       A portrait of the person a block, card or bio is about is informative, even when their name is the heading or
       caption next to it: the picture shows who they are, which the name does not. An alt that names the person is
       correct, and repeating the visible name is not a failure (not F39), so it is a pass. Only a repeat of portraits
@@ -56,7 +59,9 @@ site owner gets your decision, not a question.
    - Purpose first. Say what the image tells the reader on this page, in one short sentence: what is shown, then
      what is happening. Usually 5–15 words; 150 characters at most.
    - Do not repeat the visible caption or the heading next to it. Add only what they do not say. If they already
-     say everything that matters, recommend `""`.
+     say everything that matters, recommend `""`. A portrait of the person the block is about is the exception: it
+     is informative (see the portrait rule above), so its alt names the person, even when the name is the caption
+     or heading.
    - Leave out "image of", "photo of" and "picture of" (the screen reader already says "image"). Leave out file
      names, keywords, slogans that are not in the picture, and minor appearance details such as light colour.
    - Only visible facts. Do not guess gender, ethnicity, age, disability or job title from a person's appearance.
@@ -98,7 +103,8 @@ site owner gets your decision, not a question.
    that a careful expert could see differently (for example whether a photo is informative or decorative), and say
    in `confidence_note` what you are unsure of. A medium-confidence decision is still a decision.
 5. One observation per problem per page type, not per element: group the same defect on the same component and
-   name a typical element. If the same problem has different causes, report them separately.
+   name a typical element. If the same problem has different causes, report them separately. Images are the
+   exception: each image element is its own observation (step 2).
 6. Keyboard use of menus, drop-downs and other controls that open something is measured on the live page (Enter,
    Space, Tab, Escape). Links that the collected data marks `hidden: true` sit inside a closed menu: that they are
    not in the Tab order while it is closed is expected, not a 2.1.1 failure. Report a keyboard failure only for what

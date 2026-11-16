@@ -35,8 +35,9 @@ export function judgeCriteria(level, { consistency }) {
     });
 }
 
-// The W3C test procedure of every failure a judge decides, in one file the judge reads.
-function writeFailureGuide(dir, criteria) {
+// The W3C test procedure of every failure a judge decides, in one file per judge: judges whose contexts are built
+// at the same time must not overwrite each other's (the consistency judge decides other criteria).
+function writeFailureGuide(dir, criteria, name) {
   const lines = ['# Documented failures to decide', '', 'From W3C "Techniques for WCAG 2.2". For each failure: the test procedure, and what this review collects for it.', ''];
   for (const c of criteria) {
     if (!c.failures.length) continue;
@@ -46,7 +47,7 @@ function writeFailureGuide(dir, criteria) {
       if (f.how) lines.push(`How this review covers it: ${f.how}`, '');
     }
   }
-  const file = path.join(dir, 'judge-failures.md');
+  const file = path.join(dir, `judge-failures-${name}.md`);
   fs.writeFileSync(file, lines.join('\n'));
   return file;
 }
@@ -112,7 +113,7 @@ export function judgeContext(ctx, { template: tid, consistency, save }) {
   const deepLines = consistency ? [] : fs.existsSync(p.deepDir(tid))
     ? fs.readdirSync(p.deepDir(tid)).filter((f) => f.endsWith('.json')).map((f) => `- Deep check result: ${path.join(p.deepDir(tid), f)}`)
     : ['- No deep check results for this page type.'];
-  const failureGuide = writeFailureGuide(p.dir, criteria);
+  const failureGuide = writeFailureGuide(p.dir, criteria, name);
   const cut = (t) => (t.length > 90 ? `${t.slice(0, 89)}…` : t);
   const criterionLines = criteria.flatMap((c) => [
     `- **${c.sc} ${c.name}** (Level ${c.level}) — look at: ${c.topic}. Card: ${c.card}`,
@@ -175,7 +176,10 @@ export function altSuggestionProblems(j, shotsIndex = {}) {
   const sel = String(j.selector ?? '');
   const im = (shotsIndex.images?.[j.pageId] ?? []).find((x) => x.selector && sel && (x.selector === sel || x.selector.endsWith(sel) || sel.endsWith(x.selector)));
   const cap = norm(im?.caption);
-  if (cap.length >= 12 && norm(s).includes(cap)) out.push(`repeats the visible caption ("${im.caption}"): say only what the caption does not, or recommend "" when the caption already says all that matters`);
+  // A suggestion that is only a short caption names what the caption names: a portrait's alt is the person's name
+  // (judge.md), which is not a repeat to cut.
+  const nameOnly = norm(s) === cap && cap.split(' ').length <= 4;
+  if (cap.length >= 12 && norm(s).includes(cap) && !nameOnly) out.push(`repeats the visible caption ("${im.caption}"): say only what the caption does not, or recommend "" when the caption already says all that matters`);
   return out;
 }
 

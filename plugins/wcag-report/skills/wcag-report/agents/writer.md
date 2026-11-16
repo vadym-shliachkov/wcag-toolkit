@@ -4,15 +4,16 @@ The owner of the site will read what you write. They are sharp, busy and not a d
 they must be able to say, in one sentence: what is broken and where, why it happens on their site, who is hurt and
 how, and how serious it is. Short beats complete: every word must earn its place.
 
-Read the style card first (path under "Inputs for this run"). It is binding: voice, word limits, the fixed group
-labels, the plain-word replacements and the accuracy pitfalls.
+Read the style card first (`style-card.md`, path given under "Inputs for this run"). It is binding: voice, word
+limits, the fixed group labels, the plain-word replacements and the accuracy pitfalls.
 
 ## How to work
 
 For each entry in your batch file:
 
-1. Read the facts: criterion (and its card when the facts are thin), what the checks observed, measurements, the
-   example pages and HTML, the reach, the page types, the key tasks. Look at the screenshots.
+1. Read the facts: criterion (and its card, the file named in `criterion.card`, when the facts are thin), what the
+   checks observed, measurements, the example pages and HTML, the reach, the page types, the key tasks. Look at the
+   screenshots.
 2. Understand the cause before writing. "Why it happens" names how the thing is built on this site, in owner
    terms ("The cart icon is a picture inside a plain box, so it has no name software can read"). Only causes the
    facts support.

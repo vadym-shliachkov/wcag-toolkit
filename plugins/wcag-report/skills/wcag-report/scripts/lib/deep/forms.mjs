@@ -164,6 +164,9 @@ export async function run(env) {
           ? signal(base, { check: 'redundant-entry', sc: ['3.3.7'], status: 'needs_review', ...field(f.fields[0]), description: `${label[0].toUpperCase()}${label.slice(1)} has several steps.`, question: 'Go through every step: does a later step ask again for something entered earlier, without filling it in or offering it?', barrier: 'minor', steps })
           : signal(base, { check: 'redundant-entry', sc: ['3.3.7'], status: 'not_applicable', description: `${label[0].toUpperCase()}${label.slice(1)} is a single step, so nothing is asked twice.`, steps }));
         if (!f.payment) add(signal(base, { check: 'error-prevention', sc: ['3.3.4'], status: 'not_applicable', description: `${label[0].toUpperCase()}${label.slice(1)} sends a message; it makes no legal or financial commitment and changes no stored data.`, steps }));
+        // An order or payment is a financial commitment. Whether it can be checked, corrected or cancelled shows only
+        // after sending, which this test never does.
+        else add(signal(base, { check: 'error-prevention', sc: ['3.3.4'], status: 'needs_review', ...field(f.fields[0]), description: `${label[0].toUpperCase()}${label.slice(1)} takes an order or a payment, which is a financial commitment; sending it was blocked for this test.`, question: 'Place a test order: before it is final, can the visitor review and correct the details, or cancel or undo it afterwards?', barrier: 'major', expected: 'Before an order or payment is final, the visitor can review and correct it, or it can be cancelled or undone.', steps }));
 
         // 3.3.1 / 3.3.3 / 4.1.3 — submit empty, then with a malformed e-mail.
         submitTests: if (f.hasSubmit) {
@@ -201,13 +204,23 @@ export async function run(env) {
         if (email) {
           await frame.locator(email.selector).first().fill('name.example.com').catch(() => {});
           await markSeen(frame);
+          const sentBeforeBad = blocked.log.length;
           await submit(frame, f.i);
           const bad = await freshMessages(frame, f.i);
-          const native = await frame.locator(email.selector).first().evaluate((x) => x.validationMessage || '').catch(() => '');
+          // A novalidate form never shows the browser's own message, so it does not count there.
+          const native = f.novalidate ? '' : await frame.locator(email.selector).first().evaluate((x) => x.validationMessage || '').catch(() => '');
           const all = [...bad.messages, native].filter(Boolean);
           const helpful = all.find((m) => /@|valid|format|e-?mail|correct|адрес/i.test(m));
           if (helpful) add(passSignal(base, { check: 'error-suggestion', sc: '3.3.3', description: `Entering "name.example.com" as the e-mail in ${label} gives the message "${helpful.slice(0, 80)}", which says how to correct it.`, expected: 'Error messages suggest how to correct the input.', steps, evidence: [shot] }));
           else if (all.length) add(signal(base, { check: 'error-suggestion', sc: ['3.3.3'], status: 'fail', ...field(email), description: `Entering an e-mail address without "@" in ${label} only says "${all[0].slice(0, 60)}", without saying what a correct address looks like.`, barrier: 'minor', trust: 'confirmed', evidence: [shot], expected: 'Error messages suggest how to correct the input.', steps }));
+          else {
+            // No message at all. A field the page marks invalid is an error it found and does not explain; otherwise the
+            // check may wait for the other fields or the server, which this test does not reach.
+            const markedInvalid = await frame.locator(email.selector).first().evaluate((x) => x.getAttribute('aria-invalid') === 'true').catch(() => false);
+            const sentBad = formWrites(blocked, sentBeforeBad, f.fields.map((x) => x.nameAttr)) > 0;
+            if (markedInvalid) add(signal(base, { check: 'error-suggestion', sc: ['3.3.3'], status: 'fail', ...field(email), description: `Entering an e-mail address without "@" in ${label} marks the field as wrong, but no text says what is wrong or what a correct address looks like.`, barrier: 'minor', trust: 'confirmed', evidence: [shot], expected: 'Error messages suggest how to correct the input.', steps }));
+            else add(signal(base, { check: 'error-suggestion', sc: ['3.3.3'], status: 'needs_review', ...field(email), description: `Entering an e-mail address without "@" in ${label} shows no message${sentBad ? '; the form sends it to the server, whose answer was blocked for this test' : ''}.`, question: 'On a test copy of the site, fill in every other field correctly, enter an e-mail address without "@" and submit: does the page say how to correct the address?', measured: { sent: sentBad }, barrier: 'minor', trust: 'review', evidence: [shot], expected: 'Error messages suggest how to correct the input.', steps }));
+          }
         } else if (empty.messages.length) {
           add(passSignal(base, { check: 'error-suggestion', sc: '3.3.3', description: `The only errors ${label} can show are missing required fields, and its messages name the field to fill in.`, expected: 'Error messages suggest how to correct the input.', steps, evidence: [shot] }));
         }

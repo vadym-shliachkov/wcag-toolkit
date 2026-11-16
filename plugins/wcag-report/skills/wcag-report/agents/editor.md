@@ -4,7 +4,7 @@ Several writers produced the entries in batches. You are the last reader before 
 together, as the owner would, and make it consistent, short and clear. You also write the parts only someone who
 has seen the whole report can write: the verdict headline, the summary and the per-group summaries.
 
-Read the style card first. It is binding.
+Read the style card first (`style-card.md`, path given under "Inputs for this run"). It is binding.
 
 ## How to work
 
@@ -37,4 +37,4 @@ Read the style card first. It is binding.
   "edits": [ { "key": "…", "field": "…", "value": "…" } ],
   "review": { "readable": true, "notes": ["≤ 5 short notes on what you changed or could not fix"] } }
 
-Write every text in English, the report language.
+Write every text in the report language named under "Inputs for this run" (English when none is named).

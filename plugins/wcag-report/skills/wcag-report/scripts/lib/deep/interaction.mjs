@@ -50,15 +50,18 @@ async function bypass(page, base) {
   if (first.hasTarget) {
     await page.keyboard.press('Enter');
     await page.waitForTimeout(300);
+    // The target is found the way the first check found it: by id, or by name (<a name>), as the browser does.
     const after = await page.evaluate((href) => {
-      const t = document.getElementById(decodeURIComponent(href.slice(1)));
+      const id = decodeURIComponent(href.slice(1));
+      const t = document.getElementById(id) || document.getElementsByName(id)[0];
       const r = t?.getBoundingClientRect();
       return { inTarget: Boolean(t && (t === document.activeElement || t.contains(document.activeElement))), visible: Boolean(r && r.top < innerHeight && r.bottom > 0), hash: location.hash };
     }, first.href);
     // Tab once more: the next stop must be inside or after the target, not back in the header.
     await page.keyboard.press('Tab');
     const next = await page.evaluate((href) => {
-      const t = document.getElementById(decodeURIComponent(href.slice(1)));
+      const id = decodeURIComponent(href.slice(1));
+      const t = document.getElementById(id) || document.getElementsByName(id)[0];
       const a = document.activeElement;
       return Boolean(t && a && (t.contains(a) || (t.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING)));
     }, first.href);
@@ -168,7 +171,9 @@ async function pointer(page, cdp, base, blocked) {
       await page.evaluate(() => document.querySelectorAll('[data-wr-ptr]').forEach((e) => e.removeAttribute('data-wr-ptr')));
       return signal(base, { check: 'pointer', sc: ['2.5.2'], status: 'fail', selector: info.selector, html: info.html, bbox: info.bbox, description: `"${info.text || info.tag}" starts loading another page as soon as the mouse button is pressed, so moving away before releasing cannot cancel it.`, barrier: 'minor', trust: 'confirmed', expected: 'Pressing a control does not run its action until the pointer is released over it.', steps: STEPS.pointer });
     }
-    if (mid.url !== before.url) await page.goBack().catch(() => {});
+    // The press changed nothing irreversible, but the release may have (a hash or history change): back to the page
+    // as it was, so the next control is tested there.
+    if (page.url() !== before.url) await page.goBack().catch(() => {});
   }
   await page.evaluate(() => document.querySelectorAll('[data-wr-ptr]').forEach((e) => e.removeAttribute('data-wr-ptr')));
   return passSignal(base, { check: 'pointer', sc: '2.5.2', description: `${down.length} control(s) react to the pointer being pressed, but none goes to another page or sends anything on press; what opens on press (a menu) can be closed again.`, expected: 'Pressing a control does not run its action until the pointer is released over it.', steps: STEPS.pointer });
@@ -188,7 +193,7 @@ async function toggles(page, base) {
       const details = el.localName === 'summary' ? el.parentElement : null;
       // The part the control opens, when its markup names it: whether that part is shown says more than the length of
       // the page's text, which a carousel turning elsewhere also changes.
-      const ref = el.getAttribute('aria-controls') || el.getAttribute('data-bs-target') || el.getAttribute('data-target') || (/^#[w-]+$/.test(el.getAttribute('href') || '') ? el.getAttribute('href') : '');
+      const ref = el.getAttribute('aria-controls') || el.getAttribute('data-bs-target') || el.getAttribute('data-target') || (/^#[\w-]+$/.test(el.getAttribute('href') || '') ? el.getAttribute('href') : '');
       let target = null;
       try { target = ref ? document.querySelector(ref.startsWith('#') || ref.startsWith('.') ? ref : `#${ref}`) : null; } catch { target = null; }
       const panel = target ? (target.getBoundingClientRect().height > 0 && getComputedStyle(target).visibility !== 'hidden' ? 'shown' : 'hidden') : null;

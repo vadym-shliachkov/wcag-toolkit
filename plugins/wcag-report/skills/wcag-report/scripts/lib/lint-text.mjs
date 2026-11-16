@@ -5,9 +5,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { readJson } from './io.mjs';
 import { REFS_DIR } from './paths.mjs';
+import { baseLang, usesLatinScript } from './i18n.mjs';
 
 const UNIVERSAL = new Set(['code-like', 'placeholder', 'exclamation', 'question']);
-const LATIN_LANGS = new Set(['en', 'de', 'fr', 'es', 'it', 'pt', 'nl', 'pl', 'cs', 'sk', 'sl', 'hr', 'ro', 'hu', 'fi', 'sv', 'da', 'no', 'nb', 'et', 'lv', 'lt', 'tr', 'id', 'ms', 'vi']);
 
 // Word limits per field (design.md §3). Over by up to 10 % is a warning, more is an error.
 export const LIMITS = {
@@ -158,10 +158,9 @@ function inScope(scope, f) {
 }
 
 function scriptCheck(lang, text) {
-  const base = String(lang).split('-')[0].toLowerCase();
-  const plain = stripQuoted(text);
-  const cyr = (plain.match(/\p{Script=Cyrillic}/gu) ?? []).length;
-  if (LATIN_LANGS.has(base) && cyr > 0) return `Cyrillic text in a "${base}" report.`;
+  if (!usesLatinScript(lang)) return null;
+  const cyr = (stripQuoted(text).match(/\p{Script=Cyrillic}/gu) ?? []).length;
+  if (cyr > 0) return `Cyrillic text in a report written in "${baseLang(lang)}".`;
   return null;
 }
 
@@ -220,7 +219,7 @@ export function lintEntry(entry, { kind = 'issue', fix = false, lang = 'en', key
   for (const f of fields) {
     const plain = stripQuoted(f.text);
     if (f.limit) {
-      const n = wordCount(f.field === 'where' ? f.text : f.text);
+      const n = wordCount(f.text); // "where" arrives here without its web addresses (see add('where', …))
       if (n > f.limit) push(f.field, n > f.limit * 1.1 ? 'error' : 'warning', 'length', `${n} words; at most ${f.limit}.`);
     }
     if (!f.tags.has('devNote')) {

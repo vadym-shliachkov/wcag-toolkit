@@ -5,7 +5,7 @@ import { readJson, writeJson } from './io.mjs';
 import { REFS_DIR } from './paths.mjs';
 import { allCriteria } from './criteria.mjs';
 import { loadSchema, validate } from './schema.mjs';
-import { layeredTexts, GROUP_IDS } from './text.mjs';
+import { layeredTexts, entriesWithoutFix, GROUP_IDS } from './text.mjs';
 import { isReviewed } from './merge.mjs';
 import { publicPath, publicUrl, isLocal } from './report-paths.mjs';
 import { publicTarget } from './run.mjs';
@@ -131,6 +131,8 @@ export function assembleReport(ctx) {
   const idByKey = new Map(issuesAll.map((i) => [i.key, i.id]));
 
   for (const i of issuesAll) if (!entries[i.key]) warnings.push(`No text was written for ${i.id}; it is shown with placeholder text and will fail review.`);
+  const noFix = entriesWithoutFix(p, issuesAll);
+  if (noFix.length) warnings.push(`${noFix.length} problem(s) have text without a fix block (${noFix.slice(0, 5).join(', ')}), written by an older version: findings.csv has no fix for them. Run "configure", then the writers and the editor again.`);
 
   const issues = fails.map((i, n) => {
     const e = entries[i.key] ?? {};
@@ -453,6 +455,8 @@ export function assembleReport(ctx) {
 }
 
 // Counts written in prose by the editor must match the data: "19 problems" when there are 18 reads as a false claim.
+// The patterns are English words (--lang accepts only bundled languages, today English only); in a report in another
+// language they find nothing, and only the red team's own reading checks the counts.
 const NUMBER_CLAIMS = [
   { re: /(\d+)\s+(?:distinct\s+|confirmed\s+)?problems?\b/giu, total: (t) => [t.issues] },
   { re: /(\d+)\s+(?:more\s+|other\s+)?items?\b/giu, total: (t) => [t.review] },

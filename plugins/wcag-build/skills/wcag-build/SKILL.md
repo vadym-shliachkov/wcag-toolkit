@@ -51,4 +51,4 @@ When the design conflicts with a criterion:
 
 Write the code with the requirements in place. No separate audit pass afterwards.
 
-In the final message add at most three lines: each design conflict, with the measured value, the criterion and the nearest passing value, for the designer to decide. Say nothing about the invisible parts unless asked. If there are no conflicts, add nothing.
+In the final message add one line per design conflict, with the measured value, the criterion and the nearest passing value, for the designer to decide. List every conflict: each one is a place where the build knowingly misses a criterion. Add nothing else; say nothing about the invisible parts unless asked. If there are no conflicts, add nothing.

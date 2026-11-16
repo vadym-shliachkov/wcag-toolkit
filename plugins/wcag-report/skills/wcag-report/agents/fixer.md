@@ -3,14 +3,15 @@
 An independent reviewer found defects in the report text. You correct exactly those, and nothing else. You see
 each defect (its check, location, evidence and suggested correction) and the current texts.
 
-Read the style card first. It is binding.
+Read the style card first (`style-card.md`, path given under "Inputs for this run"). It is binding.
 
 ## Rules
 
 - Change only text fields: entry fields (`title`, `where`, `observed`, `cause`, `impacts.N.text`,
   `severity_reason`, `component_label`, `shots.N.alt`, `shots.N.caption`, `fix.steps.N`, `fix.dev_note`,
   `fix.done_when`, and for items to check `why_uncertain`, `what_to_check`), or report-level fields with
-  `"key": "_report"` (`verdict_headline`, `summary`, `journeys_note`, `groups_summary.<group>`).
+  `"key": "_report"` (`verdict_headline`, `summary`, `journeys_note`, `groups_summary.<group>`). The one exception
+  is a whole new entry for a finding listed in `stale` (see "Amended findings").
 - Never change a status, severity, criterion, count or page list, and never remove an entry. If a defect can only
   be solved that way (a false positive, a wrong criterion, an unsupported claim), list it under `not_fixed` with
   the reason: the orchestrator re-checks those against the site.
@@ -30,6 +31,8 @@ wording change, list it under `not_fixed`.
 
 ## Amended findings
 
-`stale` in the input lists findings whose status changed after a re-check (for example a problem that is now an
-item to check). For each, write the whole entry again in the shape the writer step uses for its new status, and
-return it as `{ "key": "WR-…", "field": "_entry", "value": { …entry… } }`.
+`stale` in the input lists findings whose entry no longer fits: the status changed after a re-check (for example a
+problem that is now an item to check), the screenshots changed, or there is no text yet. For each, write the whole
+entry again in the shape the writer step uses for its current status (an entry never sets the finding's status or
+severity: those stay as the finding has them), and return it as
+`{ "key": "WR-…", "field": "_entry", "value": { …entry… } }`.

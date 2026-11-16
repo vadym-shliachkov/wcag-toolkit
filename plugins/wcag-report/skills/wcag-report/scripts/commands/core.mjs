@@ -35,10 +35,10 @@ export const options = {
 
 const LEVELS = ['A', 'AA', 'AAA'];
 const list = (s) => (s ? String(s).split(',').map((x) => x.trim()).filter(Boolean) : []);
-const int = (s, d, min, max) => {
+const int = (flag, s, d, min, max) => {
   if (s == null) return d;
-  const n = Number.parseInt(s, 10);
-  if (!Number.isFinite(n) || n < min || n > max) throw new Error(`Expected a number from ${min} to ${max}, got "${s}".`);
+  const n = Number(s);
+  if (!Number.isInteger(n) || n < min || n > max) throw new Error(`--${flag} must be a whole number from ${min} to ${max} (got "${s}").`);
   return n;
 };
 
@@ -53,7 +53,7 @@ function checkUrl(url) {
 function checkLang(value) {
   const lang = String(value).trim().toLowerCase();
   const langs = bundledLanguages().sort();
-  if (!langs.includes(lang)) throw new Error(`--lang must be one of: ${langs.join(', ')} (got "${value}"). The report is written in English only.`);
+  if (!langs.includes(lang)) throw new Error(`--lang must be one of: ${langs.join(', ')} (got "${value}").${langs.length === 1 && langs[0] === 'en' ? ' The report is written in English only.' : ''}`);
   return lang;
 }
 
@@ -115,6 +115,10 @@ export function init(o) {
     if (!fs.existsSync(path.resolve(o['http-auth']))) throw new Error(`--http-auth file not found: ${o['http-auth']}`);
     readHttpAuth(path.resolve(o['http-auth']), url); // fail now on a malformed file, not halfway through the crawl
   }
+  // Checked before the run folder is made, so a bad number never leaves an empty run marked as the latest.
+  const maxPages = int('max-pages', o['max-pages'], 200, 1, 5000);
+  const maxTemplates = int('max-templates', o['max-templates'], 60, 1, 60);
+  const concurrency = int('concurrency', o.concurrency, url ? 3 : 6, 1, 12);
 
   const root = rootOf(o);
   const { id, dir } = createRun(root);
@@ -137,15 +141,15 @@ export function init(o) {
       level,
       lang,
       fix: Boolean(o.fix),
-      maxPages: int(o['max-pages'], 200, 1, 5000),
-      maxTemplates: int(o['max-templates'], 60, 1, 60),
+      maxPages,
+      maxTemplates,
       include: list(o.include),
       exclude: list(o.exclude),
       auth: o.auth ? path.resolve(o.auth) : null,
       httpAuth: o['http-auth'] ? path.resolve(o['http-auth']) : null,
       mask: list(o.mask),
       journeys: list(o.journey),
-      concurrency: int(o.concurrency, url ? 3 : 6, 1, 12),
+      concurrency,
       browser: o.browser || null,
       ignoreRobots: Boolean(o['ignore-robots']),
     },
@@ -182,8 +186,8 @@ export function status(o) {
 // Changes what the report says, not what was tested: the language, fix instructions or the site's display name.
 // A new language changes every text, so the old texts are set aside and the writers run again. Fix mode does not:
 // every text already has its fix (findings.csv always carries it), and --fix only decides whether the report prints
-// it, so a render is enough.
-export function configure(o) {
+// it, so a render is enough. Texts from an older version of the skill without fix blocks are set aside too.
+export async function configure(o) {
   const ctx = loadRun(o);
   const opts = ctx.run.options;
   const before = { lang: opts.lang, fix: opts.fix };
@@ -191,14 +195,17 @@ export function configure(o) {
   if (o.fix) opts.fix = true;
   if (o['no-fix']) opts.fix = false;
   if (o.name) ctx.run.target.name = o.name;
-  const rewrite = before.lang !== opts.lang;
+  const { entriesWithoutFix } = await import('../lib/text.mjs');
+  const noFix = fs.existsSync(ctx.p.issues) && fs.existsSync(ctx.p.textDir) ? entriesWithoutFix(ctx.p, readJson(ctx.p.issues)) : [];
+  const rewrite = before.lang !== opts.lang || noFix.length > 0;
+  const reason = before.lang !== opts.lang ? `new language "${opts.lang}"` : noFix.length ? `${noFix.length} text(s) have no fix block (${noFix.slice(0, 5).join(', ')}${noFix.length > 5 ? ', …' : ''})` : null;
   if (rewrite && fs.existsSync(ctx.p.textDir)) {
     fs.renameSync(ctx.p.textDir, `${ctx.p.textDir}-${before.lang}-${Date.now()}`);
   }
   // The report changes either way, so an earlier review verdict no longer applies to it.
   if (rewrite || before.fix !== opts.fix) delete ctx.run.review;
   writeJson(ctx.p.run, ctx.run);
-  return { ok: true, lang: opts.lang, fix: opts.fix, name: ctx.run.target.name, rewrite };
+  return { ok: true, lang: opts.lang, fix: opts.fix, name: ctx.run.target.name, rewrite, ...(reason ? { reason } : {}) };
 }
 
 export const commands = { doctor, setup, init, latest, status, configure };

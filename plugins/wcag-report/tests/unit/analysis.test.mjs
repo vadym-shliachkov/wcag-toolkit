@@ -126,6 +126,43 @@ test('report lint finds claims and leaks but ignores the template disclaimers', 
   assert.ok(checks.includes('CRED-01') && checks.includes('SEC-02') && checks.includes('TON-04'));
 });
 
+test('report lint checks the script and the fix label in the report language', () => {
+  const cyr = 'Фото без описания';
+  const report = { issues: [{ id: 'I-01' }], review_items: [] };
+  const ctxFor = (lang, fix = false) => ({ run: { options: { lang, fix } }, p: { text: () => '/nonexistent' } });
+  const en = lintReport(ctxFor('en'), [`I-01 ${cyr} appears here.`], report).find((d) => d.check === 'LNG-01');
+  assert.ok(en, 'Cyrillic outside a quote in an English report');
+  assert.match(en.evidence, /report written in "en"/);
+  assert.doesNotMatch(en.evidence, /English report/);
+  assert.equal(lintReport(ctxFor('uk'), [`I-01 ${cyr} appears here.`], report).filter((d) => d.check === 'LNG-01').length, 0, 'Cyrillic is the own text of a report in Ukrainian');
+  // The fix label is the report's own string, so the count of fix blocks is right.
+  const fixed = lintReport(ctxFor('en', true), ['I-01 Keyboard users get stuck. How to fix Add a skip link.'], report);
+  assert.ok(!fixed.some((d) => d.check === 'FIX-02'));
+  assert.ok(lintReport(ctxFor('en', false), ['I-01 How to fix Add a skip link.'], report).some((d) => d.check === 'FIX-01'));
+});
+
+test('--budget must be a positive number of seconds', async () => {
+  const { budgetSec } = await imp('run.mjs');
+  assert.equal(budgetSec({}), 480);
+  assert.equal(budgetSec({ budget: '1' }), 1);
+  assert.equal(budgetSec({ budget: '10' }, 480, 30), 30, 'below the minimum, the minimum');
+  for (const bad of ['abc', '0', '-5']) assert.throws(() => budgetSec({ budget: bad }), /--budget must be a number of seconds above 0/);
+});
+
+test('texts without a fix block are found, so the writers run again', async () => {
+  const { entriesWithoutFix } = await imp('text.mjs');
+  const textDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wr-text-'));
+  const p = { textDir, text: (name) => path.join(textDir, `${name}.json`) };
+  fs.writeFileSync(p.text('write-1'), JSON.stringify({ entries: [
+    { key: 'A', title: 'Has a fix', fix: { steps: ['Add a label.'], dev_note: 'n', done_when: 'd' } },
+    { key: 'B', title: 'Written without a fix' },
+    { key: 'C', title: 'An item to check' },
+  ] }));
+  const issues = [{ id: 'I-01', key: 'A', status: 'fail' }, { id: 'I-02', key: 'B', status: 'fail' }, { id: 'R-01', key: 'C', status: 'needs_review' }, { id: 'I-03', key: 'D', status: 'fail' }];
+  assert.deepEqual(entriesWithoutFix(p, issues), ['I-02'], 'only confirmed problems that have a text; one with no text at all is reported elsewhere');
+  fs.rmSync(textDir, { recursive: true, force: true });
+});
+
 test('the spot-check sample is deterministic and includes every critical issue', () => {
   const report = { issues: [{ id: 'I-01', severity: 'critical' }, { id: 'I-02', severity: 'minor', basis: 'ai_review' }, { id: 'I-03', severity: 'minor' }], review_items: [{ id: 'R-01' }] };
   const ctx = { id: 'run-1', p: { amendments: '/nonexistent' } };
@@ -257,4 +294,58 @@ test('frameIsThirdParty: a node inside a video or form-service frame is third-pa
   assert.equal(frameIsThirdParty('iframe[title="video"]', [yt, own]), true, 'matched by title');
   assert.equal(frameIsThirdParty('iframe[title="Store finder"]', [yt, own]), false);
   assert.equal(frameIsThirdParty('iframe:nth-child(2)', [yt, own]), false, 'mixed and unmatched: not claimed as third-party');
+});
+
+test('layered texts: upTo "edit" leaves out the fixer layers, also when the editor saved nothing', async () => {
+  const { layeredTexts } = await imp('text.mjs');
+  const textDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wr-text-'));
+  const p = { textDir, text: (name) => path.join(textDir, `${name}.json`) };
+  fs.writeFileSync(p.text('write-1'), JSON.stringify({ entries: [{ key: 'K', title: 'Writer title' }] }));
+  fs.writeFileSync(p.text('fix-1'), JSON.stringify({ edits: [{ key: 'K', field: 'title', value: 'Fixer title' }] }));
+  assert.equal(layeredTexts(p, { upTo: 'edit' }).entries.K.title, 'Writer title', 'no edit.json: still stops before the fixer');
+  assert.equal(layeredTexts(p).entries.K.title, 'Fixer title');
+  fs.writeFileSync(p.text('edit'), JSON.stringify({ summary: 'S', edits: [{ key: 'K', field: 'title', value: 'Editor title' }] }));
+  assert.equal(layeredTexts(p, { upTo: 'edit' }).entries.K.title, 'Editor title');
+  assert.equal(layeredTexts(p).entries.K.title, 'Fixer title');
+  fs.rmSync(textDir, { recursive: true, force: true });
+});
+
+test('layered texts: fix rounds apply in numeric order, earlier saves of a round before its latest', async () => {
+  const { layeredTexts } = await imp('text.mjs');
+  const textDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wr-text-'));
+  const p = { textDir, text: (name) => path.join(textDir, `${name}.json`) };
+  const edit = (value) => JSON.stringify({ edits: [{ key: 'K', field: 'title', value }] });
+  fs.writeFileSync(p.text('write-1'), JSON.stringify({ entries: [{ key: 'K', title: 'Writer title' }] }));
+  fs.writeFileSync(p.text('fix-10'), edit('Round 10'));
+  fs.writeFileSync(p.text('fix-2'), edit('Round 2'));
+  fs.writeFileSync(p.text('fix-10-1'), edit('Round 10, first save'));
+  assert.equal(layeredTexts(p).entries.K.title, 'Round 10', 'fix-10 is applied after fix-2 and after fix-10-1');
+  fs.rmSync(textDir, { recursive: true, force: true });
+});
+
+test('save-text and validate-text need --batch for write and --round for fix', async () => {
+  const { saveText, validateText } = await import('../../skills/wcag-report/scripts/commands/analysis.mjs');
+  await assert.rejects(saveText({ stage: 'write' }, { stdin: () => '{}' }), /--batch/);
+  await assert.rejects(saveText({ stage: 'fix' }, { stdin: () => '{}' }), /--round/);
+  await assert.rejects(validateText({ stage: 'fix', round: 'x' }), /--round/);
+  await assert.rejects(saveText({ stage: 'review' }, { stdin: () => '{}' }), /--stage must be/);
+  const { validateTexts } = await imp('text.mjs');
+  await assert.rejects(validateTexts({}, 'review', {}), /--stage must be/, 'an unknown stage is refused, not passed with no errors');
+});
+
+test('each judge gets its own failure guide, so judges started together do not overwrite each other', async () => {
+  const { judgeContext } = await imp('judge.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wr-guide-'));
+  const file = (n) => path.join(dir, n);
+  fs.writeFileSync(file('pages.json'), JSON.stringify({ pages: [{ id: 'p001', url: 'https://ex.test/', status: 200 }, { id: 'p002', url: 'https://ex.test/a', status: 200 }] }));
+  fs.writeFileSync(file('templates.json'), JSON.stringify({ templates: [{ id: 't01', name: 'Home', pageIds: ['p001'], representative: 'p001' }, { id: 't02', name: 'Articles', pageIds: ['p002'], representative: 'p002' }] }));
+  const p = { dir, pages: file('pages.json'), templates: file('templates.json'), shotsIndex: file('shots.json'), signals: file('signals.json'), collect: (id) => file(`collect/${id}.json`), deepDir: (t) => file(`deep/${t}`) };
+  const ctx = { root: dir, id: 'r1', p, run: { options: { level: 'AA' } } };
+  const guideOf = (text) => text.match(/its W3C test procedure is in (.+?\.md)/)?.[1];
+  const first = guideOf(judgeContext(ctx, { template: 't01' }));
+  const second = guideOf(judgeContext(ctx, { template: 't02' }));
+  assert.ok(first && second, 'both contexts name their failure guide');
+  assert.notEqual(first, second);
+  assert.ok(fs.existsSync(first) && fs.existsSync(second));
+  fs.rmSync(dir, { recursive: true, force: true });
 });

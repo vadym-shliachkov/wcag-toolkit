@@ -60,6 +60,10 @@ export async function recheck(o) {
   if (!o.issue) throw new Error('Give --issue <I-NN>.');
   const ctx = loadRun(o);
   const round = roundOf(o);
+  requireFile(ctx.p.issues, 'Run "merge" first.');
+  // A mistyped ID is an error, not a re-check that quietly did nothing.
+  const ids = readJson(ctx.p.issues).map((x) => x.id);
+  if (!ids.includes(o.issue)) throw new Error(`No issue ${o.issue}. Known: ${ids.slice(0, 20).join(', ')}${ids.length > 20 ? ', …' : ''}`);
   return { ok: true, issue: o.issue, ...(await recheckIssue(ctx, o.issue, { outDir: path.join(ctx.p.reviewDir(round), 'recheck') })) };
 }
 

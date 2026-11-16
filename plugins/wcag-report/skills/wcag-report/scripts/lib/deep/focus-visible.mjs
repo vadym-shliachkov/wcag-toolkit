@@ -120,7 +120,8 @@ export async function run(env) {
     await context.close();
   }
   if (!tested) return { ran: false, reason: 'No sampled element could be compared with and without focus.', steps, signals: [], artifacts };
-  // A focus style drawn mostly in colours under 3:1 against what it covers is hard to see (median of changed pixels).
+  // A focus style drawn mostly in colours under 3:1 against what it covers is hard to see: three quarters of its
+  // changed pixels (the 75th percentile) are under 3:1. The median is only reported.
   const weak = indicators.filter((x) => x.contrast.changed > 0 && x.contrast.p75 < 3);
   for (const [k, w] of weak.slice(0, 3).entries()) {
     const files = [
@@ -141,7 +142,9 @@ export async function run(env) {
     signals.push(passSignal(base, { check: 'focus-contrast', sc: '1.4.11', state: 'focus', description: `The keyboard highlight of ${indicators.length} sampled elements has at least ${min.toFixed(1)}:1 contrast against what it covers.`, expected: 'The keyboard highlight has at least 3:1 contrast against the colours next to it.', steps }));
   }
   if (!signals.some((s) => s.status === 'fail')) {
-    signals.push(passSignal(base, { check, sc: '2.4.7', state: 'focus', description: `${tested - signals.length} of ${tested} sampled elements show a visible change when they receive keyboard focus.`, expected, steps }));
+    // Only this check's own questions (2.4.7) are elements without a clear change; the contrast pass is not one.
+    const unclear = signals.filter((s) => s.check === check).length;
+    signals.push(passSignal(base, { check, sc: '2.4.7', state: 'focus', description: `${tested - unclear} of ${tested} sampled elements show a visible change when they receive keyboard focus.`, expected, steps }));
   }
   return { ran: true, environment: environment(null, DESKTOP), steps, signals, artifacts, notes: `${tested} elements compared` };
 }

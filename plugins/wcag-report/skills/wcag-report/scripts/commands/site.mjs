@@ -1,7 +1,7 @@
 // serve, stop, crawl, templates.
 import fs from 'node:fs';
 import { readJson, writeJson } from '../lib/io.mjs';
-import { loadRun, markStep, saveRun, requireFile } from '../lib/run.mjs';
+import { loadRun, markStep, saveRun, requireFile, budgetSec } from '../lib/run.mjs';
 import { serveRepo, stopTree, alive } from '../lib/serve.mjs';
 import { crawl as runCrawl } from '../lib/crawl.mjs';
 import { buildTemplates } from '../lib/templates.mjs';
@@ -11,10 +11,7 @@ export const options = {
   app: { type: 'string' },
 };
 
-const budget = (o, d = 480) => {
-  const n = Number.parseInt(o.budget ?? d, 10);
-  return Number.isFinite(n) && n >= 30 ? n : d;
-};
+const budget = (o, d = 480) => Math.round(budgetSec(o, d, 30));
 
 export async function serve(o) {
   const ctx = loadRun(o);

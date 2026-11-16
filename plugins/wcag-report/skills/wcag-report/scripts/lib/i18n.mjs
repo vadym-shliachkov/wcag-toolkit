@@ -6,6 +6,18 @@ import path from 'node:path';
 import { readJson } from './io.mjs';
 import { REFS_DIR } from './paths.mjs';
 
+// Languages written in the Latin alphabet: in a report in one of them, Cyrillic outside a quote is a defect. For any
+// other language (Ukrainian, Greek, Japanese, …) that check does not apply.
+const LATIN_LANGS = new Set(['en', 'de', 'fr', 'es', 'it', 'pt', 'nl', 'pl', 'cs', 'sk', 'sl', 'hr', 'ro', 'hu', 'fi', 'sv', 'da', 'no', 'nb', 'et', 'lv', 'lt', 'tr', 'id', 'ms', 'vi']);
+
+export function baseLang(lang) {
+  return String(lang ?? '').split('-')[0].trim().toLowerCase();
+}
+
+export function usesLatinScript(lang) {
+  return LATIN_LANGS.has(baseLang(lang));
+}
+
 export function bundledLanguages() {
   return fs.readdirSync(path.join(REFS_DIR, 'i18n')).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5));
 }
