@@ -77,6 +77,8 @@ const CASES = [
   ['keyboard', 'keyboard', '4.1.2', 'fail'],
   ['orientation', 'orientation', '1.3.4', 'fail'],
   ['motion', 'motion', '2.2.2', 'fail'],
+  ['motion', 'motionsix', '2.2.2', 'fail'],
+  ['motion', 'motiontext', '2.2.2', 'fail'],
   ['motion', 'overlay', '2.2.2', 'fail'],
   ['reflow', 'reflowpause', '1.4.10', 'fail'],
   ['target-size', 'targets', '2.5.8', 'fail'],
@@ -103,6 +105,16 @@ for (const [check, stem, sc, status] of CASES) {
     if (status === 'needs_review') assert.equal(bySc(r, sc, 'needs_review').length, 0, 'clean page should not need review');
   });
 }
+
+test('hover-content: a slide that moves on during the hover is not taken for the tooltip', { skip }, async () => {
+  const r = await runCheck('hover-content', 'hoverslide-bad');
+  const hover = r.signals.filter((s) => ['hover-content', 'hover-keyboard'].includes(s.check) && s.status !== 'pass');
+  assert.ok(hover.length > 0, JSON.stringify(r.signals.map((s) => [s.check, s.status, s.description])));
+  for (const s of hover) {
+    assert.match(s.description, /Shipping is free/);
+    assert.doesNotMatch(s.description, /Summer sale|New collection|Free returns/);
+  }
+});
 
 test('motion: a moving canvas under text is one finding on the canvas, not one per text block', { skip }, async () => {
   const r = await runCheck('motion', 'overlay-bad');

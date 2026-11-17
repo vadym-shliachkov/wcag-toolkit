@@ -10,7 +10,7 @@ import { mergeObservations, isReviewed, pageToolNotes } from '../lib/merge.mjs';
 import { judgeContext, convertJudgeOutput, saveJudgeFile, judgeCriteria } from '../lib/judge.mjs';
 import { textContext, validateTexts, saveTexts, batches } from '../lib/text.mjs';
 import { log } from '../lib/log.mjs';
-import { joinInto } from './review.mjs';
+import { joinInto, splitOff } from './review.mjs';
 
 export const options = {
   template: { type: 'string' },
@@ -151,6 +151,19 @@ export function merge(o) {
     if (i && a.to === 'needs_review' && i.status === 'fail') Object.assign(i, { status: 'needs_review', question: [a.reason] });
     // An item to check that a re-check with evidence confirmed stays a problem.
     if (i && a.to === 'fail' && i.status === 'needs_review') Object.assign(i, { status: 'fail', amended: true });
+    // A corrected requirement or severity stays corrected.
+    if (i && a.criterion?.to) i.criteria = { primary: a.criterion.to, related: i.criteria.related.filter((x) => x !== a.criterion.to) };
+    if (i && a.severity?.to && i.status === 'fail') i.severity = a.severity.to;
+    // A split is replayed from the observations it moved; the new finding keeps its key, so later amendments find it.
+    if (i && a.to === 'split' && a.newKey && !issues.some((x) => x.key === a.newKey)) {
+      const moved = new Set(a.observationIds ?? []);
+      const part = splitOff(i, (x) => moved.has(x.observationId), a.newKey, (id) => pages.find((pg) => pg.id === id)?.templateId ?? null);
+      if (part) {
+        delete part.textStale;
+        delete i.textStale;
+        issues.splice(issues.indexOf(i) + 1, 0, part);
+      }
+    }
     const target = a.to === 'merged' && a.intoKey ? issues.find((x) => x.key === a.intoKey) : null;
     if (i && target && target !== i) {
       joinInto(target, i);
@@ -159,7 +172,7 @@ export function merge(o) {
       issues.splice(issues.indexOf(i), 1);
     }
   }
-  if (removedKeys.size || amendments.some((a) => a.to === 'needs_review' || a.to === 'fail')) {
+  if (removedKeys.size || amendments.some((a) => a.to === 'needs_review' || a.to === 'fail' || a.to === 'split' || a.criterion || a.severity)) {
     for (const c of criteriaStatus.filter((x) => x.in_profile)) {
       c.issueKeys = issues.filter((i) => i.status === 'fail' && (i.criteria.primary === c.id || i.criteria.related.includes(c.id))).map((i) => i.key);
       c.reviewKeys = issues.filter((i) => i.status === 'needs_review' && (i.criteria.primary === c.id || i.criteria.related.includes(c.id))).map((i) => i.key);

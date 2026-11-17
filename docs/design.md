@@ -13,7 +13,7 @@ engine). Where they disagreed, the decision is recorded here and wins.
 | Topic | Decision |
 |---|---|
 | Severity names | Keys `critical`, `serious`, `moderate`, `minor`. Printed with a hint: Critical · *blocks a task*, Serious · *very hard*, Moderate · *slows people down*, Minor · *annoyance*. Words like "critical" never appear in writer prose (lint), only in template labels. |
-| Issue IDs | Display IDs by priority order: `I-01…`; review items `R-01…`. Stable internal key `WR-xxxxxx` (hash of SC + check + component) for re-runs and CSV joins. |
+| Issue IDs | Display IDs by priority order when `merge` sets them: `I-01…`; review items `R-01…`. A later `amend --severity` moves the card to its new severity group without renumbering (prose already cites the IDs), so the PDF legend promises grouping by severity, not ID order. Stable internal key `WR-xxxxxx` (hash of SC + check + component) for re-runs and CSV joins. |
 | Disability groups | 8 fixed groups (below). Writers may not invent labels. Voice control and switch users sit under `keyboard`. |
 | Score | No score, grade or percentage anywhere. Verdict label + conformance line + coverage line. |
 | Layout review | Replaced by the red team (it owns layout checks too). |
@@ -45,7 +45,7 @@ engine). Where they disagreed, the decision is recorded here and wins.
    certification" line.
 2. **At a glance**: barrier table (8 groups × severity counts with stacked bars, most affected first, "No barrier
    found in what we tested" rows kept), severity tiles, principle tiles with criteria grids, coverage line.
-3. **Fix these first**: top ≤ 7 confirmed issues (rank, title, groups, reach, severity, link) + "Check soon" (≤ 3 review
+3. **Fix these first**: every critical and serious issue, topped up to 7 with the next ones (rank, title, groups, reach, severity, link) + "Check soon" (≤ 3 review
    items that could be serious). **Key tasks** matrix (journeys × groups → Blocked / Very hard / Some problems / No
    barrier found / Not tested).
 4. **How to read this report**: severity key, the 8 groups with one line each, the assistive tools in plain words,
@@ -110,8 +110,8 @@ doctor → init → [serve] → crawl* → templates → deep* → candidates �
 `templates.json` · `deep/<tid>/<check>.json` · `signals.json` · `shots/` + `shots/index.json` ·
 `observations/auto.json`, `observations/judge-<tid>.json` · `issues.json` · `criteria-status.json` ·
 `text/write-<n>.json`, `text/edit.json`, `text/fix-<r>.json`, `text/i18n.<lang>.json` · `report.json` ·
-`report.html` · `report.pdf` · `findings.csv` · `review/r<n>/` (pages PNG, text, lint.json, pdf-a11y.json,
-sample.json, verdict.json) · `amendments.json` · deliverable copied to `<root>/.wcag-report/<host>-wcag-report-<date>.pdf`
+`report.html` · `report.pdf` · `findings.csv` · `inbox/<step>.json` (subagent results before they are saved) · `review/r<n>/` (pages PNG, text, lint.json, pdf-a11y.json,
+sample.json, verdict.json) · `amendments.json` · deliverable copied to `<root>/.wcag-report/reports/<name or host>-wcag-report-<date>.pdf`
 by `publish`.
 
 ### Data contracts
@@ -202,7 +202,7 @@ consistency, confidentiality, fix mode, language). `save-redteam` validates and 
 Ready = all pages seen, every sample spot-checked, 0 blockers, ≤ 3 majors and none in accuracy / credibility /
 confidentiality / PDF accessibility, two-minute test passed, verdict hash = current PDF hash.
 
-Defects route by cause: `content` → fixer subagent; `evidence` → `recheck` + `amend` (downgrade/remove with recorded
+Defects route by cause: `content` → fixer subagent; `evidence` → `recheck` + `amend` (downgrade, remove, merge a duplicate, split off places with another cause, change criterion or severity, with recorded
 evidence, never silent rewording); `template` → reported to the user as a skill bug. At most 3 reviews.
-`publish` copies the PDF only with a passing verdict for the same hash; otherwise `publish --draft` stamps
-"Draft — failed quality review, not for distribution" and the user is told why.
+`publish` copies the PDF only with a passing verdict for the same hash; otherwise `publish --draft` writes the copy
+as `<name>-wcag-report-<date>-DRAFT.pdf` (the file name marks it; nothing is stamped inside) and the user is told why.

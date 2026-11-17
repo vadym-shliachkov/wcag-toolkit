@@ -111,6 +111,14 @@
                 "string",
                 "null"
               ]
+            },
+            "uncommitted": {
+              "type": "boolean",
+              "description": "The repository folder had changes not yet committed when it was reviewed"
+            },
+            "local": {
+              "type": "boolean",
+              "description": "The pages were served from a copy running on the reviewer's computer, not the public site"
             }
           }
         },
@@ -431,7 +439,7 @@
       "properties": {
         "issue_ids": {
           "$ref": "#/$defs/ids",
-          "maxItems": 7
+          "description": "Every critical and serious problem; fewer than 7 are topped up with the next ones in order"
         },
         "reason": {
           "type": [
@@ -601,6 +609,10 @@
               "string",
               "null"
             ]
+          },
+          "not_a_page": {
+            "type": "boolean",
+            "description": "An address that is not a page of its own (another address for a listed page, a sign-out link, a 'page not found'): listed apart, not counted in scope.pages_discovered"
           },
           "issue_ids": {
             "$ref": "#/$defs/ids"
@@ -1418,6 +1430,10 @@
                   },
                   "height": {
                     "type": "integer"
+                  },
+                  "boxes": {
+                    "type": "array",
+                    "description": "Element rows: the outline of the element in the close-up, in image pixels"
                   }
                 }
               },

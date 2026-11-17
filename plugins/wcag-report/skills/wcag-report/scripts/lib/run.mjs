@@ -16,6 +16,8 @@ export function loadRun(o) {
   const p = runPaths(dir);
   setLogDir(p.logs);
   const run = readJson(p.run);
+  // A --budget given to init is the default of every resumable step of the run; one given to the step itself wins.
+  if (o.budget == null && run?.options?.budget) o.budget = String(run.options.budget);
   // Every command that opens the site goes through loadRun, so a protected staging site opens in each of them.
   if (run?.options?.httpAuth) setHttpAuth(readHttpAuth(run.options.httpAuth, run.target?.url));
   return { root, id, dir, p, run };

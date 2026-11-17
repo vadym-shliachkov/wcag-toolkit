@@ -55,11 +55,14 @@ export async function run(env) {
     for (const [sc, min] of [['2.5.8', 24], ...(env.level === 'AAA' ? [['2.5.5', 44]] : [])]) {
       const m = await measureTargets(page, min);
       const failing = capByKind(m.failing, 2, 12);
+      // The ones left out of the list (more icons of the same row) are still named, so the scanner's open question
+      // about one of them on a page without hands-on tests counts as answered by this problem.
+      const notListed = m.failing.filter((f) => !failing.includes(f)).map((f) => f.html).slice(0, 30);
       for (const f of failing) {
         signals.push(signal(base, {
           check, sc: [sc], status: 'fail', selector: f.selector, html: f.html, bbox: f.bbox,
           description: `${f.name ? `"${f.name.slice(0, 50)}"` : `The ${f.tag} control`} is ${f.width} × ${f.height} pixels and sits too close to "${String(f.near).slice(0, 40)}" for the space around it to make up the difference.`,
-          measured: { width: f.width, height: f.height, minimum: min, nearest: f.near },
+          measured: { width: f.width, height: f.height, minimum: min, nearest: f.near, ...(notListed.length ? { notListed } : {}) },
           barrier: 'minor', trust: 'confirmed', expected: sc === '2.5.8' ? expected : 'Click and tap targets are at least 44 × 44 pixels.', steps,
         }));
       }

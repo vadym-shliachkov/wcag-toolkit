@@ -138,7 +138,9 @@ export const rowThumbKey = (issue, x) => (issue.check === 'judge-1.1.1' ? `${x.p
 const ELEMENT_CHECKS = new Set(['focus-visible', 'autocomplete', 'form-labels', 'label', 'target-size', 'color-contrast', 'contrast-measured', 'label-in-name']);
 
 // What was measured on one element, in numbers the card can print: a contrast ratio, a tap size, the token to add.
-function elementDetail(check, m = {}) {
+// An instance an automated rule could not decide (or one merged in from such an item) has "measured": null.
+function elementDetail(check, measured) {
+  const m = measured ?? {};
   if (check === 'contrast-measured') return { ratio: m.worstContrast ?? m.typicalContrast ?? null, required: m.required ?? 4.5 };
   if (check === 'color-contrast') {
     const ratio = m.ratio ?? Number(/contrast of ([\d.]+)/.exec(String(m.failureSummary ?? ''))?.[1]) ?? null;
@@ -165,7 +167,7 @@ function elementRows(issue, { run, reviewedUrls }) {
     rows.set(key, r);
   }
   return [...rows.values()]
-    .map((r) => ({ ...r, thumb: r.thumb ? { file: r.thumb.file, width: r.thumb.width, height: r.thumb.height } : null, pages: [...new Set(r.urls)].length, places: placesOf(r.urls, reviewedUrls), urls: undefined }))
+    .map((r) => ({ ...r, thumb: r.thumb ? { file: r.thumb.file, width: r.thumb.width, height: r.thumb.height, ...(r.thumb.boxes?.length ? { boxes: r.thumb.boxes } : {}) } : null, pages: [...new Set(r.urls)].length, places: placesOf(r.urls, reviewedUrls), urls: undefined }))
     .sort((a, b) => b.pages - a.pages || String(a.current ?? '').localeCompare(String(b.current ?? '')));
 }
 

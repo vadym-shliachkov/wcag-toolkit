@@ -1,12 +1,13 @@
 // doctor, setup, init, latest, status.
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { readJson, writeJson } from '../lib/io.mjs';
 import { createRun, workDir, runPaths, SKILL_DIR } from '../lib/paths.mjs';
 import { bundledLanguages } from '../lib/i18n.mjs';
 import { depsStatus, setup as installDeps } from '../lib/deps.mjs';
 import { launchBrowser, readHttpAuth } from '../lib/browser.mjs';
-import { loadRun, rootOf } from '../lib/run.mjs';
+import { loadRun, rootOf, budgetSec } from '../lib/run.mjs';
 import { profileCriteria, kbVersion } from '../lib/criteria.mjs';
 import { setLogDir, log } from '../lib/log.mjs';
 
@@ -46,6 +47,8 @@ function checkUrl(url) {
   let u;
   try { u = new URL(url); } catch { throw new Error(`Not a valid URL: "${url}"`); }
   if (!/^https?:$/.test(u.protocol)) throw new Error(`Only http and https URLs can be audited: "${url}"`);
+  // A password in the address would be stored in run.json and end up in file names: refused, and not repeated here.
+  if (u.username || u.password) throw new Error('--url must not contain a user name or password. Write them to a JSON file inside .wcag-report/ and pass it with --http-auth.');
   return u.href;
 }
 
@@ -102,6 +105,18 @@ export function setup(o) {
   return installDeps({ offline: Boolean(o.offline) });
 }
 
+// The commit a repository folder is at, and whether it has changes not yet committed. Git missing or not a checkout:
+// commit null.
+export function repoVersion(repo) {
+  const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 }).trim();
+  try {
+    const commit = git('rev-parse', '--short', 'HEAD');
+    return { commit, uncommitted: git('status', '--porcelain').length > 0 };
+  } catch {
+    return { commit: null };
+  }
+}
+
 export function init(o) {
   if (!o.url && !o.repo) throw new Error('Give a site with --url <https://…>, a repository with --repo <path>, or both.');
   const url = o.url ? checkUrl(o.url) : null;
@@ -111,10 +126,19 @@ export function init(o) {
   if (!LEVELS.includes(level)) throw new Error(`--level must be A, AA or AAA (got "${o.level}").`);
   const lang = checkLang(o.lang || 'en');
   if (o.auth && !fs.existsSync(path.resolve(o.auth))) throw new Error(`--auth file not found: ${o.auth}`);
+  const warnings = [];
   if (o['http-auth']) {
     if (!fs.existsSync(path.resolve(o['http-auth']))) throw new Error(`--http-auth file not found: ${o['http-auth']}`);
     readHttpAuth(path.resolve(o['http-auth']), url); // fail now on a malformed file, not halfway through the crawl
+    // Inside the work folder the file is git-ignored and goes away with it; anywhere else it may be committed or shared.
+    const inWork = path.relative(workDir(rootOf(o)), path.resolve(o['http-auth']));
+    if (inWork.startsWith('..') || path.isAbsolute(inWork)) warnings.push(`The --http-auth file is outside ${workDir(rootOf(o))}: move it there, where it is git-ignored, so the password is not committed or shared with the project.`);
   }
+  // --budget is a setting of the resumable steps (crawl, deep, measure): kept here, it is their default for this run.
+  const budget = o.budget == null ? null : budgetSec(o);
+  // Flags that belong to other commands are not silently dropped.
+  const ignored = Object.keys(o).filter((k) => !(k in options) && !['root', 'run', 'budget'].includes(k));
+  if (ignored.length) warnings.push(`Not used by init and ignored: ${ignored.map((k) => `--${k}`).join(', ')}.`);
   // Checked before the run folder is made, so a bad number never leaves an empty run marked as the latest.
   const maxPages = int('max-pages', o['max-pages'], 200, 1, 5000);
   const maxTemplates = int('max-templates', o['max-templates'], 60, 1, 60);
@@ -132,6 +156,8 @@ export function init(o) {
       url,
       repo,
       repoName: repo ? path.basename(repo) : null,
+      // The version of the code that was reviewed, so the report can say which one (null outside a git checkout).
+      ...(repo ? repoVersion(repo) : {}),
       mode: url && repo ? 'both' : url ? 'url' : 'repo',
       name: o.name || null,
       // Set by "serve" in repo mode: the local address the crawler uses. Never printed in the report.
@@ -152,6 +178,7 @@ export function init(o) {
       concurrency,
       browser: o.browser || null,
       ignoreRobots: Boolean(o['ignore-robots']),
+      ...(budget ? { budget } : {}),
     },
     profile: { level, criteria: criteria.map((c) => c.id) },
     versions: { node: process.versions.node, kb: kbVersion(), skill: readJson(path.join(SKILL_DIR, 'scripts', 'deps', 'package.json'), {}).version ?? null },
@@ -169,6 +196,7 @@ export function init(o) {
     lang,
     fix: run.options.fix,
     next: run.target.mode === 'url' ? 'crawl' : 'serve',
+    ...(warnings.length ? { warnings } : {}),
   };
 }
 

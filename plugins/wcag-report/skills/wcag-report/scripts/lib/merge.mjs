@@ -47,6 +47,28 @@ export function isReviewed(p) {
   return p.status >= 200 && p.status < 300 && !p.blocked && !p.soft404 && !p.error;
 }
 
+// Addresses the crawl found but did not check that the report's appendix lists, with their reason.
+const LISTED_SKIPS = ['robots', 'cap', 'shape-cap', 'depth', 'query-variant', 'logout', 'blocked', 'soft404', 'error', 'excluded', 'duplicate'];
+// Of those, the ones that are not pages of their own: listed apart from the pages, and not counted as pages found.
+const NOT_A_PAGE = ['query-variant', 'logout', 'soft404', 'duplicate'];
+
+// The appendix's skipped rows, each once and never a page already listed (`keyOf` turns an address into the one the
+// report shows). The cover, the writers and the appendix all count "pages found" from this one list.
+export function listedSkips(pagesDoc, keyOf = (u) => u) {
+  const seen = new Set((pagesDoc.pages ?? []).map((pg) => keyOf(pg.finalUrl || pg.url)));
+  const out = [];
+  for (const s of pagesDoc.skipped ?? []) {
+    if (!LISTED_SKIPS.includes(s.reason) || seen.has(keyOf(s.url))) continue;
+    seen.add(keyOf(s.url));
+    out.push({ ...s, notAPage: NOT_A_PAGE.includes(s.reason) });
+  }
+  return out;
+}
+
+export function pagesFound(pagesDoc, keyOf) {
+  return (pagesDoc.pages ?? []).length + listedSkips(pagesDoc, keyOf).filter((s) => !s.notAPage).length;
+}
+
 // Task pages are where people complete something (send, sign in, buy, search): only there can a blocker be critical.
 // Key pages add the home page and other key-flow page types; they lift lesser barriers one step.
 function taskPages(pages, collects, templates) {
@@ -625,7 +647,69 @@ export function foldReviews(groups) {
     if (byKey.has(k)) byKey.get(k).observations.push(...g.observations);
     else byKey.set(k, g);
   }
-  return [...byKey.values()];
+  // Two checks asking about the same element under the same requirement (a scanner and a judge on one video) are one
+  // question for the person who checks it.
+  const out = [];
+  const byPage = new Map(); // group → its observations by page, so only places on one page are compared
+  const pagesOf = (g) => {
+    const m = new Map();
+    for (const o of g.observations) m.set(o.x?.pageId, [...(m.get(o.x?.pageId) ?? []), o]);
+    return m;
+  };
+  for (const g of byKey.values()) {
+    const sc = g.observations[0]?.criterion_id;
+    const mine = pagesOf(g);
+    const same = out.find((h) => h.observations[0]?.criterion_id === sc && [...mine].some(([pid, list]) => (byPage.get(h).get(pid) ?? []).some((a) => list.some((b) => sameElement(a, b)))));
+    if (same) {
+      same.observations.push(...g.observations);
+      byPage.set(same, pagesOf(same));
+    } else {
+      out.push(g);
+      byPage.set(g, mine);
+    }
+  }
+  return out;
+}
+
+// One element seen by two checks, which name it differently: "#contact > p:nth-of-type(1) > input" and
+// "p:nth-of-type(1) > input" on the same page, or two selectors for a link whose opening tag names it the same way
+// (its href, id, name or label).
+const openTag = (html) => String(html ?? '').replace(/\s+data-wr[\w-]*(="[^"]*")?/g, '').replace(/\s+/g, ' ').trim().split('>')[0];
+const endsWithPath = (a, b) => a === b || a.endsWith(` > ${b}`) || a.endsWith(` ${b}`);
+export function sameElement(a, b) {
+  const xa = a.x ?? {};
+  const xb = b.x ?? {};
+  if (!xa.pageId || xa.pageId !== xb.pageId) return false;
+  const sa = String(xa.selector ?? a.scope?.locator ?? '').replace(/\s*>\s*/g, ' > ').trim();
+  const sb = String(xb.selector ?? b.scope?.locator ?? '').replace(/\s*>\s*/g, ' > ').trim();
+  if (sa && sb && (endsWithPath(sa, sb) || endsWithPath(sb, sa))) return true;
+  const ta = namedTag(xa.html);
+  return Boolean(ta) && ta === namedTag(xb.html);
+}
+// An opening tag that names its element (by href, id, name, src, for or label): the same tag is the same element,
+// also on another page (the footer's "Community" link on every page).
+const namedTag = (html) => { const t = openTag(html); return /\s(id|name|href|src|for|aria-label)="[^"]+"/.test(t) ? t : ''; };
+
+// An open question about an element that another check already found broken under the same requirement adds nothing
+// for the owner: the element is in the confirmed problem, and fixing it settles the question. A shared element (a
+// footer link) measured on the pages that got hands-on tests settles the scanner's question on the others too.
+export function dropAnsweredReviews(observations) {
+  const fails = new Map();
+  const failedTags = new Set();
+  for (const o of observations) {
+    if (o.status !== 'fail' || !o.x?.pageId) continue;
+    const list = fails.get(o.x.pageId) ?? [];
+    list.push(o);
+    fails.set(o.x.pageId, list);
+    // A check that lists only a few of many failing elements of one kind names the others in measured.notListed.
+    for (const html of [o.x.html, ...(o.x.measured?.notListed ?? [])]) {
+      const tag = namedTag(html);
+      if (tag) for (const sc of [o.criterion_id, ...(o.related_criteria ?? [])]) failedTags.add(`${sc}|${tag}`);
+    }
+  }
+  const answered = (o) => failedTags.has(`${o.criterion_id}|${namedTag(o.x?.html)}`)
+    || (fails.get(o.x?.pageId) ?? []).some((f) => (f.criterion_id === o.criterion_id || (f.related_criteria ?? []).includes(o.criterion_id)) && sameElement(f, o));
+  return observations.filter((o) => o.status !== 'needs_review' || !answered(o));
 }
 
 // An aria-label or aria-labelledby on a plain container (a div or span without a role) is ignored by assistive
@@ -704,8 +788,10 @@ export function dropSettled(observations) {
   }
   const SETTLED_BY_PAGE = new Set(['link-in-text-block', 'label-content-name-mismatch']);
   // The rule's tap-size test uses boxes (a round button's corners "cover" its neighbour); the deep check measured the
-  // targets on the page and found them large enough or spaced: that settles the rule's open question there.
-  const sizedPages = new Set(observations.filter((o) => o.x?.source === 'deep' && o.x?.check === 'target-size' && o.status === 'pass').map((o) => o.x.pageId));
+  // targets on the page and found them large enough or spaced: that settles the rule's open question there. It measures
+  // every target of the page, so a page where it failed some settles the question for the others too (those failing
+  // are the confirmed problem).
+  const sizedPages = new Set(observations.filter((o) => o.x?.source === 'deep' && o.x?.check === 'target-size' && ['pass', 'fail'].includes(o.status)).map((o) => o.x.pageId));
   return observations.filter((o) => {
     // The rule's result comes from the page as loaded (source axe) or from a window state (a deep record "only in the
     // … state").
@@ -734,7 +820,7 @@ export function mergeObservations({ observations: raw, pages, templates, collect
   const fails = sortIssues(oneCardPerCheck(foldJudgeFails(foldCrossSource(groupObservations(observations, 'fail'), reviewed.length), collects)).map((g) => toIssue(g, { ...ctx, status: 'fail' })));
   const failComponents = new Set(fails.map((i) => `${i.criteria.primary}|${i.component.fingerprint}`));
   // An open question about something already confirmed broken adds nothing for the owner.
-  const reviews = sortIssues(foldReviews(groupObservations(observations, 'needs_review'))
+  const reviews = sortIssues(foldReviews(groupObservations(dropAnsweredReviews(observations), 'needs_review'))
     .map((g) => toIssue(g, { ...ctx, status: 'needs_review' }))
     .filter((r) => !failComponents.has(`${r.criteria.primary}|${r.component.fingerprint}`)));
 

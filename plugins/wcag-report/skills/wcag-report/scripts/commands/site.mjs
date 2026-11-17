@@ -14,6 +14,8 @@ export const options = {
 const budget = (o, d = 480) => Math.round(budgetSec(o, d, 30));
 
 export async function serve(o) {
+  // Starting the site is not a resumable step: init's --budget (meant for crawl, deep and measure) does not apply.
+  const given = o.budget;
   const ctx = loadRun(o);
   const { run, p } = ctx;
   if (!run.target.repo) return { ok: true, skipped: true, reason: 'No repository given; the crawl uses --url directly.', baseUrl: run.target.url };
@@ -24,7 +26,7 @@ export async function serve(o) {
   const prev = readJson(p.serve, {});
   if (prev.done && prev.pid && alive(prev.pid)) return { ok: true, baseUrl: prev.baseUrl, reused: true };
   const repo = o.app ? `${run.target.repo}/${o.app}` : run.target.repo;
-  const state = await serveRepo(repo, { logFile: p.serveLog, state: prev.done ? {} : prev, budgetMs: budget(o, 540) * 1000 });
+  const state = await serveRepo(repo, { logFile: p.serveLog, state: prev.done ? {} : prev, budgetMs: budget({ budget: given }, 540) * 1000 });
   writeJson(p.serve, state);
   if (!state.ok) {
     markStep(ctx, 'serve', { fallback: 'static', reason: state.reason });

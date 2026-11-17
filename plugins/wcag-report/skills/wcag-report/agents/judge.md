@@ -142,4 +142,8 @@ site owner gets your decision, not a question.
   "also_on": ["other page ids in your scope where you saw the same problem"]
 } ] }
 
+`also_on` carries the problem to the other pages, not your quote or your `suggestion`: outside images, those pages
+are listed without a replacement. When each page needs its own words (a page title, a heading, a link text), give
+each page its own observation with its own quote and suggestion instead of `also_on`.
+
 Leave out properties that do not apply to the status. Every criterion you judge gets at least one observation.

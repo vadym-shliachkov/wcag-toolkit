@@ -10,7 +10,7 @@ Your prompt gives you the task, the design context (values, screenshots or a des
 
 1. Read the files that will change or that the new code will sit next to. Note what accessibility behaviour exists now: focus styles, ARIA state, hidden labels, heading levels, id references, the project's visually-hidden class and focus-ring tokens.
 2. Run `node "<SKILL_DIR>/scripts/wb.mjs" brief --components <keys> --changes <keys>` with the keys that fit the task (`list` prints them). Use `criterion <id>` for a full card when a line needs it.
-3. For every colour pair in the design context run `node "<SKILL_DIR>/scripts/wb.mjs" contrast <fg> <bg> ...`. Check target sizes against 24 by 24 CSS px and the narrowest width against 320 px.
+3. For every colour pair in the design context run `node "<SKILL_DIR>/scripts/wb.mjs" contrast <fg> <bg> ...`. For two colours side by side that must be told apart (a link and its surrounding text, two states), add `--adjacent`. Check target sizes against 24 by 24 CSS px and the narrowest width against 320 px.
 4. Decide, line by line, what applies to this task. Drop what does not.
 
 Rules:

@@ -6,9 +6,9 @@ import path from 'node:path';
 import { readJson, writeJson, listFiles } from './io.mjs';
 import { REFS_DIR, KB_DIR } from './paths.mjs';
 import { criterion, cardPath } from './criteria.mjs';
-import { readAgent, readRef, saveLines, wrCommand, fenceJson } from './context.mjs';
+import { readAgent, readRef, saveLines, wrCommand, fenceJson, inboxFile } from './context.mjs';
 import { publicPath } from './report-paths.mjs';
-import { isReviewed } from './merge.mjs';
+import { isReviewed, pagesFound } from './merge.mjs';
 
 export const BATCH_SIZE = 8;
 export const GROUP_IDS = ['screen_reader', 'low_vision', 'colour', 'deaf', 'keyboard', 'dexterity', 'cognitive', 'seizure_motion'];
@@ -123,7 +123,7 @@ export function textContext(ctx, { stage, batch, round, save }) {
       '',
       '## Delivering your result',
       '',
-      ...saveLines(cmdFor(`--stage write --batch ${n}`), save, `{ "batch": ${n}, "entries": [ ... ] }`, `write ${n}: ok, ${input.length} entries`, `write ${n}: invalid — <first error>`),
+      ...saveLines(cmdFor(`--stage write --batch ${n}`), save, `{ "batch": ${n}, "entries": [ ... ] }`, `write ${n}: ok, ${input.length} entries`, `write ${n}: invalid — <first error>`, inboxFile(p, `write-${n}`)),
       '',
     ].join('\n');
   }
@@ -143,7 +143,7 @@ export function textContext(ctx, { stage, batch, round, save }) {
       '',
       '## Delivering your result',
       '',
-      ...saveLines(cmdFor('--stage edit'), save, '{ "verdict_headline": "…", "summary": "…", "groups_summary": { … }, "journeys_note": "…", "glossary": [ … ], "edits": [ … ], "review": { … } }', 'edit: ok, 6 edits, readable', 'edit: invalid — <first error>'),
+      ...saveLines(cmdFor('--stage edit'), save, '{ "verdict_headline": "…", "summary": "…", "groups_summary": { … }, "journeys_note": "…", "glossary": [ … ], "edits": [ … ], "review": { … } }', 'edit: ok, 6 edits, readable', 'edit: invalid — <first error>', inboxFile(p, 'edit')),
       '',
     ].join('\n');
   }
@@ -184,7 +184,7 @@ export function textContext(ctx, { stage, batch, round, save }) {
       '',
       '## Delivering your result',
       '',
-      ...saveLines(cmdFor(`--stage fix --round ${r}`), save, `{ "round": ${r}, "edits": [ ... ], "not_fixed": [ ... ] }`, `fix ${r}: ok, 5 edits`, `fix ${r}: invalid — <first error>`),
+      ...saveLines(cmdFor(`--stage fix --round ${r}`), save, `{ "round": ${r}, "edits": [ ... ], "not_fixed": [ ... ] }`, `fix ${r}: ok, 5 edits`, `fix ${r}: invalid — <first error>`, inboxFile(p, `fix-${r}`)),
       '',
     ].join('\n');
   }
@@ -197,7 +197,7 @@ function editorInput(ctx, issues, texts) {
   const counts = Object.fromEntries(SEVERITIES.map((s) => [s, fails.filter((i) => i.severity === s).length]));
   const pages = readJson(ctx.p.pages);
   return {
-    totals: { issues: counts, review_items: reviews.length, pages_reviewed: pages.pages.filter(isReviewed).length, pages_found: pages.pages.length + (pages.skipped ?? []).filter((s) => !['external', 'asset', 'document'].includes(s.reason)).length, pages_deep: readJson(ctx.p.templates, { templates: [] }).templates.filter((x) => x.deep).length },
+    totals: { issues: counts, review_items: reviews.length, pages_reviewed: pages.pages.filter(isReviewed).length, pages_found: pagesFound(pages, (u) => publicPath(u, ctx.run.target.baseUrl)), pages_deep: readJson(ctx.p.templates, { templates: [] }).templates.filter((x) => x.deep).length },
     criteria: readJson(ctx.p.criteriaStatus, []).filter((c) => c.in_profile).map((c) => ({ id: c.id, status: c.status })),
     journeys: readJson(ctx.p.dir + '/journeys.json', []),
     entries: issues.map((i) => ({ id: i.id, key: i.key, status: i.status, severity: i.severity, criterion: i.criteria.primary, reach: i.reach, ...texts.entries[i.key] })),

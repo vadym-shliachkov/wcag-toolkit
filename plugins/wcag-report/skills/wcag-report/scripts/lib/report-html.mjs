@@ -4,6 +4,7 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { groupIcon, sevGlyph, GROUP_IDS } from './icons.mjs';
+import { claimsAccessibility } from './claims.mjs';
 
 const SEVERITIES = ['critical', 'serious', 'moderate', 'minor'];
 const WEIGHT = { critical: 8, serious: 4, moderate: 2, minor: 1 };
@@ -85,7 +86,8 @@ function formatDate(iso, locale) {
 // Running headers per named page, localised; Chrome has no string-set, so each part is a named page.
 // A draft carries no stamp inside the document: only its file name (-DRAFT) says it is a draft.
 function namedPageCss({ t, report }, dateLabel) {
-  const host = hostOf(report.site.url);
+  // A local copy has no address the client knows: its headers carry the site's name.
+  const host = siteHost(report) || report.site.name || hostOf(report.site.url);
   const footer = t('meta.footer', { site: host, date: dateLabel });
   const pageOf = `${cssString(`${t('meta.page_word')} `)} counter(page) ${cssString(` ${t('meta.of_word')} `)} counter(pages)`;
   const parts = { front: 'running.front', issues: 'running.issues', review: 'running.review', reference: 'running.reference', appendix: 'running.appendix' };
@@ -93,6 +95,9 @@ function namedPageCss({ t, report }, dateLabel) {
   return `@page { @top-right { content: ${cssString(host)}; } @bottom-left { content: ${cssString(footer)}; } @bottom-right { content: ${pageOf}; } }
 ${named}`;
 }
+
+// The site's public host, or null for a local copy or a repository (no address the client would recognise).
+const siteHost = (report) => (/^https?:/.test(String(report.site.url ?? '')) ? hostOf(report.site.url) : null);
 
 function hostOf(url) {
   try { return new URL(url).host.replace(/^www\./, ''); } catch { return String(url ?? ''); }
@@ -183,10 +188,10 @@ function cover(ctx, dateLabel) {
       <div class="cover-title">
         <p class="kicker">${esc(t('cover.kicker'))}</p>
         <h1 id="doc-title">${esc(report.site.name)}</h1>
-        <p class="cover-url">${urlLink(report.site.url, report.site.url)}</p>
+        ${siteHost(report) ? `<p class="cover-url">${urlLink(report.site.url, report.site.url)}</p>` : ''}
         <p class="cover-meta">${esc(t('meta.standard', { level: report.report.profile }))}<br>${esc(t('cover.reviewed_on', { date: dateLabel }))}</p>
       </div>
-      ${shot ? `<div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(hostOf(report.site.url))}</span></div><img src="${esc(fileUrl(shot.file))}" width="${shot.width}" height="${shot.height}" alt="${esc(t('cover.home_alt', { site: report.site.name }))}"></div>` : ''}
+      ${shot ? `<div class="browser"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(siteHost(report) || report.site.name)}</span></div><img src="${esc(fileUrl(shot.file))}" width="${shot.width}" height="${shot.height}" alt="${esc(t('cover.home_alt', { site: report.site.name }))}"></div>` : ''}
     </div>
     <div class="verdict tone-${tone}">
       <h2 class="verdict-label">${SEVERITIES.includes(tone) ? sevGlyph(tone) : ''}${esc(t(`verdict.${report.verdict.label}`, { n: n(report.totals.review_items.total) }))}</h2>
@@ -513,6 +518,14 @@ function placesHtml(ctx, pl) {
   return parts.join('; ');
 }
 
+// Text from the site, quoted. Site text that claims compliance or certification (a badge's alt text, a note addressed
+// to automated reviewers) is described instead: printed, it would read as a claim of this report. findings.csv keeps
+// it word for word for the developers.
+function siteQuote(ctx, text) {
+  if (!claimsAccessibility(text)) return `<q>${esc(text)}</q>`;
+  return `<span class="small muted">${esc(ctx.t('issues.rec_claim_withheld', { n: ctx.n(String(text).trim().split(/\s+/).length) }))}</span>`;
+}
+
 // One row per thing to change: the picture (always shown, so the owner recognises it without reading code), the
 // text there now, what it should be, and where it is.
 function recTable(ctx, i) {
@@ -525,24 +538,25 @@ function recTable(ctx, i) {
   if (elements) {
     const body = rows.map((r) => {
       const name = r.current ?? t('issues.rec_element');
-      const thumb = r.thumb ? `<img src="${esc(ctx.fileUrl(r.thumb.file))}" width="${r.thumb.width}" height="${r.thumb.height}" alt="${esc(t('issues.rec_thumb_element', { name }))}">` : `<span class="small muted">${esc(t('issues.rec_no_image'))}</span>`;
+      // The element is outlined, as in the card's screenshots, so the close-up shows which words or control it means.
+      const thumb = r.thumb ? `<span class="rec-thumb" style="aspect-ratio:${r.thumb.width}/${r.thumb.height}"><img src="${esc(ctx.fileUrl(r.thumb.file))}" width="${r.thumb.width}" height="${r.thumb.height}" alt="${esc(t('issues.rec_thumb_element', { name }))}">${overlay(r.thumb.width, r.thumb.height, r.thumb.boxes, '', { scrim: false })}</span>` : `<span class="small muted">${esc(t('issues.rec_no_image'))}</span>`;
       const d = r.detail ?? {};
       const fam = r.check === 'contrast-measured' ? 'color-contrast' : r.check === 'label' ? 'form-labels' : r.check;
       const nowDetail = d.ratio != null ? t('issues.rec_el_now_contrast', { ratio: n(Number(d.ratio).toFixed(1)) }) : d.width != null ? t('issues.rec_el_now_size', { w: n(d.width), h: n(d.height) }) : t(`issues.rec_el_now_${fam}`);
-      const now = `<q>${esc(name)}</q>${nowDetail ? `<br><span class="small">${esc(nowDetail)}</span>` : ''}`;
+      const now = `${siteQuote(ctx, name)}${nowDetail ? `<br><span class="small">${esc(nowDetail)}</span>` : ''}`;
       // An attribute breaks after its "=", never before its closing quote.
       // The attribute a developer adds, and in words what it does for the visitor.
       const should = r.value ? `<code>${esc(r.value).replace('=', '=<wbr>')}</code>${fam === 'autocomplete' ? `<br><span class="small">${esc(t('issues.rec_el_autocomplete_note'))}</span>` : ''}` : esc(d.required != null ? t('issues.rec_el_should_contrast', { required: n(d.required) }) : t(`issues.rec_el_should_${fam}`));
       return `<tr>${images ? `<td class="rec-img">${thumb}</td>` : ''}<td>${now}</td><td>${should}</td><td class="rec-where">${placesHtml(ctx, r.places)}</td></tr>`;
     }).join('');
-    return `<div class="rec-wrap"><p class="rec-label">${esc(t('issues.recommended'))}</p><table class="rec-table"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+    return `<div class="rec-wrap"><p class="rec-label">${esc(t('issues.recommended'))}</p><table class="rec-table elements"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
   }
   const body = rows.map((r) => {
     // The close-up is the evidence for the row, so it has a text alternative: what it shows, else what it is.
     const thumbAlt = r.seen ? t('issues.rec_thumb_seen', { seen: r.seen }) : r.zoom ? t('issues.rec_thumb_text') : t('issues.rec_thumb_file', { file: r.file && !r.file.includes('[redacted]') ? r.file : t('issues.rec_image') });
     const thumb = r.thumb ? `<img src="${esc(ctx.fileUrl(r.thumb.file))}" width="${r.thumb.width}" height="${r.thumb.height}" alt="${esc(thumbAlt)}">` : `<span class="small muted">${esc(t('issues.rec_no_image'))}</span>`;
     // The same picture may carry different texts on different pages: each is shown.
-    let now = (r.currents?.length ? r.currents : r.current == null ? [] : [r.current]).map((c) => (c === '' ? esc(t('issues.rec_no_alt')) : `<q>${esc(c)}</q>`)).join('<br>');
+    let now = (r.currents?.length ? r.currents : r.current == null ? [] : [r.current]).map((c) => (c === '' ? esc(t('issues.rec_no_alt')) : siteQuote(ctx, c))).join('<br>');
     if (r.zoom) now += `${now ? '<br>' : ''}<span class="small">${esc(t('issues.rec_zoom_now', { px: n(r.zoom.fontPx), pct: n(r.zoom.grows) }))}</span>`;
     const should = r.zoom ? esc(t('issues.rec_zoom_should')) : r.value == null ? `<span class="muted">${esc(t('issues.rec_describe_missing'))}</span>` : recommendation(ctx, i, r.value);
     return `<tr>${images ? `<td class="rec-img">${thumb}${r.file && !r.file.includes('[redacted]') ? `<span class="rec-file">${breakable(r.file)}</span>` : ''}</td>` : ''}<td>${now}</td><td>${should}</td><td class="rec-where">${placesHtml(ctx, r.places)}</td></tr>`;
@@ -673,7 +687,14 @@ function limitsSection(ctx) {
 function methodSection(ctx) {
   const { t, n, report } = ctx;
   const env = report.method.environment ?? {};
+  // What exactly was reviewed: the public site is named on the cover; a copy run from the code or on this computer
+  // is named here, with the version of the code when it is known.
+  const src = report.site.source ?? {};
+  const version = src.commit ? t(src.uncommitted ? 'method_section.source_commit_changed' : 'method_section.source_commit', { commit: src.commit }) : t('method_section.source_no_commit');
+  const source = src.type === 'repo' ? t('method_section.source_repo', { name: src.repo_name ?? report.site.name, version })
+    : src.local ? t('method_section.source_local') : null;
   const rows = [
+    [t('method_section.source'), source],
     [t('method_section.browser'), env.browser],
     [t('method_section.viewports'), (env.viewports ?? []).map((v) => `${v[0]} × ${v[1]}`).join(', ')],
     [t('method_section.zoom'), (env.zoom_percent ?? []).map((z) => new Intl.NumberFormat(ctx.lang, { style: 'percent' }).format(z / 100)).join(', ')],
@@ -685,7 +706,7 @@ function methodSection(ctx) {
   const deep = (report.method.deep_pages ?? []).map((d) => `<li>${esc(d.template)}: ${urlLink(d.url)}</li>`).join('');
   return `<section class="method-sec reference" aria-labelledby="meth-h">
   <h2 id="meth-h">${esc(t('method_section.heading'))}</h2>
-  <ol class="steps">${(t('method_section.steps', { deep: n(report.scope.templates_deep), types: n(report.scope.templates_total) }) || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
+  <ol class="steps">${(t('method_section.steps', { deep: n(report.scope.templates_deep), types: n(report.scope.templates_total) }) || []).map((s, k) => (k === 0 && !(report.scope.discovery ?? []).includes('sitemap') ? t('method_section.step_links_only') : s)).map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
   <h3>${esc(t('method_section.env_heading'))}</h3>
   <table class="env"><tbody>${rows.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table>
   ${deep ? `<h3>${esc(t('method_section.deep_pages'))}</h3><ul class="deep-list">${deep}</ul>` : ''}
@@ -754,18 +775,27 @@ function notCheckedSummary(ctx, excluded) {
 function pagesAppendix(ctx) {
   const { t, report } = ctx;
   const tplName = new Map(report.templates.map((x) => [x.id, x.name]));
-  const excluded = report.pages.filter((p) => p.load_status === 'excluded');
+  // The pages table holds exactly the pages the cover counts as found; addresses that are not pages of their own
+  // follow in a list of their own.
+  const pages = report.pages.filter((p) => !p.not_a_page);
+  const notPages = report.pages.filter((p) => p.not_a_page);
+  const excluded = pages.filter((p) => p.load_status === 'excluded');
   const summarise = excluded.length > NOT_CHECKED_ROWS_MAX;
-  const listed = summarise ? report.pages.filter((p) => p.load_status !== 'excluded') : report.pages;
+  const listed = summarise ? pages.filter((p) => p.load_status !== 'excluded') : pages;
   const rows = listed.map((p) => {
     const ok = p.load_status === 'ok';
     const status = ok ? '' : `<span class="page-status">${esc(t(`pages_appendix.status_${p.load_status}`))}${p.reason ? `: ${esc(p.reason)}` : ''}</span>`;
     return `<tr${ok ? '' : ' class="failed"'}><td>${urlLink(p.url)}${p.title ? `<span class="ptitle">${esc(p.title)}</span>` : ''}${status}</td><td>${esc(tplName.get(p.template_id) ?? '—')}</td><td>${ok ? esc(t(p.deep_tested ? 'pages_appendix.deep' : 'pages_appendix.auto')) : '—'}</td><td>${idList([...(p.issue_ids ?? []), ...(p.review_ids ?? [])])}</td></tr>`;
   }).join('\n');
+  const notPageRows = notPages.slice(0, NOT_CHECKED_ROWS_MAX).map((p) => `<tr><td>${urlLink(p.url)}</td><td>${esc(p.reason ?? '')}</td></tr>`).join('\n');
+  const notPageList = notPages.length ? `<h3 id="pages-not-pages-h">${esc(t('pages_appendix.not_pages_heading', { n: notPages.length.toLocaleString('en') }))}</h3>
+  <p>${esc(t(notPages.length > NOT_CHECKED_ROWS_MAX ? 'pages_appendix.not_pages_lead_summary' : 'pages_appendix.not_pages_lead', { max: NOT_CHECKED_ROWS_MAX }))}</p>
+  <table class="pages not-pages"><thead><tr><th scope="col">${esc(t('pages_appendix.col_address'))}</th><th scope="col">${esc(t('pages_appendix.col_reason'))}</th></tr></thead><tbody>${notPageRows}</tbody></table>` : '';
   return `<section class="pages-sec appendix" aria-labelledby="pages-h">
   <h2 id="pages-h">${esc(t('pages_appendix.heading'))}</h2>
-  <p class="lead">${esc(t(summarise ? 'pages_appendix.lead_summary' : 'pages_appendix.lead'))}</p>
+  <p class="lead">${esc(t(summarise ? 'pages_appendix.lead_summary' : 'pages_appendix.lead', { n: pages.length.toLocaleString('en') }))}</p>
   <table class="pages"><thead><tr><th scope="col">${esc(t('pages_appendix.col_url'))}</th><th scope="col">${esc(t('pages_appendix.col_type'))}</th><th scope="col">${esc(t('pages_appendix.col_deep'))}</th><th scope="col">${esc(t('pages_appendix.col_ids'))}</th></tr></thead><tbody>${rows}</tbody></table>
   ${summarise ? notCheckedSummary(ctx, excluded) : ''}
+  ${notPageList}
 </section>`;
 }

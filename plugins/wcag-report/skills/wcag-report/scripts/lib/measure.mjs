@@ -330,7 +330,10 @@ async function colourWithoutBackground(page) {
       if (el.matches('script,style,noscript,svg,svg *') || !window.__wr.visible(el)) continue;
       if (![...el.childNodes].some((c) => c.nodeType === 3 && c.textContent.trim().length >= 3)) continue;
       const color = getComputedStyle(el).color;
-      if (color === 'rgb(0, 0, 0)' || /, 0\)$/.test(color) || el.closest('[data-wr-hide]') || painted(el)) continue;
+      // The browser's own colours are not set by the page: black text, and a link's default blue, purple or red,
+      // which follow the visitor's colour settings like the white behind them.
+      const browserLink = el.closest('a[href]') && ['rgb(0, 0, 238)', 'rgb(85, 26, 139)', 'rgb(255, 0, 0)'].includes(color);
+      if (color === 'rgb(0, 0, 0)' || browserLink || el.closest(':disabled') || /, 0\)$/.test(color) || el.closest('[data-wr-hide]') || painted(el)) continue;
       found.push({ ...window.__wr.describe(el), color, text: window.__wr.text(el, 60) });
     }
     return { applies: true, found };

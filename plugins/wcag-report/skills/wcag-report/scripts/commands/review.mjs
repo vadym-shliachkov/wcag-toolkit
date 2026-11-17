@@ -9,6 +9,8 @@ import { prepRound, redteamContext, checkVerdict, finalizeVerdict, statusLine, M
 import { recheckIssue } from '../lib/recheck.mjs';
 import { criterion as criterionOf } from '../lib/criteria.mjs';
 
+const SEVERITIES = ['critical', 'serious', 'moderate', 'minor'];
+
 export const options = {
   issue: { type: 'string' },
   status: { type: 'string' },
@@ -16,6 +18,8 @@ export const options = {
   evidence: { type: 'string' },
   'merge-into': { type: 'string' },
   criterion: { type: 'string' },
+  severity: { type: 'string' },
+  split: { type: 'string' },
   draft: { type: 'boolean' },
   'no-recheck': { type: 'boolean' },
 };
@@ -53,7 +57,7 @@ export function saveRedteam(o, { stdin = readStdin } = {}) {
   writeJson(path.join(ctx.p.reviewDir(round), 'verdict.json'), verdict);
   ctx.run.review = { round, ready: verdict.ready, pdf_sha256: verdict.pdf_sha256, counts: verdict.counts, at: verdict.saved_at };
   saveRun(ctx);
-  return { ok: true, round, ready: verdict.ready, counts: verdict.counts, not_ready_because: verdict.not_ready_because, line: statusLine(verdict) };
+  return { ok: true, round, ready: verdict.ready, counts: verdict.counts, not_ready_because: verdict.not_ready_because, template_only: verdict.template_only, line: statusLine(verdict) };
 }
 
 export async function recheck(o) {
@@ -90,12 +94,51 @@ export function joinInto(target, issue) {
   Object.assign(target, { textStale: true, amended: true });
 }
 
+// The places of a finding chosen by `--split`: a page address or path, a page ID, a selector or a picture's file name.
+export const splitPick = (spec) => {
+  const v = String(spec ?? '').trim();
+  const file = (src) => String(src ?? '').split('/').pop().split('?')[0];
+  const pathOf = (url) => { try { return new URL(url).pathname; } catch { return String(url ?? ''); } };
+  return (x) => Boolean(v) && [x.url, pathOf(x.url), pathOf(x.url).replace(/\/$/, ''), x.pageId, x.selector, file(x.src)].includes(v);
+};
+
+// Places of one finding that have a different cause (a picture whose alt text is a long unrelated note, in a card about
+// alt texts that are the word "image") become a finding of their own, under the same requirement and severity. Both
+// are written again. Returns the new finding, or null when the pick takes none or all of the places.
+export function splitOff(issue, pick, key, templateOf = () => null) {
+  const moved = issue.instances.filter(pick);
+  if (!moved.length || moved.length === issue.instances.length) return null;
+  const ids = new Set(moved.map((x) => x.observationId));
+  const part = structuredClone(issue);
+  part.key = key;
+  part.instances = moved;
+  issue.instances = issue.instances.filter((x) => !ids.has(x.observationId));
+  const movedPages = new Set(moved.map((x) => x.pageId));
+  const keptPages = new Set(issue.instances.map((x) => x.pageId));
+  part.shots = (issue.shots ?? []).filter((s) => movedPages.has(s.pageId));
+  issue.shots = (issue.shots ?? []).filter((s) => keptPages.has(s.pageId) || !movedPages.has(s.pageId));
+  for (const it of [issue, part]) {
+    const own = new Set(it.instances.map((x) => x.observationId));
+    it.observationIds = (it.observationIds ?? []).filter((x) => own.has(x));
+    it.instanceCount = it.instances.length;
+    it.observed = [...new Set(it.instances.map((x) => x.observed).filter(Boolean))].slice(0, 5);
+    const pages = new Set(it.instances.map((x) => x.pageId).filter(Boolean)).size;
+    const likely = it === part ? pages : Math.max(pages, (issue.reach?.likelyPages ?? pages) - [...movedPages].filter((pg) => !keptPages.has(pg)).length);
+    it.reach = { ...it.reach, pages, likelyPages: likely, ...(it.reach?.pagesReviewed ? { share: Math.round((pages / it.reach.pagesReviewed) * 1000) / 1000 } : {}) };
+    const tpl = [...new Set(it.instances.map((x) => templateOf(x.pageId)).filter(Boolean))];
+    if (tpl.length) it.templates = tpl;
+    Object.assign(it, { textStale: true, amended: true });
+  }
+  return part;
+}
+
 export function amend(o) {
   const ctx = loadRun(o);
   const { p } = ctx;
   const into = o['merge-into'];
-  const mode = into ? 'merge' : o.criterion ? 'criterion' : 'status';
-  if (!o.issue || !o.reason || (mode === 'status' && !o.status)) throw new Error('Give --issue <I-NN|R-NN>, --reason "…" and one of --status needs_review|removed|fail, --merge-into <I-NN|R-NN> or --criterion <n.n.n>.');
+  const mode = into ? 'merge' : o.split ? 'split' : o.criterion ? 'criterion' : o.severity ? 'severity' : 'status';
+  if (!o.issue || !o.reason || (mode === 'status' && !o.status)) throw new Error('Give --issue <I-NN|R-NN>, --reason "…" and one of --status needs_review|removed|fail, --merge-into <I-NN|R-NN>, --split <page, selector or picture file>, --criterion <n.n.n> or --severity critical|serious|moderate|minor.');
+  if (mode === 'severity' && !SEVERITIES.includes(o.severity)) throw new Error(`--severity must be ${SEVERITIES.join(', ')}.`);
   if (mode === 'status' && !['needs_review', 'removed', 'fail'].includes(o.status)) throw new Error('--status must be needs_review, removed or fail.');
   const issues = readJson(p.issues);
   const i = issues.findIndex((x) => x.id === o.issue);
@@ -126,12 +169,32 @@ export function amend(o) {
     issues.splice(i, 1);
     // The target is named by its key too: display IDs change when a later merge renumbers the findings.
     Object.assign(entry, { to: 'merged', into: target.id, intoKey: target.key });
+  } else if (mode === 'split') {
+    const pageTemplate = new Map((readJson(p.pages, { pages: [] }).pages ?? []).map((pg) => [pg.id, pg.templateId]));
+    const pick = splitPick(o.split);
+    const moved = issue.instances.filter(pick);
+    if (!moved.length) throw new Error(`No place of ${issue.id} matches "${o.split}". Give a page path (/about), a page ID, a selector or a picture's file name as the card or findings.csv shows it.`);
+    if (moved.length === issue.instances.length) throw new Error(`Every place of ${issue.id} matches "${o.split}": nothing would be left. Use --criterion or --status for the whole finding.`);
+    const newKey = `${issue.key}-${createHash('sha256').update(moved.map((x) => x.observationId).sort().join('|')).digest('hex').slice(0, 4)}`;
+    const part = splitOff(issue, pick, newKey, (id) => pageTemplate.get(id));
+    const prefix = part.status === 'fail' ? 'I' : 'R';
+    const next = Math.max(0, ...issues.filter((x) => x.status === part.status).map((x) => Number(String(x.id).slice(2)) || 0)) + 1;
+    part.id = `${prefix}-${String(next).padStart(2, '0')}`;
+    issues.splice(i + 1, 0, part);
+    // Replayed by `merge` from the moved observations, so a later merge splits the same places off again.
+    Object.assign(entry, { to: 'split', split: o.split, observationIds: moved.map((x) => x.observationId), newKey, newId: part.id });
   } else if (mode === 'criterion') {
     const c = criterionOf(o.criterion);
     if (!c) throw new Error(`Unknown criterion ${o.criterion}.`);
     entry.criterion = { from: issue.criteria.primary, to: c.id };
     issue.criteria = { primary: c.id, related: issue.criteria.related.filter((x) => x !== c.id) };
     Object.assign(issue, { textStale: true, amended: true });
+  } else if (mode === 'severity') {
+    // A severity that does not follow severity.md (the barrier the check recorded, one step up for reach): set to
+    // what the rules give, with the reason. Its "why this severity" text is written again.
+    if (issue.status !== 'fail') throw new Error(`${issue.id} is an item to check; only a confirmed problem has a severity.`);
+    entry.severity = { from: issue.severity, to: o.severity };
+    Object.assign(issue, { severity: o.severity, textStale: true, amended: true });
   } else if (o.status === 'removed') issues.splice(i, 1);
   else if (o.status === 'needs_review' && issue.status === 'fail') {
     const next = issues.filter((x) => x.status === 'needs_review').length + 1;
@@ -155,7 +218,7 @@ export function amend(o) {
     else if (c.status === 'fail' || c.status === 'needs_review') { c.status = 'not_tested'; c.reason = `A finding was withdrawn after a re-check: ${o.reason}`; c.noteCode = 'withdrawn'; }
   }
   writeJson(p.criteriaStatus, cs);
-  return { ok: true, ...entry, textStale: mode === 'merge' || Boolean(issue.textStale) };
+  return { ok: true, ...entry, textStale: mode === 'merge' || mode === 'split' || Boolean(issue.textStale) };
 }
 
 // The work lists go with the PDF under the same name: findings.xlsx for the owner, findings.csv for developers.
@@ -169,10 +232,16 @@ function copyData(p, base) {
   return out;
 }
 
-function deliverableName(ctx) {
-  const target = publicTarget(ctx.run).replace(/^https?:\/\//, '').replace(/[^\w.-]+/g, '-').replace(/^-+|-+$/g, '') || 'site';
-  return `${target}-wcag-report-${ctx.run.createdAt.slice(0, 10)}`;
+// The file is named after the site as the client knows it: --name when given, else the public address, else the
+// name on the report's cover. Accents are dropped from their letters ("Café Müller" → "Cafe-Muller"), never the
+// letters themselves.
+export function deliverableName(run, coverName = null) {
+  const url = publicTarget(run);
+  const base = run.target?.name || (/^https?:/.test(url) ? new URL(url).host : null) || coverName || url;
+  const safe = String(base ?? '').normalize('NFKD').replace(/\p{M}+/gu, '').replace(/[^\p{L}\p{N}.]+/gu, '-').replace(/^[-.]+|[-.]+$/g, '') || 'site';
+  return `${safe}-wcag-report-${run.createdAt.slice(0, 10)}`;
 }
+const fileBase = (ctx) => deliverableName(ctx.run, readJson(ctx.p.report, null)?.site?.name ?? null);
 
 export async function publish(o) {
   const ctx = loadRun(o);
@@ -184,9 +253,9 @@ export async function publish(o) {
   const current = sha(p.pdf);
   const passed = review?.ready && review.pdf_sha256 === current;
   if (passed && !o.draft) {
-    const file = path.join(outDir, `${deliverableName(ctx)}.pdf`);
+    const file = path.join(outDir, `${fileBase(ctx)}.pdf`);
     fs.copyFileSync(p.pdf, file);
-    const data = copyData(p, path.join(outDir, deliverableName(ctx)));
+    const data = copyData(p, path.join(outDir, fileBase(ctx)));
     run.published = { file, data, at: new Date().toISOString(), pdf_sha256: current, round: review.round };
     saveRun(ctx);
     return { ok: true, ready: true, file, data, round: review.round };
@@ -197,9 +266,9 @@ export async function publish(o) {
   }
   const { commands } = await import('./render.mjs');
   const r = await commands.render({ ...o, draft: true });
-  const file = path.join(outDir, `${deliverableName(ctx)}-DRAFT.pdf`);
+  const file = path.join(outDir, `${fileBase(ctx)}-DRAFT.pdf`);
   fs.copyFileSync(r.pdf ?? p.pdf, file);
-  const data = copyData(p, path.join(outDir, `${deliverableName(ctx)}-DRAFT`));
+  const data = copyData(p, path.join(outDir, `${fileBase(ctx)}-DRAFT`));
   // The draft render overwrote report.pdf; the reviewed hash no longer matches, so it can never be published by accident.
   return { ok: true, ready: false, draft: true, file, data };
 }

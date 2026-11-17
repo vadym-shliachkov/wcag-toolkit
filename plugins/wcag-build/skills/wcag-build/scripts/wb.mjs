@@ -3,6 +3,7 @@
 //   wb.mjs list
 //   wb.mjs brief --components a,b --changes x,y [--level A|AA|AAA] [--compact]
 //   wb.mjs contrast <fg> <bg> [<fg> <bg> ...] [--large]
+//   wb.mjs contrast --adjacent <colour> <colour> [...]
 //   wb.mjs criterion <id>
 import fs from 'node:fs';
 import path from 'node:path';
@@ -249,12 +250,28 @@ export function contrast(fgIn, bgIn, { large = false } = {}) {
   return { ratio: r, passText: r >= textNeed, passUi: r >= 3, line };
 }
 
+// Two colours that sit side by side and must be told apart, not text on its background: a link and the text around
+// it (1.4.1, technique G183), a current or selected state and the default one, or two parts of a control (1.4.11).
+export function adjacent(aIn, bIn) {
+  const b = { ...parseColour(bIn), a: 1 };
+  const a = over(parseColour(aIn), b);
+  const r = ratio(a, b);
+  const shown = Math.floor(r * 100) / 100;
+  let line = `${aIn} next to ${bIn}: ${shown.toFixed(2)}:1. Told apart by colour alone (1.4.1 links in text, 1.4.11 states and parts, needs 3): ${r >= 3 ? 'pass' : 'FAIL'}.`;
+  if (r < 3) {
+    const fix = nearestPassing(a, b, 3);
+    line += fix ? ` Nearest passing colour for the first: ${hex(fix)} (${(Math.floor(ratio(fix, b) * 100) / 100).toFixed(2)}:1); or add a non-colour cue (underline, weight, an icon or a border).` : ' No lightness of this hue reaches 3:1 here; add a non-colour cue (underline, weight, an icon or a border).';
+  }
+  return { ratio: r, pass: r >= 3, line };
+}
+
 // ---------------------------------------------------------------- CLI
 
 const USAGE = `Usage:
   wb.mjs list
   wb.mjs brief --components a,b --changes x,y [--level A|AA|AAA] [--compact]
   wb.mjs contrast <fg> <bg> [<fg> <bg> ...] [--large]
+  wb.mjs contrast --adjacent <colour> <colour> [...]   two colours side by side (a link and its text, two states)
   wb.mjs criterion <id>`;
 
 function main(argv) {
@@ -263,7 +280,7 @@ function main(argv) {
     allowPositionals: true,
     options: {
       components: { type: 'string' }, changes: { type: 'string' }, level: { type: 'string', default: 'AA' },
-      compact: { type: 'boolean', default: false }, large: { type: 'boolean', default: false },
+      compact: { type: 'boolean', default: false }, large: { type: 'boolean', default: false }, adjacent: { type: 'boolean', default: false },
     },
   });
   const [cmd, ...rest] = positionals;
@@ -274,7 +291,7 @@ function main(argv) {
     case 'contrast': {
       if (!rest.length || rest.length % 2) throw new UsageError('contrast needs pairs: <foreground> <background> ...');
       const lines = [];
-      for (let i = 0; i < rest.length; i += 2) lines.push(contrast(rest[i], rest[i + 1], { large: values.large }).line);
+      for (let i = 0; i < rest.length; i += 2) lines.push((values.adjacent ? adjacent(rest[i], rest[i + 1]) : contrast(rest[i], rest[i + 1], { large: values.large })).line);
       return lines.join('\n');
     }
     default: throw new UsageError(USAGE);

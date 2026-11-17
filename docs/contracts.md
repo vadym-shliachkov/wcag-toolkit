@@ -29,7 +29,7 @@ Shared helpers you may import: everything in core. Use `requireDep('playwright-c
     "error": null, "scannedAt": "ISO" } ],
   "skipped": [ { "url": "…", "reason": "robots|cap|shape-cap|depth|external|asset|document|query-variant|logout|blocked|soft404|error|excluded", "detail": "…" } ],
   "documents": [ { "url": "…/brochure.pdf", "foundOn": "p003" } ],
-  "stats": { "discovered": 0, "scanned": 0, "capReached": false, "robotsRespected": true, "consent": "dismissed|none|not-dismissable" } }
+  "stats": { "discovered": 0, "scanned": 0, "capReached": false, "robotsRespected": true, "fromSitemap": 0, "consent": "dismissed|none|not-dismissable" } }
 ```
 
 Only pages with `status` 200–299, `blocked:false`, `soft404:false` and `error:null` count as reviewed.

@@ -27,8 +27,12 @@ allowed-tools: Read, Write, Glob, Grep, Bash(node:*)
 - Requires Node.js 22+. `WR doctor` installs the runtime dependencies once (into a per-user cache) and checks the
   browser.
 
-If the user gave neither a URL nor a repository, ask for one before starting. Pass every flag the user gave to
-`init` unchanged.
+If the user gave neither a URL nor a repository, ask for one before starting. If they gave a repository, or a local
+or staging address, and no `--name`, ask in the same message for the site's name as the client knows it (it goes on
+the cover and in the file name) and pass it as `--name`; with a public address and no name, the report takes the name
+the pages carry in their titles, else the address. Pass every flag the user gave to `init` unchanged: `init` keeps
+`--budget` for `crawl`, `deep` and `measure`, and its reply lists under `warnings` any flag it does not use (tell the
+user) and an `--http-auth` file kept outside `.wcag-report/`.
 
 ## audit
 
@@ -45,7 +49,7 @@ If the user gave neither a URL nor a repository, ask for one before starting. Pa
    protection, an expired `--auth`), stop and tell the user. A site behind a browser password prompt (HTTP Basic,
    e.g. staging protected by .htaccess) needs `init --http-auth <file>`: a JSON file `{"username": "…", "password": "…"}`
    that the user writes themselves, inside `<ROOT>/.wcag-report/` (git-ignored). Never ask for the password in chat
-   and never copy it anywhere; only the file's path is stored.
+   and never copy it anywhere; only the file's path is stored. A user name or password inside `--url` is refused.
 5. `WR templates`, then `WR deep` (repeated until `done`), then `WR measure` (repeated until `done`: contrast over
    images and in hover and keyboard-focus states, links marked only by colour and control names, on every page), then `WR shots`, then `WR candidates`,
    each with `--root "<ROOT>" --run <run>`.
@@ -100,17 +104,28 @@ For round r = 1, 2, 3:
      `WR shots --issues` to recapture;
      `WR amend --issue <ID> --status needs_review|removed --reason "<what the re-check showed>" --evidence <file>`;
      `WR amend --issue <ID> --merge-into <ID> --reason "…"` for a duplicate of another finding;
-     `WR amend --issue <ID> --criterion <n.n.n> --reason "…"` for a finding filed under the wrong requirement.
+     `WR amend --issue <ID> --split <page path, selector or picture file> --reason "…"` for a card that mixes places
+     with different causes (ACC-10): those places become a finding of their own, then `WR shots --issues`;
+     `WR amend --issue <ID> --criterion <n.n.n> --reason "…"` for a finding filed under the wrong requirement;
+     `WR amend --issue <ID> --severity critical|serious|moderate|minor --reason "…"` for a severity that does not
+     follow `references/severity.md`.
      Never just reword a finding the reviewer doubts. After any amend or recapture, run the fixer step (it rewrites
      the entries that changed) even if there were no content defects. An evidence defect you did not settle this way
      (a statement the reviewer's cited file shows to be wrong) goes to the fixer as a wording correction.
    - `template` (a defect in the skill's own layout or code): it cannot be fixed in this run. Note it for the user.
 5. `WR render`. Then check the stop rule below; if it does not apply, go to the next round.
 
+If `WR render` fails, here or in step 1, the review cannot go on: `redteam-prep` refuses a PDF older than the
+findings or texts, and `publish --draft` renders too. Stop, publish nothing, and tell the user the report could not
+be rendered, with the error and the step that came before it (for example the amend); the PDF in the run folder is
+the one the reviewer rejected and must not go to the client.
+
 The stop rule is checked at the end of each round, after its fixes and `WR render`, so the draft always carries the
-last round's fixes. Stop, not ready, when a blocker has cause `template`, when the number of blockers did not go down
-since the previous round, or after round 3. Then run `WR publish --draft`, which writes the copy as
-`<site>-wcag-report-<date>-DRAFT.pdf` (the file name marks it; nothing is stamped inside the document).
+last round's fixes. Stop, not ready, when a blocker has cause `template`, when the red team's status line ends with
+"(only template defects left)" (`template_only` in `verdict.json`: no step of this run can change what is left), when
+neither the number of blockers nor the number of majors went down since the previous round (0 → 0 blockers with
+6 → 3 majors is progress: go on), or after round 3. Then run `WR publish --draft`, which writes
+the copy as `<site>-wcag-report-<date>-DRAFT.pdf` (the file name marks it; nothing is stamped inside the document).
 
 If subagents are not available at all, the review cannot be independent: render, run `WR publish --draft`, and tell
 the user the report has not passed an independent review.

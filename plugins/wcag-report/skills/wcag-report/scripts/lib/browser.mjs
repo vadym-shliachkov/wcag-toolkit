@@ -75,7 +75,11 @@ export async function closeBrowser() {
 let httpAuth = null;
 
 export function readHttpAuth(file, siteUrl) {
-  const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
+  let raw;
+  // The parser's message quotes the text around the error, which can be the password itself: it is not passed on.
+  try { raw = JSON.parse(fs.readFileSync(file, 'utf8').replace(/^﻿/, '')); } catch {
+    throw new Error(`--http-auth file is not valid JSON (check the quotes and commas; its content is not shown here): ${file}`);
+  }
   if (!raw?.username || typeof raw.password !== 'string') throw new Error(`--http-auth file needs "username" and "password": ${file}`);
   const origin = raw.origin || (siteUrl ? new URL(siteUrl).origin : null);
   if (!origin) throw new Error('--http-auth needs the site address (--url) or an "origin" in the file.');

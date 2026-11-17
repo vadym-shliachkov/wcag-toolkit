@@ -13,7 +13,7 @@ const WB = path.join(SKILL, 'scripts', 'wb.mjs');
 const json = (...p) => JSON.parse(fs.readFileSync(path.join(SKILL, ...p), 'utf8'));
 const lines = (s) => s.split('\n').length;
 
-const { brief, contrast, list, criterionCard, FULL_MAX, COMPACT_MAX } = await import(new URL(`file://${WB.replace(/\\/g, '/')}`));
+const { brief, contrast, adjacent, list, criterionCard, FULL_MAX, COMPACT_MAX } = await import(new URL(`file://${WB.replace(/\\/g, '/')}`));
 const { drift } = await import(new URL(`file://${path.join(PLUGIN, 'tools', 'sync-kb.mjs').replace(/\\/g, '/')}`));
 const hooks = await import(new URL(`file://${path.join(PLUGIN, 'hooks', 'lib.mjs').replace(/\\/g, '/')}`));
 
@@ -107,6 +107,14 @@ test('contrast: known pairs, never rounds up to a pass, suggests a passing colou
   assert.throws(() => contrast('blue-ish', '#fff'), /Cannot read colour/);
 });
 
+test('contrast --adjacent: two colours side by side need 3:1 between them, not a text colour', () => {
+  const states = adjacent('#2e7d32', '#8a8a8a');
+  assert.equal(states.pass, false);
+  assert.match(states.line, /next to #8a8a8a: 1\.\d\d:1\. Told apart by colour alone .* FAIL\. Nearest passing colour for the first: #[0-9a-f]{6} \(3\.\d\d:1\); or add a non-colour cue/);
+  assert.doesNotMatch(states.line, /text colour/);
+  assert.equal(adjacent('#000', '#777').pass, true);
+});
+
 test('CLI: prints the brief, exits 1 with a message on bad input', () => {
   const ok = spawnSync(process.execPath, [WB, 'brief', '--components', 'card', '--changes', 'colour', '--compact'], { encoding: 'utf8' });
   assert.equal(ok.status, 0);
@@ -127,6 +135,12 @@ test('prompt filter: UI work fires, other work does not', () => {
     'make the footer links bigger on mobile',
     'The modal should close on escape',
     'fix the hover colour of the primary button, tests are failing after it',
+    'add dark mode',
+    'make the product grid look better on phones',
+    'the checkout page is ugly, can you improve it',
+    "show the user's cart count from the API in the header",
+    'add an auth token refresh to the header component',
+    'add a link to the privacy page in the footer of the page',
   ];
   const no = [
     'fix the failing date parser test',
@@ -135,6 +149,9 @@ test('prompt filter: UI work fires, other work does not', () => {
     'why is the server returning 500?',
     'update the README',
     'block the user after five failed logins',
+    'add an API endpoint that returns the nav items',
+    'move the logs to the footer of the CI pipeline output',
+    '<task-notification>write 3: ok, 8 entries. The hover screenshot shows the slideshow box on the home page</task-notification>',
     '/wcag-report:wcag-report audit --url https://example.com',
     '',
   ];

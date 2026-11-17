@@ -31,7 +31,7 @@ Level is AA unless the project says otherwise. If the same keys were briefed ear
 
 For each risk line decide: does it apply to this design and this code, and what exactly will the build do about it? Drop the ones that do not apply. Then check what can be checked now:
 
-- **Colours**: `WB contrast <fg> <bg> ...` for every text and control colour pair in the design, each state and each background variant. Add `--large` for text of 24 px (18.66 px bold) and up.
+- **Colours**: `WB contrast <fg> <bg> ...` for every text and control colour pair in the design, each state and each background variant. Add `--large` for text of 24 px (18.66 px bold) and up. For two colours that sit side by side and must be told apart (a link and the text around it, a current state and the default one), use `WB contrast --adjacent <a> <b>`: it checks 3:1 between them, not text on a background.
 - **Sizes**: every target against 24 by 24 CSS px; the narrowest width against 320 px.
 - **States the design does not draw**: focus, hover, error, disabled, open/closed, current.
 - **When changing existing code**: list the accessibility behaviour it has now (focus styles, ARIA state, hidden labels, heading levels, id references). The change must keep each one or replace it with an equivalent.
@@ -51,4 +51,4 @@ When the design conflicts with a criterion:
 
 Write the code with the requirements in place. No separate audit pass afterwards.
 
-In the final message add one line per design conflict, with the measured value, the criterion and the nearest passing value, for the designer to decide. List every conflict: each one is a place where the build knowingly misses a criterion. Add nothing else; say nothing about the invisible parts unless asked. If there are no conflicts, add nothing.
+In the final message add one line per design conflict, with the measured value, the criterion and the nearest passing value, for the designer to decide. List every conflict: each one is a place where the build knowingly misses a criterion. Also add one line for each visible change the build made that the design does not draw, to meet a criterion (links made taller for a 24 px target, a bar that now wraps at 320 px), so whoever reviews the change is not surprised. Add nothing else; say nothing about the invisible parts unless asked. If there are neither, add nothing.

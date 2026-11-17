@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "node --test \"tests/unit/**/*.test.mjs\"",
-    "test:browser": "node --test \"tests/browser/**/*.test.mjs\"",
-    "smoke": "node --test tests/e2e/smoke.test.mjs"
+    "test:browser": "node --test \"tests/browser/**/*.test.mjs\""
   }
 }

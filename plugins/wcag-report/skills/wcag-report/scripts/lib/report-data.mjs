@@ -6,7 +6,7 @@ import { REFS_DIR } from './paths.mjs';
 import { allCriteria } from './criteria.mjs';
 import { loadSchema, validate } from './schema.mjs';
 import { layeredTexts, entriesWithoutFix, GROUP_IDS } from './text.mjs';
-import { isReviewed } from './merge.mjs';
+import { isReviewed, listedSkips } from './merge.mjs';
 import { publicPath, publicUrl, isLocal } from './report-paths.mjs';
 import { publicTarget } from './run.mjs';
 import { pageKey } from './urls.mjs';
@@ -39,10 +39,30 @@ function counts(list) {
 const pageUrl = (pg) => pg?.finalUrl || pg?.url;
 const reachOf = (r) => r.where?.pages_likely ?? r.where?.pages_confirmed ?? 0;
 
-function siteName(run) {
+// The name most pages give themselves at the end (or the start) of their title: "Garden tools | Planted Shop".
+// Only a part shared by at least half of the pages, and by two at least, is a name rather than a page's own words.
+export function nameFromTitles(titles) {
+  const list = titles.map((x) => String(x ?? '').trim()).filter(Boolean);
+  if (list.length < 2) return null;
+  const counts = new Map();
+  for (const title of list) {
+    const parts = title.split(/\s+[|–—·•:-]\s+/).map((x) => x.trim()).filter(Boolean);
+    if (parts.length < 2) continue;
+    for (const c of new Set([parts.at(-1), parts[0]])) counts.set(c, (counts.get(c) ?? 0) + 1);
+  }
+  const [best, n] = [...counts].sort((a, b) => b[1] - a[1])[0] ?? [];
+  return best && n >= Math.max(2, Math.ceil(list.length / 2)) && best.length <= 60 ? best : null;
+}
+
+// The client's name for the site: the one given with --name, else the one its pages use, else its public address.
+// A repository's folder name is the last resort ("~client site ü" is how it is stored, not what the client calls it).
+export function siteName(run, pages = []) {
   if (run.target.name) return run.target.name;
+  const own = nameFromTitles(pages.map((pg) => pg.title));
+  if (own) return own;
   if (run.target.url && !isLocal(run.target.url)) return new URL(run.target.url).hostname.replace(/^www\./, '');
-  return run.target.repoName || 'Site';
+  const folder = String(run.target.repoName ?? '').replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+  return folder || 'Site';
 }
 
 function groupsOf(entry, issue) {
@@ -270,15 +290,13 @@ export function assembleReport(ctx) {
     review_ids: pageIssueIds(pg.id, 'needs_review'),
   }));
   // Every page that was found but not checked is listed with its reason, so "every page we found" is literally true.
-  const LISTED = ['robots', 'cap', 'shape-cap', 'depth', 'query-variant', 'logout', 'blocked', 'soft404', 'error', 'excluded', 'duplicate'];
-  const listed = new Set(pageRows.map((r) => r.url));
-  for (const s of pagesDoc.skipped ?? []) {
-    if (!LISTED.includes(s.reason) || listed.has(publicUrl(s.url, run))) continue;
-    listed.add(publicUrl(s.url, run));
+  // Addresses that are not pages of their own (the same page under another address, a sign-out link) are listed apart
+  // and not counted as pages found, so the cover and the appendix count the same rows.
+  for (const s of listedSkips(pagesDoc, (u) => publicUrl(u, run))) {
     const status = s.reason === 'soft404' ? 'soft404' : s.reason === 'blocked' ? 'blocked' : s.reason === 'error' ? 'error' : 'excluded';
     const key = `pages_appendix.skip.${s.reason.replace('-', '_')}`;
     const reason = t(key);
-    pageRows.push({ url: publicUrl(s.url, run), title: null, template_id: null, deep_tested: false, load_status: status, reason: reason === key ? s.reason : reason, issue_ids: [], review_ids: [] });
+    pageRows.push({ url: publicUrl(s.url, run), title: null, template_id: null, deep_tested: false, load_status: status, reason: reason === key ? s.reason : reason, issue_ids: [], review_ids: [], ...(s.notAPage ? { not_a_page: true } : {}) });
   }
 
   // Gaps: everything a reader could wrongly assume was covered.
@@ -341,13 +359,13 @@ export function assembleReport(ctx) {
       options: { fix: run.options.fix, max_pages: run.options.maxPages },
     },
     site: {
-      name: siteName(run),
+      name: siteName(run, reviewed),
       url: siteUrl,
-      source: { type: run.target.mode, repo_name: run.target.repoName ?? null, commit: run.target.commit ?? null },
+      source: { type: run.target.mode, repo_name: run.target.repoName ?? null, commit: run.target.commit ?? null, ...(run.target.uncommitted ? { uncommitted: true } : {}), local: run.target.mode === 'repo' || Boolean(run.target.url && isLocal(run.target.url)) },
       home_shot: homeShotFile && homeSize ? { file: homeShotFile, ...homeSize } : null,
     },
     scope: {
-      pages_discovered: pageRows.length,
+      pages_discovered: pageRows.filter((r) => !r.not_a_page).length,
       pages_reviewed: reviewed.length,
       pages_failed: failedPages,
       cap_reached: Boolean(stats.capReached),
@@ -355,7 +373,8 @@ export function assembleReport(ctx) {
       templates_total: templates.length,
       templates_deep: deepTemplates.length,
       journeys_tested: journeysRaw.filter((j) => j.tested).length,
-      discovery: ['sitemap', 'links'],
+      // A site without a sitemap (a plain folder of HTML, most repositories) was found by its links alone.
+      discovery: stats.fromSitemap === 0 ? ['links'] : ['sitemap', 'links'],
       excluded: run.options.exclude.map((x) => ({ what: x, reason: 'excluded' })),
       auth: Boolean(run.options.auth),
       forms_submitted: false,
@@ -378,7 +397,12 @@ export function assembleReport(ctx) {
     groups,
     journeys,
     priorities: {
-      issue_ids: fails.slice(0, 7).map((i) => i.id),
+      // Every critical and serious problem, however many: the section promises those that block a task or make it
+      // very hard. Fewer than 7 are topped up with the next ones in order.
+      issue_ids: (() => {
+        const top = fails.filter((i) => ['critical', 'serious'].includes(i.severity));
+        return (top.length >= 7 ? top : [...top, ...fails.filter((i) => !top.includes(i))].slice(0, 7)).map((i) => i.id);
+      })(),
       reason: null,
       // With nothing confirmed, the owner's first job is the open items that would matter most if confirmed.
       // Ranked by how serious each would be if confirmed, then by how many pages it touches (not by ID).

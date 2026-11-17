@@ -88,6 +88,10 @@ q { quotes: "\201C" "\201D"; }
    otherwise leave that page mostly empty. Its heading stays with its table. */
 .priorities { break-before: auto; margin-top: var(--sp-7); }
 .priorities > h2, .priorities > .lead { break-after: avoid; }
+/* "How to read" follows the key-tasks table on the same page: when the table's last rows run onto a new page, that
+   page would otherwise hold two rows and nothing else. */
+.journeys-sec + .howto { break-before: auto; margin-top: var(--sp-7); }
+.howto > h2 { break-after: avoid; }
 /* A change of named page always starts a new page, whatever break-before says: an empty "Problems" section takes the
    page name of the items to check that follow it, so both share a page. */
 .issues-sec.short { page: review; }
@@ -110,6 +114,11 @@ section > .lead { break-after: avoid; break-inside: avoid; }
 .rec-table tr { break-inside: avoid; }
 .rec-table th.rec-img, .rec-table td.rec-img { width: 30mm; }
 .rec-table td.rec-img img { display: block; max-width: 28mm; max-height: 22mm; width: auto; height: auto; border: .5pt solid var(--line); border-radius: 2pt; }
+/* An element row's close-up is a tight crop of the words or the control, outlined, printed wide enough to read. */
+.rec-table.elements th.rec-img, .rec-table.elements td.rec-img { width: 46mm; }
+.rec-thumb { position: relative; display: block; width: 100%; max-width: 44mm; }
+.rec-thumb img { display: block; width: 100%; height: auto; border: .5pt solid var(--line); border-radius: 2pt; }
+.rec-table.elements td.rec-img .rec-thumb img { width: 100%; height: auto; max-width: none; max-height: none; }
 .rec-file { display: block; font: var(--t-cap) var(--font-mono); color: var(--muted); margin-top: 2pt; overflow-wrap: break-word; }
 .rec-table td.rec-where { width: 34%; font-size: var(--t-cap); }
 .rec-table code { font-family: var(--font-mono); font-size: var(--t-sm); background: var(--surface); padding: 1pt 3pt; border-radius: 2pt; }

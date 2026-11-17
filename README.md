@@ -13,7 +13,8 @@ For each problem the report says, in plain language and briefly:
 - **how serious it is** — Critical (blocks a task), Serious, Moderate, Minor — judged by the barrier, not the WCAG level.
 
 Fix instructions appear only with `--fix`. Every report passes an independent **red-team review** of every PDF page
-before it is handed over; a report that fails is delivered only as a draft marked "not for distribution".
+before it is handed over; a report that fails is delivered only as a draft. Only its file name marks it
+(`…-DRAFT.pdf`): nothing is stamped inside the document, so do not rename a draft and send it as final.
 
 ## How it works
 
@@ -21,7 +22,7 @@ before it is handed over; a report that fails is delivered only as a draft marke
    mode the site is built and started locally first.
 2. **Automated checks on every page** with axe-core in a real browser, plus collectors for headings, images, links,
    forms, media and landmarks.
-3. **Page types.** Pages are grouped by layout; one page of each type (up to 15) is tested in depth: keyboard use and
+3. **Page types.** Pages are grouped by layout; one page of each type (up to 60, `--max-templates`) is tested in depth: keyboard use and
    traps, visible keyboard highlight, focus hidden behind sticky bars, 320 px reflow, 200 % text, text spacing,
    hover content, orientation, motion, target size, form errors, open menus and dialogs.
 4. **Judges** (subagents) review what automation cannot decide — image descriptions, link and heading wording,
@@ -103,7 +104,7 @@ In Codex, mention the skill (`$wcag-report`) with the same arguments.
 | `--auth <storageState.json>` | Audit logged-in pages with a Playwright storage state. Inputs are masked in screenshots. |
 | `--include / --exclude <globs>` | Limit the crawl by path. |
 | `--mask <selectors>` | Extra elements to black out in screenshots (personal data). |
-| `--name "<name>"` | The site name printed on the report. |
+| `--name "<name>"` | The site name for the cover and the file name. Without it, the name the pages carry in their titles, else the address. |
 | `--ignore-robots` | Crawl pages that robots.txt asks robots to skip (your own site only). |
 
 ## Output
@@ -118,6 +119,7 @@ Everything goes to `.wcag-report/` under the audited repository (or the working 
    ├─ findings.csv                            one row per instance, with selectors, for developers
    ├─ issues.json, criteria-status.json       merged findings and per-criterion status
    ├─ pages.json, templates.json, axe/, collect/, deep/, shots/, observations/   evidence
+   ├─ inbox/                                  the subagents' results before they are saved
    └─ review/r<n>/                            page images, automated checks, sample, red-team verdict
 ```
 

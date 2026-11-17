@@ -11,7 +11,12 @@ export const EDIT_NUDGE = 'wcag-build: this is the first UI file edited in this 
 export const enabled = () => !/^(off|0|false)$/i.test(process.env.WCAG_BUILD_HOOKS ?? '');
 
 // Words about how things look: enough on their own.
-const VISUAL = /\b(figma|s?css|sass|tailwind|styl(e|es|ed|ing)|restyl\w*|(re)?design\w*|layouts?|colou?rs?|fonts?|typograph\w*|hover|focus (state|style|ring)|animat\w*|transitions?|responsive|breakpoints?|spacing|padding|markup|html|mock-?ups?|pixel[- ]perfect)\b/i;
+const VISUAL = /\b(figma|s?css|sass|tailwind|styl(e|es|ed|ing)|restyl\w*|(re)?design\w*|layouts?|colou?rs?|fonts?|typograph\w*|hover|focus (state|style|ring)|animat\w*|transitions?|responsive|breakpoints?|spacing|padding|markup|html|mock-?ups?|pixel[- ]perfect|dark[- ]mode|light[- ]mode|grids?|ugly|looks? (better|nicer|good|off|wrong|broken)|on (mobile|phones?|tablets?|small screens?))\b/i;
+// Where something goes on screen ("in the header", "to the menu component"): UI work even when the prompt also names
+// the API or a token that feeds it. Not "the footer of the CI output": a place "of" something else is not on screen.
+const PLACED = /\b(in|into|on|to|inside|under|above|below) (the|a|an|our|my|this) (\w+ ){0,2}(header|footer|nav(bar|igation)?|menu|sidebar|page|screen|component|button|modal|dialog|card|banner|toolbar|hero)\b(?! of\b)/i;
+// Turns the host adds itself (a background task or subagent reporting back), not a request typed by the user.
+const HOST_TURN = /^\s*<(task-notification|system-reminder|local-command-stdout|command-name)\b/i;
 // UI things: enough unless the prompt is plainly about something else.
 const STRONG = /\b(components?|menus?|nav(igation|bar)?|modals?|dialogs?|pop-?ups?|popovers?|buttons?|hero|banners?|carousels?|sliders?|accordions?|tooltips?|dropdowns?|footers?|sidebars?|landing page|templates?|cards?|icons?|widgets?|themes?|front-?end|ui|ux|checkbox(es)?|inputs?|toasts?)\b/i;
 // Ambiguous nouns: need a build verb next to them.
@@ -21,8 +26,8 @@ const NOT_UI = /\b(tests?|specs?|api|endpoints?|database|db|sql|quer(y|ies)|migr
 
 export function isUiPrompt(prompt) {
   const p = String(prompt ?? '');
-  if (!p.trim() || p.trim().startsWith('/')) return false;
-  if (VISUAL.test(p)) return true;
+  if (!p.trim() || p.trim().startsWith('/') || HOST_TURN.test(p)) return false;
+  if (VISUAL.test(p) || PLACED.test(p)) return true;
   if (NOT_UI.test(p)) return false;
   return STRONG.test(p) || (WEAK.test(p) && VERB.test(p));
 }

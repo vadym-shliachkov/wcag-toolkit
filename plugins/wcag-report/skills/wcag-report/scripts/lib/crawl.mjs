@@ -97,6 +97,7 @@ class Crawl {
       scanned,
       capReached: Boolean(this.out.stats.capReached),
       robotsRespected: this.state.robotsRespected,
+      fromSitemap: this.state.sitemapUrls ?? null,
       consent: this.state.consent,
     };
     writeJson(this.p.pages, this.out);
@@ -145,6 +146,8 @@ class Crawl {
     const starts = [...new Set([...(this.robots?.sitemaps || []), `${origin}/sitemap.xml`, `${origin}/sitemap_index.xml`])];
     const sm = await collectSitemapUrls(starts, fetchText);
     this.state.sitemaps = sm.sitemaps;
+    // How many addresses the sitemaps gave: the report says how pages were found, and none means links only.
+    this.state.sitemapUrls = sm.urls.length;
     for (const u of sm.urls) {
       // Sitemaps may list the production host while we crawl a local server: map them onto the base origin.
       let mapped = u;

@@ -17,22 +17,30 @@ export function wrCommand(cmd, root, runId, extra = '') {
 
 // With --save the subagent stores its own result (Claude Code); without it the subagent replies with the JSON and
 // the orchestrator pipes it to the same command (Codex explorer agents cannot write files).
-export function saveLines(cmd, save, shape, okLine, badLine) {
+// `file` is this step's own place in the run folder (inbox/<step>.json): never a shared temporary folder, where two
+// audits in one session would overwrite each other's results before they are saved.
+export function saveLines(cmd, save, shape, okLine, badLine, file) {
   if (!save) return ['Reply with the JSON object only, as described under "Output". Do not write any files.'];
-  // A file is the robust route: heredocs break in some tool shells when the JSON contains apostrophes.
+  // A file is the robust route: heredocs break in some tool shells when the JSON contains apostrophes, and long
+  // ones break on Windows.
   return [
-    'Save the JSON object: write it to a file outside the audited project with your file-writing tool (for example in',
-    'your temporary or scratch folder), then pass that file to this command on standard input:',
+    `Save the JSON object: write it with your Write tool to \`${file}\` (create the file; write nothing anywhere else),`,
+    'then pass that file to this command on standard input:',
     '',
     '```bash',
-    `${cmd} < "<that file>"`,
+    `${cmd} < "${file}"`,
     '```',
     '',
-    `Shape: \`${shape}\`. Without a file-writing tool, use a quoted heredoc (\`<<'WR_JSON'\` … \`WR_JSON\`) in Bash, or pipe a here-string in PowerShell.`,
+    `Shape: \`${shape}\`.`,
     '',
     'It prints `"ok": true` when the result is valid. When it prints `"ok": false`, fix every item in `errors` and save again; stop after three attempts.',
     `Then reply with one line only, for example \`${okLine}\` or \`${badLine}\`. Do not repeat the result in your reply.`,
   ];
+}
+
+export function inboxFile(p, step) {
+  fs.mkdirSync(path.join(p.dir, 'inbox'), { recursive: true });
+  return path.join(p.dir, 'inbox', `${step}.json`);
 }
 
 export function fenceJson(value) {

@@ -6,6 +6,9 @@ import { openPage, signal, passSignal, environment, writeArtifact, DESKTOP } fro
 
 export const check = 'hover-content';
 
+// Slideshows change by themselves while a trigger is pointed at (the same list as the motion check's).
+const CAROUSEL = '[aria-roledescription*=carousel i],[aria-roledescription*=slide i],[class*=carousel i],[class*=slider i],[class*=swiper i],[class*=slick i],[class*=marquee i],[class*=ticker i],marquee';
+
 // Triggers: elements pointing at a described or popup element, tooltip conventions, and selectors from same-origin
 // style sheets that reveal something on :hover.
 async function findTriggers(page) {
@@ -44,16 +47,34 @@ async function snapshot(page) {
   });
 }
 
-async function revealed(page) {
-  return page.evaluate(() => {
+// What pointing at the trigger showed. Other things change on their own meanwhile (a slideshow moves on): the new
+// content must belong to the trigger — named by it (aria-describedby, aria-controls), inside it or its list item, or
+// the nearest new layer close to it — and a slide that changed by itself elsewhere is never taken for it.
+async function revealed(page, i) {
+  return page.evaluate(({ i, carouselSel }) => {
     const fresh = [...document.querySelectorAll('body *:not([data-wr-seen])')].filter((el) => window.__wr.visible(el) && window.__wr.text(el, 20).length > 0);
     const top = fresh.filter((el) => !fresh.some((p) => p !== el && p.contains(el)));
     if (!top.length) return null;
-    const el = top[0];
+    const trigger = document.querySelector(`[data-wr-hover="${i}"]`);
+    const named = new Set(['aria-describedby', 'aria-controls', 'aria-owns', 'aria-details'].flatMap((a) => (trigger?.getAttribute(a) || '').split(/\s+/)).filter(Boolean).map((id) => document.getElementById(id)).filter(Boolean));
+    const parent = trigger?.parentElement;
+    const scope = trigger?.closest('li') || (parent && !parent.matches('body,main,[role=main],header,footer,nav,section,article') ? parent : null);
+    const tr = trigger?.getBoundingClientRect();
+    const gap = (el) => {
+      if (!tr) return Infinity;
+      const r = el.getBoundingClientRect();
+      return Math.hypot(Math.max(0, r.left - tr.right, tr.left - r.right), Math.max(0, r.top - tr.bottom, tr.top - r.bottom));
+    };
+    const ownSlideshow = (el) => { const c = el.closest(carouselSel); return !c || (trigger && c.contains(trigger)); };
+    const linked = top.find((el) => [...named].some((n) => n === el || n.contains(el) || el.contains(n)));
+    const inside = top.filter(ownSlideshow).find((el) => trigger?.contains(el) || (scope && scope.contains(el)));
+    const near = top.filter(ownSlideshow).filter((el) => gap(el) <= 200).sort((a, b) => gap(a) - gap(b))[0];
+    const el = linked || inside || near;
+    if (!el) return null;
     el.setAttribute('data-wr-popup', '');
     const r = el.getBoundingClientRect();
     return { ...window.__wr.describe(el), text: window.__wr.text(el, 100), rect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom } };
-  });
+  }, { i, carouselSel: CAROUSEL });
 }
 
 // From a state where the content is hidden, try what a keyboard user would: focus the trigger, focus the first
@@ -137,7 +158,7 @@ export async function run(env) {
       const loc = page.locator(`[data-wr-hover="${t.i}"]`);
       try { await loc.hover({ timeout: 1500 }); } catch { continue; }
       await page.waitForTimeout(450);
-      const pop = await revealed(page);
+      const pop = await revealed(page, t.i);
       if (!pop) continue;
       tested += 1;
       const shot = writeArtifact(env, `hover-${tested}.jpg`, await page.screenshot({ type: 'jpeg', quality: 72 }));

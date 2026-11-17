@@ -135,7 +135,7 @@
     "card_parts": [
       [
         "ID and title",
-        "The barrier in plain words. IDs (I-01) are in priority order and stay the same in the developer files."
+        "The barrier in plain words. Problems are grouped by severity, most severe first; the ID (I-01) stays the same in the developer files."
       ],
       [
         "Severity",
@@ -312,6 +312,7 @@
     "rec_should": "Should be",
     "rec_where": "Where",
     "rec_no_alt": "(no alt text)",
+    "rec_claim_withheld": "A text of {n} words, not repeated here because it contains a claim about the site's accessibility (findings.csv has it word for word).",
     "rec_no_image": "(no close-up)",
     "rec_thumb_seen": "Close-up: {seen}",
     "rec_thumb_text": "Close-up of this text on the page",
@@ -410,7 +411,14 @@
       "Reviewed content that needs judgement, such as image descriptions, headings and link text, with AI and quoted evidence.",
       "Merged repeated problems, described each one in plain language, and had the report checked by an independent reviewer before release."
     ],
+    "step_links_only": "Found the pages by following the links between pages, starting from the home page (the site has no sitemap).",
     "env_heading": "Test environment",
+    "source": "What was reviewed",
+    "source_repo": "The site's code from the folder \"{name}\" ({version}), built and run on the reviewer's computer; the public site was not visited.",
+    "source_commit": "version {commit}",
+    "source_commit_changed": "version {commit} with changes not yet committed",
+    "source_no_commit": "no version number recorded",
+    "source_local": "A copy of the site running on the reviewer's computer; the public site was not visited.",
     "browser": "Browser",
     "viewports": "Window sizes",
     "zoom": "Zoom levels",
@@ -462,7 +470,7 @@
   },
   "pages_appendix": {
     "heading": "Appendix: pages reviewed",
-    "lead": "Every page we found, with the problems and items on it. Pages that could not be checked are listed with the reason.",
+    "lead": "Every page we found ({n}), with the problems and items on it. Pages that could not be checked are listed with the reason.",
     "col_url": "Page",
     "col_type": "Type",
     "col_deep": "Depth",
@@ -492,7 +500,11 @@
     "col_reason": "Reason",
     "col_count": "Pages",
     "col_where": "Mostly in",
-    "other_sections": ", and {n} elsewhere"
+    "other_sections": ", and {n} elsewhere",
+    "not_pages_heading": "Addresses that are not separate pages ({n})",
+    "not_pages_lead": "Found in links but not counted as pages found: each is another address for a page listed above, a sign-out link, or an address that shows \"page not found\".",
+    "not_pages_lead_summary": "Found in links but not counted as pages found: each is another address for a page listed above, a sign-out link, or an address that shows \"page not found\". The first {max} are listed here; the workbook (findings.xlsx, Pages sheet) lists all of them.",
+    "col_address": "Address"
   },
   "toc": {
     "heading": "Contents"

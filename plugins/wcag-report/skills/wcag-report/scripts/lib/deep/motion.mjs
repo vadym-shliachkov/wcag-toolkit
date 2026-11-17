@@ -43,24 +43,62 @@ async function movingNow(page, img) {
     try {
       await loc.scrollIntoViewIfNeeded({ timeout: 1500 });
       const a = await loc.screenshot({ type: 'png', timeout: 3000 });
-      await page.waitForTimeout(6000);
-      const b = await loc.screenshot({ type: 'png', timeout: 3000 });
-      const d = await img.diff(a, b);
-      if (d.ratio > 0.05) moving.push({ ...c, changed: d.ratio, before: a, after: b });
+      const shown = await shownContent(page, c.i);
+      // Watched for 6 seconds at uneven moments: a slideshow whose round takes 2, 3 or 6 seconds is back on its first
+      // slide after exactly 6, so two pictures 6 seconds apart would look the same.
+      // Moving means a large share of the pixels changed, or the words or pictures it shows changed: one line of dark
+      // text on white swapped for another alters only about 1 % of the pixels.
+      let best = null;
+      for (const wait of WATCH_MS) {
+        await page.waitForTimeout(wait);
+        const b = await loc.screenshot({ type: 'png', timeout: 3000 });
+        const d = await img.diff(a, b);
+        const swapped = d.ratio > 0 && (await shownContent(page, c.i)) !== shown;
+        const score = (swapped ? 1 : 0) + d.ratio;
+        if (!best || score > best.score) best = { score, swapped, ratio: d.ratio, shot: b };
+      }
+      if (best.swapped || best.ratio > 0.05) moving.push({ ...c, changed: best.ratio, before: a, after: best.shot });
     } catch { /* element went away */ }
   }
   return moving;
 }
 
-// Parts of the first screen that keep changing: screenshots 2 s apart, compared cell by cell; a cell that changes in
-// both intervals is moving. Each moving cell is traced to the element drawn there.
+// What a candidate shows right now: the text and the picture addresses of the parts of it that are visible inside its
+// box. A slide that is hidden, or pushed outside the box, does not count. Pictures still loading (no address yet or a
+// data: placeholder) are left out, so a picture that loads late is not taken for a new slide.
+const shownContent = (page, i) => page.evaluate((i) => {
+  const root = document.querySelector(`[data-wr-move="${i}"]`);
+  if (!root) return '';
+  const box = root.getBoundingClientRect();
+  const inside = (el) => {
+    const r = el.getBoundingClientRect();
+    return Math.min(r.right, box.right) - Math.max(r.left, box.left) >= 4 && Math.min(r.bottom, box.bottom) - Math.max(r.top, box.top) >= 4;
+  };
+  const out = [];
+  for (const el of [root, ...root.querySelectorAll('*')].slice(0, 400)) {
+    if (!window.__wr.visible(el) || !inside(el)) continue;
+    const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' ').replace(/\s+/g, ' ').trim();
+    if (own) out.push(own);
+    const src = el.currentSrc || el.getAttribute('src') || '';
+    if (el.matches('img,video') && src && !src.startsWith('data:')) out.push(`[${src}]`);
+  }
+  return out.join('|');
+}, i).catch(() => '');
+
+// The pauses between the pictures of a candidate: 2.3 s, 3.7 s and 6 s after the first. No common slide period
+// (a multiple of 0.1 s) lands on all three.
+const WATCH_MS = [2300, 1400, 2300];
+
+// Parts of the first screen that keep changing: screenshots 2 s and then 1.3 s apart (uneven, so a ticker with a
+// 2-second round is not caught at the same point twice), compared cell by cell; a cell that changes in both intervals
+// is moving. Each moving cell is traced to the element drawn there.
 async function movingByPixels(page, img) {
   await page.evaluate(() => scrollTo(0, 0));
   await page.mouse.move(1, 1);
   await page.waitForTimeout(500);
   const shots = [];
-  for (let k = 0; k < 3; k++) {
-    if (k) await page.waitForTimeout(2000);
+  for (const wait of [0, 2000, 1300]) {
+    if (wait) await page.waitForTimeout(wait);
     shots.push(await page.screenshot({ type: 'png' }));
   }
   const COLS = 8;
@@ -105,7 +143,7 @@ export async function run(env) {
   const base = { pageId: env.pageId, url: env.url };
   const steps = [
     'Load the page in a desktop browser window (1280 × 900) without touching it.',
-    'Watch carousels, tickers and animations for 6 seconds and compare how they look before and after.',
+    'Watch carousels, tickers and animations for 6 seconds and compare what they show before and after.',
     'Look for a pause, stop or hide button next to anything that moves, and for sound that starts by itself.',
   ];
   const { context, page, blocked } = await openPage(env, { viewport: DESKTOP });
@@ -128,7 +166,7 @@ export async function run(env) {
       const settled = m.why === 'carousel' || m.whole;
       signals.push(signal(base, {
         check, sc: ['2.2.2'], status: settled ? 'fail' : 'needs_review', selector: m.selector, html: m.html, bbox: m.bbox,
-        description: m.whole ? `${a} ${what} keeps moving by itself (it was still changing 5 to 9 seconds after the page opened) and there is no button to pause or stop it.` : `${a} ${what} changes by itself (it looked different after 6 seconds) and there is no button to pause or stop it.`,
+        description: m.whole ? `${a} ${what} keeps moving by itself (it was still changing 5 to 9 seconds after the page opened) and there is no button to pause or stop it.` : `${a} ${what} changes by itself (it changed while it was watched for 6 seconds) and there is no button to pause or stop it.`,
         question: settled ? undefined : 'Is this animation part of the content or a loading indicator? Content that moves for more than 5 seconds needs a way to pause, stop or hide it.',
         measured: { changedShare: Math.round(m.changed * 100) / 100, controlsNearby: m.controls.slice(0, 8) },
         barrier: 'major', trust: settled ? 'confirmed' : 'review', evidence: shots,

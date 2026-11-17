@@ -11,6 +11,9 @@ const links = Array.from({ length: 30 }, (_, i) => `<p style="margin:40px 0"><a 
 const slides = '<div class="slide" style="background:#c33">Summer sale</div><div class="slide" style="background:#36c">New collection</div><div class="slide" style="background:#393">Free returns</div>';
 const carouselCss = '.carousel{width:600px;height:200px;position:relative;overflow:hidden}.slide{position:absolute;inset:0;color:#fff;font-size:32px;padding:40px;display:none}.slide.on{display:block}';
 const carouselJs = "const s=[...document.querySelectorAll('.slide')];let i=0;s[0].classList.add('on');window.__t=setInterval(()=>{s[i].classList.remove('on');i=(i+1)%s.length;s[i].classList.add('on')},1500);";
+const textSlides = '<div class="slide on">Spring sale: 20% off seeds</div><div class="slide">Free delivery over 50 euros</div><div class="slide">New: indoor herb kits</div>';
+const textCarouselCss = 'body{font:16px/1.5 Arial,sans-serif;color:#222;background:#fff}.carousel{position:relative;height:120px;overflow:hidden;border:1px solid #ccc}.slide{position:absolute;inset:0;display:none;padding:16px}.slide.on{display:block}';
+const textCarouselJs = "var s=document.querySelectorAll('.slide'),i=0;window.__t=setInterval(function(){s[i].classList.remove('on');i=(i+1)%s.length;s[i].classList.add('on');},2000);";
 const svg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='32'%3E%3Crect width='60' height='32' fill='%23369'/%3E%3C/svg%3E";
 const menu = (alt) => `<button id="t" aria-expanded="false" aria-controls="menu">Menu</button><ul id="menu" hidden><li><a href="#s"><img ${alt} src="${svg}"></a></li><li><a href="#c">Contact</a></li></ul>
 <script>const t=document.getElementById('t'),m=document.getElementById('menu');t.onclick=()=>{const o=t.getAttribute('aria-expanded')==='true';t.setAttribute('aria-expanded',String(!o));m.hidden=o;};</script>`;
@@ -82,6 +85,10 @@ const f = document.getElementById('fav'); f.addEventListener('click', () => { do
     '<div class="card">Free delivery on every order over fifty euros, returns within thirty days.</div>'),
   'hover-bad': page('Hover planted', 'body{margin:40px}.trigger{display:inline-block;padding:4px;border:1px solid #666}.tip{display:none;position:absolute;left:40px;top:120px;width:220px;background:#222;color:#fff;padding:8px}.trigger:hover + .tip{display:block}',
     '<p>Shipping costs <span class="trigger" tabindex="0">?</span><span class="tip" role="tooltip">Shipping is free above 50 euros, otherwise 4.90 euros.</span></p><p>Other text below the tip.</p>'),
+  // The same tooltip below a slideshow that moves on while the trigger is pointed at: the slide that appears is not
+  // what pointing showed.
+  'hoverslide-bad': page('Hover beside a slideshow planted', `${carouselCss}body{margin:40px}.trigger{display:inline-block;padding:4px;border:1px solid #666}.tip{display:none;position:absolute;left:40px;top:320px;width:220px;background:#222;color:#fff;padding:8px}.trigger:hover + .tip{display:block}`,
+    `<div class="carousel">${slides}</div><p>Shipping costs <span class="trigger" tabindex="0">?</span><span class="tip" role="tooltip">Shipping is free above 50 euros, otherwise 4.90 euros.</span></p><p>Other text below the tip.</p><script>${carouselJs.replace('1500', '300')}</script>`),
   // A submenu that only the pointer opens.
   'hovermenu-bad': page('Hover menu planted', 'nav ul{list-style:none;margin:0;padding:0}.sub{display:none;padding:8px;background:#eee}.has:hover .sub{display:block}',
     '<nav><ul><li class="has"><a href="#s">Services</a><ul class="sub"><li><a href="#w">Web design</a></li><li><a href="#a">Accessibility audits</a></li></ul></li><li><a href="#c">Contact</a></li></ul></nav><main><p>Welcome.</p></main>'),
@@ -104,6 +111,13 @@ const f = document.getElementById('fav'); f.addEventListener('click', () => { do
   // Moved by script frame by frame: no CSS animation and no carousel class to find it by.
   'ticker-bad': page('Ticker planted', tickerCss, `<section><div class="band"><span id="news">${tickerText}</span></div></section><p>Text after the news.</p><script>${tickerJs}</script>`),
   'ticker-ok': page('Ticker clean', tickerCss, `<section><div class="band"><span id="news">${tickerText}</span></div><button id="p">Pause news</button></section><p>Text after the news.</p><script>${tickerJs}document.getElementById('p').onclick=()=>{window.__stop=true};</script>`),
+  // Three slides every 2 s: a round of 6 s, so the slideshow is back on its first slide after exactly 6 seconds.
+  'motionsix-bad': page('Motion six planted', carouselCss, `<div class="carousel">${slides}</div><p>Text after the slideshow.</p><script>${carouselJs.replace('1500', '2000')}</script>`),
+  'motionsix-ok': page('Motion six clean', carouselCss, `<section><div class="carousel">${slides}</div><button id="p">Pause slideshow</button></section><p>Text after the slideshow.</p><script>${carouselJs.replace('1500', '2000')}document.getElementById('p').onclick=()=>clearInterval(window.__t);</script>`),
+  // Like a real shop banner: dark text on white, slides switched by class every 2 s. Changing one line of text alters
+  // only about 1 % of the pixels, so a pixel count alone misses it.
+  'motiontext-bad': page('Motion text planted', textCarouselCss, `<div class="carousel" aria-label="Offers">${textSlides}</div><p>Text after the slideshow.</p><script>${textCarouselJs}</script>`),
+  'motiontext-ok': page('Motion text clean', textCarouselCss, `<section><div class="carousel" aria-label="Offers">${textSlides}</div><button id="p">Pause offers</button></section><p>Text after the slideshow.</p><script>${textCarouselJs}document.getElementById('p').onclick=()=>clearInterval(window.__t);</script>`),
   'motion-ok': page('Motion clean', carouselCss, `<section><div class="carousel">${slides}</div><button id="p">Pause slideshow</button></section><p>Text after the slideshow.</p><script>${carouselJs}document.getElementById('p').onclick=()=>clearInterval(window.__t);</script>`),
   'targets-bad': page('Targets planted', '.icons button{width:16px;height:16px;padding:0;margin:0 1px;border:1px solid #333;background:#fff}',
     '<div class="icons"><button aria-label="Share on network A"></button><button aria-label="Share on network B"></button><button aria-label="Share by e-mail"></button></div><p>Read our <a href="#t">terms of service</a> before you order anything from this shop.</p>'),

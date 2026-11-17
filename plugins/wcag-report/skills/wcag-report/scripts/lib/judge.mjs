@@ -7,7 +7,7 @@ import { readJson, writeJson } from './io.mjs';
 import { REFS_DIR, KB_DIR } from './paths.mjs';
 import { criterion, inProfile, cardPath, criterionFailures } from './criteria.mjs';
 import { signalToObservation, checkObservation } from './observations.mjs';
-import { readAgent, saveLines, wrCommand, fenceJson } from './context.mjs';
+import { readAgent, saveLines, wrCommand, fenceJson, inboxFile } from './context.mjs';
 import { isReviewed } from './merge.mjs';
 import { plainSuggestion } from './dedupe.mjs';
 
@@ -149,7 +149,7 @@ export function judgeContext(ctx, { template: tid, consistency, save }) {
     '',
     '## Delivering your result',
     '',
-    ...saveLines(cmd, save, `{ "judge": "${name}", "observations": [ ... ] }`, `${name}: ok, 3 fail, 2 needs_review, 9 pass`, `${name}: invalid — <first error>`),
+    ...saveLines(cmd, save, `{ "judge": "${name}", "observations": [ ... ] }`, `${name}: ok, 3 fail, 2 needs_review, 9 pass`, `${name}: invalid — <first error>`, inboxFile(p, `judge-${name}`)),
     '',
   ].join('\n');
 }
@@ -288,7 +288,13 @@ export function convertJudgeOutput(ctx, data, { template: tid, consistency }) {
     for (const [k, pid] of (Array.isArray(j.also_on) ? j.also_on : []).entries()) {
       if (!allowedPages.has(pid) || pid === j.pageId) continue;
       const other = pages.find((x) => x.id === pid);
-      observations.push({ ...obs, id: `${obs.id}-${k + 2}`, scope: { ...obs.scope, url: other ? other.finalUrl || other.url : obs.scope.url }, x: { ...obs.x, pageId: pid } });
+      const url = other ? other.finalUrl || other.url : obs.scope.url;
+      // The same image (1.1.1) has the same answer on every page. Anything else seen again (a page title, a heading,
+      // link text) has its own words on each page: the quote and the replacement of the first page are not copied,
+      // or the work list would rename one article after another.
+      const x = { ...obs.x, pageId: pid };
+      if (j.sc !== '1.1.1') { x.html = null; delete x.suggestion; }
+      observations.push({ ...obs, id: `${obs.id}-${k + 2}`, scope: { ...obs.scope, url }, steps: [`Read the collected content of ${url}`, ...obs.steps.slice(1)], x });
     }
   });
   // Every criterion of the scope gets a decision: a silent one would be reported as not tested.

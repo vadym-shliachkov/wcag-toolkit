@@ -210,6 +210,27 @@ async function locate(page, inst) {
   }, inst.selector).catch(() => null);
 }
 
+// Where an element's own words are on screen (the union of its text lines), for an element with text and no picture
+// whose box is wider than its words. Null otherwise, and the element's box is used.
+async function textExtent(page, selector) {
+  return page.evaluate((sel) => {
+    let el = null;
+    try { el = document.querySelector(sel); } catch { return null; }
+    if (!el || el.matches('img,svg,video,canvas,input,select,textarea') || el.querySelector('img,svg,video,canvas')) return null;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const rects = [...range.getClientRects()].filter((q) => q.width > 0 && q.height > 0);
+    if (!rects.length) return null;
+    const x0 = Math.min(...rects.map((q) => q.left));
+    const y0 = Math.min(...rects.map((q) => q.top));
+    const x1 = Math.max(...rects.map((q) => q.right));
+    const y1 = Math.max(...rects.map((q) => q.bottom));
+    const box = el.getBoundingClientRect();
+    if (x1 - x0 > box.width - 8) return null;
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, vw: document.documentElement.clientWidth, vh: innerHeight };
+  }, selector).catch(() => null);
+}
+
 async function visibleText(page, clip) {
   return page.evaluate((c) => {
     const seen = new Set();
@@ -345,9 +366,14 @@ export async function issueShots(ctx, { browser, img, quality = 0.76, maxWidth =
             return img.complete && img.naturalWidth > 0;
           }, inst.selector).catch(() => false);
           if (loaded) r = (await locate(page, inst)) ?? r;
-          const t = await cropAt(env, page, r, quality, 520, { pad: 16, minW: 280, minH: 90, maxW: 640 });
+          // A row about text (its contrast, its label) shows the words themselves, outlined: a paragraph's box runs the
+          // full width of the page, and shrunk into the table's picture column its words could not be read.
+          const words = issue.check === 'judge-1.1.1' ? null : await textExtent(page, inst.selector);
+          const t = words
+            ? await cropAt(env, page, words, quality, 520, { pad: 10, minW: 140, minH: 48, maxW: 240 })
+            : await cropAt(env, page, r, quality, 520, { pad: 16, minW: 280, minH: 90, maxW: 640 });
           save(file, t.jpg.buffer);
-          issue.rowThumbs.push({ key: thumb, file: rel(ctx, file), width: t.jpg.width, height: t.jpg.height });
+          issue.rowThumbs.push({ key: thumb, file: rel(ctx, file), width: t.jpg.width, height: t.jpg.height, ...(issue.check === 'judge-1.1.1' ? {} : { boxes: [t.box] }) });
           continue;
         }
         if (isFocusIssue(issue)) {

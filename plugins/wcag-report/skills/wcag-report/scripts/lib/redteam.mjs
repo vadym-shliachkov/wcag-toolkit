@@ -8,17 +8,17 @@ import { readJson, writeJson, writeText } from './io.mjs';
 import { KB_DIR, REFS_DIR } from './paths.mjs';
 import { pageTexts, pdfAccessibility } from './pdf-check.mjs';
 import { rasterize } from './raster.mjs';
-import { readAgent, saveLines, wrCommand } from './context.mjs';
+import { readAgent, saveLines, wrCommand, inboxFile } from './context.mjs';
 import { layeredTexts } from './text.mjs';
 import { recheckIssue } from './recheck.mjs';
 import { numberMismatches } from './report-data.mjs';
 import { usesLatinScript, loadStrings } from './i18n.mjs';
+import { FORBIDDEN } from './claims.mjs';
 
 export const DIMENSIONS = ['accuracy', 'credibility', 'coverage', 'purpose', 'clarity', 'tone', 'layout', 'pdf_accessibility', 'consistency', 'confidentiality', 'fix_mode', 'language'];
 const STRICT = ['accuracy', 'credibility', 'confidentiality', 'pdf_accessibility'];
 export const MAX_ROUNDS = 3;
 
-const FORBIDDEN = [/\bcompliant\b/i, /\bcompliance\b/i, /\bconform(s|ant)\b/i, /\bcertified\b/i, /\bcertification\b/i, /\baccredited\b/i, /\bfully accessible\b/i, /\b100\s?% accessible\b/i, /\baccessible to everyone\b/i, /\b(meets|passes|satisfies) WCAG\b/i, /\bADA[- ]compliant\b/i, /\bno accessibility (issues|problems)\b/i, /\bguarantee[sd]?\b/i, /\blawsuit/i, /\blegally safe\b/i];
 const PLACEHOLDERS = [/\bundefined\b/, /\bNaN\b/, /\[object Object\]/, /\bnull\b/, /\bTODO\b/, /lorem ipsum/i, /\bAs an AI\b/i, /\{\{[^}]*\}\}/];
 const LEAKS = [
   { id: 'SEC-02', re: /\b(localhost|127\.0\.0\.1)(:\d+)?\b/i, what: 'a local server address' },
@@ -136,9 +136,22 @@ export function drawSample(ctx, report, round) {
   return [...picked].map(([id, why]) => ({ id, why }));
 }
 
+// What changed after the PDF was rendered: findings (amend, shots --issues) or saved texts (writers, editor, fixer).
+// The inputs the context commands write for the next subagent are not results, so they do not count.
+export function staleInputs(p) {
+  const pdfAt = fs.statSync(p.pdf).mtimeMs;
+  const newer = (f) => fs.existsSync(f) && fs.statSync(f).mtimeMs > pdfAt;
+  const texts = fs.existsSync(p.textDir) ? fs.readdirSync(p.textDir).filter((f) => f.endsWith('.json') && !/-input\.json$|^batches\.json$/.test(f)).map((f) => path.join(p.textDir, f)) : [];
+  return [p.issues, p.amendments, ...texts].filter(newer).map((f) => path.relative(p.dir, f).split(path.sep).join('/'));
+}
+
 export async function prepRound(ctx, round, { recheck = true } = {}) {
   const { p, run } = ctx;
   if (!fs.existsSync(p.pdf)) throw new Error('No report.pdf yet. Run "render" first.');
+  // A reviewer must never get a PDF that lacks the fixes made since it was rendered (a render that failed after an
+  // amend leaves the old one in place).
+  const stale = staleInputs(p);
+  if (stale.length) throw new Error(`report.pdf is older than ${stale.slice(0, 4).join(', ')}${stale.length > 4 ? ', …' : ''}: run "render" first. If render fails, stop the review and report the error; do not review the old PDF.`);
   const dir = p.reviewDir(round);
   // Re-check screenshots stay: amendments made before this round cite them as evidence.
   if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) if (f !== 'recheck') fs.rmSync(path.join(dir, f), { recursive: true, force: true });
@@ -209,9 +222,25 @@ export function redteamContext(ctx, round, save) {
     '',
     '## Delivering your result',
     '',
-    ...saveLines(cmd, save, `{ "schema": "wcag-report/red-team-verdict@1", "run": "${id}", "round": ${round}, "pdf_sha256": "${prep.pdf_sha256}", … }`, `red team r${round}: NOT READY - 2 blocker, 4 major`, `red team r${round}: invalid — <first error>`),
+    ...saveLines(cmd, save, `{ "schema": "wcag-report/red-team-verdict@1", "run": "${id}", "round": ${round}, "pdf_sha256": "${prep.pdf_sha256}", … }`, `red team r${round}: NOT READY - 2 blocker, 4 major`, `red team r${round}: invalid — <first error>`, inboxFile(p, `redteam-r${round}`)),
     '',
   ].join('\n');
+}
+
+// The ready rule. A template defect the reviewer reports once per page (a split box on four pages) is one defect of
+// the skill: it counts once per check, so it does not use up the majors the run's own content is allowed.
+function notReadyBecause(defects, { allPages, unanswered }) {
+  const reasons = [];
+  const blockers = defects.filter((d) => d.severity === 'blocker');
+  const majors = defects.filter((d) => d.severity === 'major');
+  const counted = majors.filter((d) => d.cause !== 'template').length + new Set(majors.filter((d) => d.cause === 'template').map((d) => d.check)).size;
+  if (!allPages) reasons.push('not every page was reviewed');
+  if (blockers.length) reasons.push(`${blockers.length} blocker(s)`);
+  if (counted > 3) reasons.push(`${counted} majors (at most 3 allowed; a template defect counts once)`);
+  const strictMajors = majors.filter((d) => STRICT.includes(d.dimension));
+  if (strictMajors.length) reasons.push(`major defect(s) in ${[...new Set(strictMajors.map((d) => d.dimension))].join(', ')}`);
+  if (unanswered.length) reasons.push(`two-minute test unanswered: ${unanswered.join(', ')}`);
+  return reasons;
 }
 
 function score(defects) {
@@ -263,16 +292,13 @@ export function finalizeVerdict(ctx, round, v, prep) {
   const scores = Object.fromEntries(DIMENSIONS.map((dim) => [dim, v.pages_seen === 0 ? 0 : score(defects.filter((d) => d.dimension === dim))]));
   const blockers = defects.filter((d) => d.severity === 'blocker');
   const majors = defects.filter((d) => d.severity === 'major');
-  const reasons = [];
-  if (v.pages_seen !== prep.page_count) reasons.push('not every page was reviewed');
-  if (blockers.length) reasons.push(`${blockers.length} blocker(s)`);
-  if (majors.length > 3) reasons.push(`${majors.length} majors (at most 3 allowed)`);
-  const strictMajors = majors.filter((d) => STRICT.includes(d.dimension));
-  if (strictMajors.length) reasons.push(`major defect(s) in ${[...new Set(strictMajors.map((d) => d.dimension))].join(', ')}`);
   const tmt = v.two_minute_test ?? {};
   const unanswered = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'].filter((q) => tmt[q] == null);
-  if (unanswered.length) reasons.push(`two-minute test unanswered: ${unanswered.join(', ')}`);
+  const reasons = notReadyBecause(defects, { allPages: v.pages_seen === prep.page_count, unanswered });
   const ready = reasons.length === 0;
+  // Nothing this run can change keeps the report back: only defects of the skill's own template are left (the
+  // reviewer files them on every page, and no fixer or amend can touch them). The review stops at this round.
+  const templateOnly = !ready && notReadyBecause(defects.filter((d) => d.cause !== 'template'), { allPages: v.pages_seen === prep.page_count, unanswered }).length === 0;
   return {
     ...v,
     defects,
@@ -280,6 +306,7 @@ export function finalizeVerdict(ctx, round, v, prep) {
     ready,
     reviewer_ready: v.ready,
     not_ready_because: reasons,
+    template_only: templateOnly,
     counts: { blocker: blockers.length, major: majors.length, minor: defects.length - blockers.length - majors.length },
     two_minute_test: { ...tmt, passed: unanswered.length === 0 },
     saved_at: new Date().toISOString(),
@@ -287,5 +314,5 @@ export function finalizeVerdict(ctx, round, v, prep) {
 }
 
 export function statusLine(v) {
-  return `red team r${v.round}: ${v.ready ? 'READY' : 'NOT READY'} - ${v.counts.blocker} blocker, ${v.counts.major} major, ${v.counts.minor} minor`;
+  return `red team r${v.round}: ${v.ready ? 'READY' : 'NOT READY'} - ${v.counts.blocker} blocker, ${v.counts.major} major, ${v.counts.minor} minor${v.template_only ? ' (only template defects left)' : ''}`;
 }
