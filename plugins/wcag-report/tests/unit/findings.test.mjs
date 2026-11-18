@@ -266,3 +266,24 @@ test('focus hidden behind the same layer is one component, whichever links end u
   assert.equal(a, b);
   assert.notEqual(a, c);
 });
+
+test('contrast rows show the words on screen, name an element whose words were lost, and never round a fail up to the requirement', async () => {
+  const { recommendationRows, ratioText, decodeEntities } = await imp('findings.mjs');
+  const inst = (selector, html, ratio) => ({ pageId: 'p1', url: 'https://s.test/p1', selector, html, check: 'color-contrast', observed: 'Element has insufficient color contrast', measured: { ratio, required: 4.5 } });
+  const issue = { status: 'fail', check: 'color-contrast', instances: [
+    inst('#filters', '<button id="filters"><i class=""></i>&nbsp;&nbsp;All channels&nbsp;</button>', 2.93),
+    inst('button.cut', `<button class="cut" type="button" style="font: var(--x); color: var(--y); background: transparent; border-width: medium${' '.repeat(10)}`, 4.48),
+    inst('a.tel', '<a class="tel" href="tel:1">888.403.2667</a>', 4.48),
+  ] };
+  const rows = recommendationRows(issue, { thumbFor: () => null, run: { mode: 'url' }, reviewedUrls: ['https://s.test/p1'] });
+  const byRatio = (r) => rows.filter((x) => x.detail.ratio === r);
+  assert.equal(byRatio(2.93)[0].current, 'All channels');
+  const cut = rows.find((x) => x.role === 'button' && x.current == null);
+  assert.ok(cut, 'a button whose stored markup ends inside its tag has no name, not its half tag');
+  assert.equal(ratioText(4.48, 4.5), '4.48');
+  assert.equal(ratioText(4.37, 4.5), '4.4');
+  assert.equal(ratioText(4.5, 4.5), '4.5');
+  assert.equal(ratioText(2.96, 3), '2.96');
+  assert.equal(ratioText(3.71, 4.5), '3.7');
+  assert.equal(decodeEntities('a&nbsp;&amp;&#39;b&#x2014;'), "a &'b—");
+});

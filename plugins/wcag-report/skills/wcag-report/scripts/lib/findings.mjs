@@ -119,6 +119,25 @@ export const plainQuote = (s) => {
   return (m ? m[1] : String(s)).replace(/^["“]+|["”]+$/g, '').trim();
 };
 
+const ENTITIES = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", hellip: '…', mdash: '—', ndash: '–', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', copy: '©', reg: '®', trade: '™' };
+// Text taken from stored markup shows the words on screen ("All channels"), never "&nbsp;All channels".
+export const decodeEntities = (s) => String(s ?? '').replace(/&(#x[\da-f]+|#\d+|[a-z]+);/gi, (m, e) => {
+  if (e[0] === '#') {
+    const code = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+    return Number.isFinite(code) && code > 0 && code <= 0x10ffff ? (code === 0xa0 ? ' ' : String.fromCodePoint(code)) : m;
+  }
+  return ENTITIES[e.toLowerCase()] ?? m;
+});
+
+// A measured contrast printed next to its requirement: one decimal, unless rounding would lift a failing ratio to the
+// requirement (4.48 is not "4.5:1" beside "at least 4.5:1"); then two decimals, rounded down.
+export const ratioText = (ratio, required) => {
+  const r = Number(ratio);
+  if (!Number.isFinite(r)) return null;
+  const one = Number(r.toFixed(1));
+  return required != null && r < Number(required) && one >= Number(required) ? (Math.floor(r * 100) / 100).toFixed(2) : r.toFixed(1);
+};
+
 export const fixKindOf =(v) => (v == null ? null : v === '' ? 'hide' : 'replace');
 
 // One element of a card that gathers an automated check's failures: the same menu item on every page is one row.
@@ -128,7 +147,7 @@ export const fixKindOf =(v) => (v == null ? null : v === '' ? 'hide' : 'replace'
 // the label its markup gives it.
 const elementName = (x) => {
   const said = String(x.observed ?? '').replace(/\(only in the "[^"]*" state\)/g, '');
-  const attr = (n) => new RegExp(`\\b${n}="([^"]{1,80})"`).exec(String(x.html ?? ''))?.[1];
+  const attr = (n) => { const v = new RegExp(`\\b${n}="([^"]{1,80})"`).exec(String(x.html ?? ''))?.[1]; return v == null ? v : decodeEntities(v).trim() || null; };
   return /"([^"]{1,80})"/.exec(said)?.[1] ?? (textOf(x.html).slice(0, 80) || attr('aria-label') || attr('title') || attr('alt') || null);
 };
 export const elementKey = (x) => `${normSel(x.selector).replace(/\.(active|current|current-menu-item|current_page_item|is-active|selected)(?=[.:#[\s>]|$)/g, '')}|${elementName(x) ?? ''}|${x.state ?? 'default'}`;
@@ -162,7 +181,9 @@ function elementRows(issue, { run, reviewedUrls }) {
     const key = elementKey(x);
     const name = elementName(x);
     const detail = elementDetail(x.check ?? issue.check, x.measured);
-    const r = rows.get(key) ?? { kind: 'element', check: x.check ?? issue.check, value: detail.token ? `autocomplete="${detail.token}"` : null, current: name, currents: name ? [name] : [], detail, file: null, thumb: thumbs.get(key) ?? null, urls: [], basis: [], seen: null };
+    // What kind of control it is, for a row whose words were not captured: the report names the kind, never a
+    // placeholder quoted as if it were the site's text.
+    const r = rows.get(key) ?? { kind: 'element', role: roleOf(x.html), check: x.check ?? issue.check, value: detail.token ? `autocomplete="${detail.token}"` : null, current: name, currents: name ? [name] : [], detail, file: null, thumb: thumbs.get(key) ?? null, urls: [], basis: [], seen: null };
     r.urls.push(publicUrl(x.url, run));
     rows.set(key, r);
   }
@@ -242,7 +263,14 @@ function fixScope(issue, inst, sameImagePages) {
 }
 
 const isMarkup = (html) => /^\s*</.test(String(html ?? ''));
-const textOf = (html) =>String(html ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const roleOf = (html) => {
+  const s = String(html ?? '');
+  const role = /\brole="(button|link)"/.exec(s)?.[1];
+  const tag = /^\s*<([a-z][\w-]*)/i.exec(s)?.[1]?.toLowerCase();
+  return role ?? (tag === 'a' ? 'link' : tag === 'button' ? 'button' : ['input', 'select', 'textarea'].includes(tag) ? 'field' : tag === 'img' ? 'image' : 'other');
+};
+// Stored markup is cut at a fixed length, so it may end inside a tag: that half tag is not text.
+const textOf = (html) => decodeEntities(String(html ?? '').replace(/<[^>]*$/, '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
 // Every place of every issue as one flat row: the work list for a developer or a model making the changes. It holds
 // what is needed to decide each change without opening the PDF: the element, the text now, the exact replacement,

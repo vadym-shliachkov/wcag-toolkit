@@ -420,7 +420,7 @@ export async function measurePage(env, page, axe, stateFails = []) {
     if (colourOnly > 3) continue;
     signals.push(signal(base, {
       check: 'link-in-text', sc: ['1.4.1'], status: 'fail', selector: l.selector, html: l.html, bbox: l.bbox,
-      description: `The link "${l.text}" sits in running text and differs from it only by colour (${l.contrast.toFixed(1)}:1 against the text${l.contrast >= 3 ? ', with no extra cue on focus' : ''}); people who cannot see the colour difference cannot find it.`,
+      description: `The link "${l.text}" sits in running text and differs from it only by colour (${l.contrast < 3 && l.contrast >= 2.95 ? (Math.floor(l.contrast * 100) / 100).toFixed(2) : l.contrast.toFixed(1)}:1 against the text${l.contrast >= 3 ? ', with no extra cue on focus' : ''}); people who cannot see the colour difference cannot find it.`,
       measured: { contrastWithText: Number(l.contrast.toFixed(2)) }, barrier: 'minor', trust: 'confirmed', expected: 'Links in text are marked by more than colour: an underline, or 3:1 against the text plus a cue on focus and hover.', steps: STEPS.links,
     }));
   }

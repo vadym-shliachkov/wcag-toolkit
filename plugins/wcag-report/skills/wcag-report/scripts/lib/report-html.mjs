@@ -5,6 +5,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { groupIcon, sevGlyph, GROUP_IDS } from './icons.mjs';
 import { claimsAccessibility } from './claims.mjs';
+import { ratioText } from './findings.mjs';
 
 const SEVERITIES = ['critical', 'serious', 'moderate', 'minor'];
 const WEIGHT = { critical: 8, serious: 4, moderate: 2, minor: 1 };
@@ -537,13 +538,17 @@ function recTable(ctx, i) {
   const head = `<tr>${images ? `<th scope="col" class="rec-img">${esc(t(elements ? 'issues.rec_element' : rows.some((r) => r.zoom) ? 'issues.rec_text' : 'issues.rec_image'))}</th>` : ''}<th scope="col">${esc(t('issues.rec_now'))}</th><th scope="col">${esc(t('issues.rec_should'))}</th><th scope="col">${esc(t('issues.rec_where'))}</th></tr>`;
   if (elements) {
     const body = rows.map((r) => {
-      const name = r.current ?? t('issues.rec_element');
+      // A row whose words were not captured names the kind of control, unquoted: a placeholder in quotes reads as
+      // the site's own text.
+      const name = r.current || null;
+      const unnamed = esc(t(`issues.rec_el_unnamed_${['button', 'link', 'field', 'image'].includes(r.role) ? r.role : 'other'}`));
+      const thumbAlt = name ? t('issues.rec_thumb_element', { name }) : t('issues.rec_thumb_element_unnamed');
       // The element is outlined, as in the card's screenshots, so the close-up shows which words or control it means.
-      const thumb = r.thumb ? `<span class="rec-thumb" style="aspect-ratio:${r.thumb.width}/${r.thumb.height}"><img src="${esc(ctx.fileUrl(r.thumb.file))}" width="${r.thumb.width}" height="${r.thumb.height}" alt="${esc(t('issues.rec_thumb_element', { name }))}">${overlay(r.thumb.width, r.thumb.height, r.thumb.boxes, '', { scrim: false })}</span>` : `<span class="small muted">${esc(t('issues.rec_no_image'))}</span>`;
+      const thumb = r.thumb ? `<span class="rec-thumb" style="aspect-ratio:${r.thumb.width}/${r.thumb.height}"><img src="${esc(ctx.fileUrl(r.thumb.file))}" width="${r.thumb.width}" height="${r.thumb.height}" alt="${esc(thumbAlt)}">${overlay(r.thumb.width, r.thumb.height, r.thumb.boxes, '', { scrim: false })}</span>` : `<span class="small muted">${esc(t('issues.rec_no_image'))}</span>`;
       const d = r.detail ?? {};
       const fam = r.check === 'contrast-measured' ? 'color-contrast' : r.check === 'label' ? 'form-labels' : r.check;
-      const nowDetail = d.ratio != null ? t('issues.rec_el_now_contrast', { ratio: n(Number(d.ratio).toFixed(1)) }) : d.width != null ? t('issues.rec_el_now_size', { w: n(d.width), h: n(d.height) }) : t(`issues.rec_el_now_${fam}`);
-      const now = `${siteQuote(ctx, name)}${nowDetail ? `<br><span class="small">${esc(nowDetail)}</span>` : ''}`;
+      const nowDetail = d.ratio != null ? t('issues.rec_el_now_contrast', { ratio: n(ratioText(d.ratio, d.required)) }) : d.width != null ? t('issues.rec_el_now_size', { w: n(d.width), h: n(d.height) }) : t(`issues.rec_el_now_${fam}`);
+      const now = `${name ? siteQuote(ctx, name) : `<span class="small muted">${unnamed}</span>`}${nowDetail ? `<br><span class="small">${esc(nowDetail)}</span>` : ''}`;
       // An attribute breaks after its "=", never before its closing quote.
       // The attribute a developer adds, and in words what it does for the visitor.
       const should = r.value ? `<code>${esc(r.value).replace('=', '=<wbr>')}</code>${fam === 'autocomplete' ? `<br><span class="small">${esc(t('issues.rec_el_autocomplete_note'))}</span>` : ''}` : esc(d.required != null ? t('issues.rec_el_should_contrast', { required: n(d.required) }) : t(`issues.rec_el_should_${fam}`));
